@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "408378035201",
+    "project_id": "groupbuy-1ec04",
+    "storage_bucket": "groupbuy-1ec04.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:408378035201:android:8e3e9c678ad65d82ba0400",
+        "android_client_info": {
+          "package_name": "com.example.groupbuy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "408378035201-0388uaklk6ug0i9shvbmhjh323m08c1q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0uWaZ7L2CbvwgjPyFZMeG6TlvWJ5i5uo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "408378035201-0388uaklk6ug0i9shvbmhjh323m08c1q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
