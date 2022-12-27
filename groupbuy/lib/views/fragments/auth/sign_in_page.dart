@@ -4,6 +4,7 @@ import 'package:groupbuy/validate/validation.dart';
 import 'package:groupbuy/controllers/handle_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:groupbuy/views/fragments/auth/sign_up_page.dart';
+import 'package:groupbuy/views/fragments/auth/forgot_pw_page.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -160,18 +161,23 @@ class SignInState extends State<StatefulWidget> with CommonValidation {
   }
 
   Widget forgetPassword() {
-    return Row(
-      children: [
-        Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 54.0),
-          child: Text(
-            'Quên mật khẩu?',
-            style: GoogleFonts.inter(
-              textStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 16),
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, ForgotPasswordPage.routeName);
+      },
+      child: Row(
+        children: [
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 54.0),
+            child: Text(
+              'Quên mật khẩu?',
+              style: GoogleFonts.inter(
+                textStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 16),
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -214,11 +220,11 @@ class SignInState extends State<StatefulWidget> with CommonValidation {
             borderRadius: BorderRadius.circular(30),
           ),
           child: Center(child:
-          Text('Đăng nhập',
-            style: GoogleFonts.inter(
-              textStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18),
+            Text('Đăng nhập',
+              style: GoogleFonts.inter(
+                textStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18),
+              ),
             ),
-          ),
           ),
         ),
       ),

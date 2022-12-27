@@ -3,6 +3,7 @@ import 'package:groupbuy/views/navigation_bar.dart';
 
 import 'fragments/auth/sign_in_page.dart';
 import 'fragments/auth/sign_up_page.dart';
+import 'fragments/auth/forgot_pw_page.dart';
 import 'fragments/group_page.dart';
 import 'fragments/homepage.dart';
 import 'fragments/order_page.dart';
@@ -26,6 +27,7 @@ class GroupbuyApp extends StatelessWidget {
         '/personalPage': (context) => PersonalPage(),
         '/signInPage': (context) => const SignInPage(),
         '/signUpPage': (context) => const SignUpPage(),
+        '/forgotPassword': (context) => const ForgotPasswordPage(),
       },
       initialRoute: '/',
     );

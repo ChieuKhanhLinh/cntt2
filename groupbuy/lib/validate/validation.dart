@@ -55,6 +55,16 @@ mixin CommonValidation {
     return null;
   }
 
+  String? validateResetEmail(String? value) {
+    if (value!.isEmpty) {
+      return 'Vui lòng điền email của bạn!';
+    }
+    if (!value.contains('@') || !value.contains('.com')) {
+      return 'Email không hợp lệ. Vui lòng thử lại';
+    }
+    return null;
+  }
+
   String? validateEditOldPassword(String? value) {
     if (value!.isEmpty) {
       return 'Please enter your old password';

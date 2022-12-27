@@ -37,7 +37,7 @@ class Auth {
   }
 
   signInWithGoogle() async {
-    await GoogleSignIn().disconnect();
+    // await GoogleSignIn().disconnect();
     final GoogleSignInAccount? googleUser = await GoogleSignIn(
       scopes: <String>['email']).signIn();
 
@@ -48,7 +48,7 @@ class Auth {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-
+    GoogleSignIn().disconnect();
     print('Đăng nhập google thành công!');
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
@@ -56,6 +56,10 @@ class Auth {
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
     print('Đăng xuất thành công');
+  }
+
+  Future passwordReset({required String email,}) async {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
   }
 
 }
