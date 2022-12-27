@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:groupbuy/models/items.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 
 class Detail extends StatefulWidget {
-  const Detail({Key? key}) : super(key: key);
+  const Detail({Key? key, required this.item}) : super(key: key);
   static const String routeName = '/item_detail';
+  final Item item;
+
   State<Detail> createState() => _DetailState();
 }
 
 class _DetailState extends State<Detail> {
+  final auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +27,9 @@ class _DetailState extends State<Detail> {
                 height: 300,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('assets/home/mon1.jpg'),
+                      image: NetworkImage(widget.item.imgLink != ''
+                          ? widget.item.imgLink
+                          : 'https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg'),
                       fit: BoxFit.cover),
                 ),
               ),
@@ -37,7 +46,8 @@ class _DetailState extends State<Detail> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  '70.000d',
+                                  NumberFormat.currency(locale: 'vi')
+                                      .format(widget.item.initialprice),
                                   style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.grey.shade300,
@@ -46,7 +56,8 @@ class _DetailState extends State<Detail> {
                               ),
                               Expanded(
                                 child: Text(
-                                  '7.000đ',
+                                  NumberFormat.currency(locale: 'vi')
+                                      .format(widget.item.minprice),
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
@@ -60,7 +71,8 @@ class _DetailState extends State<Detail> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  '10 sản phẩm được đặt mua',
+                                  widget.item.ordered.toString() +
+                                      ' sản phẩm được đặt mua',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14,
@@ -104,7 +116,7 @@ class _DetailState extends State<Detail> {
                       children: [
                         Expanded(
                           child: Text(
-                            'Bông lan trứng muối mặn quá trời quá đất',
+                            widget.item.name,
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),
                             maxLines: 3,
@@ -137,7 +149,7 @@ class _DetailState extends State<Detail> {
                     color: Colors.white,
                     padding: EdgeInsets.all(10),
                     child: Text(
-                      'Lớp xôi không quá dày, chiên giòn rộm, nhân đầy ụ đậm đà thêm thêm sốt chua ngọt vị vừa phải.',
+                      widget.item.detail,
                       style:
                           TextStyle(fontSize: 16, color: Colors.grey.shade700),
                     ),

@@ -3,7 +3,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:groupbuy/models/items.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 import 'item_detail.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,46 +17,147 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text(
-          'Home',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400),
-        ),
+        backgroundColor: Color(0xFF40C800),
+        title: Text('Trang Chủ'),
       ),
-      body: ListView(
-        padding: EdgeInsets.all(20),
-        children: [
-          shopBanner(),
+      body: ListView(padding: EdgeInsets.all(20), children: [
+        shopBanner(),
+        SizedBox(
+          height: 30,
+        ),
+        Row(
+          children: [
+            Text(
+              'Phiên hết hạn sau:',
+              style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF013003)),
+            ),
+            SizedBox(
+              width: 30,
+            ),
+            timeBox(),
+          ],
+        ),
+        SizedBox(
+          height: 30,
+        ),
+        StreamBuilder<List<Item>>(
+          stream: readItems(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text('Something went wrong! ${snapshot.error}');
+            }
+            if (snapshot.hasData) {
+              final items = snapshot.data!;
+              return Expanded(
+                child: GridView(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 4,
+                      mainAxisSpacing: 4,
+                      mainAxisExtent: 250),
+                  primary: false,
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  children: items.map(_buildItem).toList(),
+                ),
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
+      ]),
+    );
+  }
+
+  Widget _buildItem(Item item) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Detail(item: item)),
+          );
+        },
+        child: Column(children: [
+          // if (item.imgLink != '')
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: 150.0,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              image: DecorationImage(
+                  image: NetworkImage(item.imgLink), fit: BoxFit.contain),
+            ),
+          ),
           SizedBox(
-            height: 30,
+            height: 10,
           ),
-          Row(
-            children: [
-              Text(
-                'Phiên hết hạn sau:',
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF013003)),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      item.name.toUpperCase(),
+                      style: TextStyle(fontSize: 13, color: Colors.black),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      softWrap: false,
+                    ),
+                  ),
+                  Spacer(),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      NumberFormat.currency(locale: 'vi').format(item.minprice),
+                      style: TextStyle(
+                          fontSize: 13,
+                          color: Color(0xFF40C800),
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Spacer(),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Text(
+                      item.ordered.toString() + ' sản phẩm đặt mua',
+                      style:
+                          TextStyle(fontSize: 10, color: Colors.grey.shade600),
+                    ),
+                  ),
+                  Spacer(),
+                ],
               ),
-              SizedBox(
-                width: 30,
-              ),
-              timeBox(),
-            ],
+            ),
           ),
-          SizedBox(
-            height: 30,
-          ),
-          gridProducts(),
-        ],
+        ]),
       ),
     );
   }
+
+  Stream<List<Item>> readItems() => FirebaseFirestore.instance
+      .collection('items')
+      .orderBy('name')
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => Item.fromJson(doc.data())).toList());
 }
 
 class shopBanner extends StatefulWidget {
@@ -182,84 +285,6 @@ class timeBox extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class gridProducts extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      itemCount: itemsName.length,
-      shrinkWrap: true,
-      physics: BouncingScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
-          mainAxisExtent: 200),
-      itemBuilder: (BuildContext context, int index) {
-        return Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: GestureDetector(
-            onTap: () => Navigator.of(context)
-                .push(MaterialPageRoute(builder: (_) => const Detail())),
-            child: Column(children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 100.0,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  image: DecorationImage(
-                      image: AssetImage(itemsImg[index]), fit: BoxFit.cover),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Column(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          itemsName[index].toUpperCase(),
-                          style: TextStyle(fontSize: 13, color: Colors.black),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          softWrap: false,
-                        ),
-                      ),
-                      Spacer(),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          itemsPrice[index],
-                          style: TextStyle(fontSize: 11, color: Colors.black),
-                        ),
-                      ),
-                      Spacer(),
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: Text(
-                          itemsBought[index] + ' sản phẩm đặt mua',
-                          style: TextStyle(fontSize: 10, color: Colors.black),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ]),
-          ),
-        );
-      },
     );
   }
 }
