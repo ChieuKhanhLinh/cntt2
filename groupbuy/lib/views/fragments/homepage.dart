@@ -58,18 +58,16 @@ class _HomePageState extends State<HomePage> {
             }
             if (snapshot.hasData) {
               final items = snapshot.data!;
-              return Expanded(
-                child: GridView(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 4,
-                      mainAxisSpacing: 4,
-                      mainAxisExtent: 250),
-                  primary: false,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  children: items.map(_buildItem).toList(),
-                ),
+              return GridView(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 4,
+                    mainAxisSpacing: 4,
+                    mainAxisExtent: 250),
+                primary: false,
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                children: items.map(_buildItem).toList(),
               );
             } else {
               return const Center(child: CircularProgressIndicator());
@@ -81,74 +79,108 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildItem(Item item) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Detail(item: item)),
-          );
-        },
-        child: Column(children: [
-          // if (item.imgLink != '')
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: 150.0,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              image: DecorationImage(
-                  image: NetworkImage(item.imgLink), fit: BoxFit.contain),
-            ),
+    return Stack(
+      children: [
+        // if (item.status != 0)
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(5),
           ),
-          SizedBox(
-            height: 10,
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Column(
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Detail(item: item)),
+              );
+            },
+            child: Column(children: [
+              Stack(
                 children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      item.name.toUpperCase(),
-                      style: TextStyle(fontSize: 13, color: Colors.black),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      softWrap: false,
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 150.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      image: DecorationImage(
+                          image: NetworkImage(item.imgLink),
+                          fit: BoxFit.contain),
                     ),
                   ),
-                  Spacer(),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      NumberFormat.currency(locale: 'vi').format(item.minprice),
-                      style: TextStyle(
-                          fontSize: 13,
-                          color: Color(0xFF40C800),
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Spacer(),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Text(
-                      item.ordered.toString() + ' sản phẩm đặt mua',
-                      style:
-                          TextStyle(fontSize: 10, color: Colors.grey.shade600),
-                    ),
-                  ),
-                  Spacer(),
+                  if (item.ordered == item.totalorder)
+                    Positioned(
+                      top: 40,
+                      left: 20,
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.all(10),
+                        height: 65,
+                        decoration: BoxDecoration(
+                            color: Color(0xFF202020),
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Text(
+                          'Hết lượt mua',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            letterSpacing: 0.5,
+                            color: const Color(0xFFE7E7E7),
+                          ),
+                        ),
+                      ),
+                    )
                 ],
               ),
-            ),
+              SizedBox(
+                height: 10,
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          item.name.toUpperCase(),
+                          style: TextStyle(fontSize: 13, color: Colors.black),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          softWrap: false,
+                        ),
+                      ),
+                      Spacer(),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          NumberFormat.currency(locale: 'vi')
+                              .format(item.minprice),
+                          style: TextStyle(
+                              fontSize: 13,
+                              color: Color(0xFF40C800),
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Spacer(),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: Text(
+                          item.ordered.toString() + ' sản phẩm đặt mua',
+                          style: TextStyle(
+                              fontSize: 10, color: Colors.grey.shade600),
+                        ),
+                      ),
+                      Spacer(),
+                    ],
+                  ),
+                ),
+              ),
+            ]),
           ),
-        ]),
-      ),
+        ),
+      ],
     );
   }
 

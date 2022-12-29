@@ -22,16 +22,44 @@ class _DetailState extends State<Detail> {
         children: [
           ListView(
             children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 300,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: NetworkImage(widget.item.imgLink != ''
-                          ? widget.item.imgLink
-                          : 'https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg'),
-                      fit: BoxFit.cover),
-                ),
+              Stack(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 300,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: NetworkImage(widget.item.imgLink != ''
+                              ? widget.item.imgLink
+                              : 'https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg'),
+                          fit: BoxFit.cover),
+                    ),
+                  ),
+                  if (widget.item.ordered == widget.item.totalorder)
+                    Positioned(
+                      top: 100,
+                      left: 110,
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.all(10),
+                        height: 65,
+                        decoration: BoxDecoration(
+                            color: Colors.blueGrey.shade900,
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Text(
+                          'Hết lượt mua',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25,
+                            letterSpacing: 0.5,
+                            color: const Color(0xFFE7E7E7),
+                          ),
+                        ),
+                      ),
+                    )
+                ],
               ),
               Container(
                 child: Column(children: [

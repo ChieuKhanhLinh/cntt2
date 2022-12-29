@@ -21,7 +21,7 @@ class Item {
 
   @override
   String toString() {
-    return 'Item(id: $id, name: $name, detail: $detail, imgLink: $imgLink, initialprice: $initialprice, minprice: $minprice, totalorder: $totalorder, ordered: $ordered)';
+    return 'Item(id: $id, name: $name, detail: $detail, imgLink: $imgLink, initialprice: $initialprice, minprice: $minprice, totalorder: $totalorder, ordered: $ordered,)';
   }
 
   Map<String, dynamic> toJson() {
