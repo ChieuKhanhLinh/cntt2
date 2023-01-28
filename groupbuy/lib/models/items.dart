@@ -1,5 +1,5 @@
 class Item {
-  final String id;
+  String id;
   final String name;
   final String detail;
   final String imgLink;
@@ -14,9 +14,9 @@ class Item {
     this.detail = '',
     this.imgLink = '',
     required this.minprice,
-    this.initialprice = 0,
+    required this.initialprice,
     required this.totalorder,
-    required this.ordered,
+    this.ordered = 0,
   });
 
   @override
@@ -30,9 +30,9 @@ class Item {
       'name': name,
       'detail': detail,
       'imgLink': imgLink,
-      'min_price': minprice,
-      'initial_price': initialprice,
-      'total_order': totalorder,
+      'minprice': minprice,
+      'initialprice': initialprice,
+      'totalorder': totalorder,
       'ordered': ordered,
     };
   }

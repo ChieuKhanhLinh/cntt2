@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:groupbuy/views/fragments/admin/add_item.dart';
+import 'package:groupbuy/views/fragments/admin/item_option.dart';
 import 'package:groupbuy/views/fragments/auth/sign_in_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:groupbuy/controllers/handle_auth.dart';
@@ -51,7 +51,7 @@ class _PersonalPageState extends State<PersonalPage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => AddItemPage()),
+                      MaterialPageRoute(builder: (context) => ItemOptionPage()),
                     );
                   },
                   child: Text('Tùy chọn sản phẩm'),
