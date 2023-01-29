@@ -7,9 +7,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 
 class AddItemPage extends StatefulWidget {
   const AddItemPage({Key? key}) : super(key: key);
@@ -47,7 +44,7 @@ class _AddItemPageState extends State<AddItemPage> {
                 child: Image.file(
                   File(pickedFile!.path!),
                   width: double.infinity,
-                  fit: BoxFit.fill,
+                  fit: BoxFit.contain,
                 ),
               ),
             if (pickedFile == null)
@@ -163,7 +160,7 @@ class _AddItemPageState extends State<AddItemPage> {
                     );
                     addItem(item);
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        backgroundColor: Colors.green,
+                        backgroundColor: Color(0xFF4BB543),
                         content: Text(
                             '"${controllerName.text}" đã lưu thành công!')));
                     Navigator.of(context).pop();
