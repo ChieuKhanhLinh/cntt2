@@ -165,8 +165,8 @@ class _ItemOptionPageState extends State<ItemOptionPage> {
                   const SizedBox(width: 16.0),
                   if (item.imgLink != '')
                     Container(
-                      width: 90.0,
-                      height: 100.0,
+                      width: 100.0,
+                      height: 200.0,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
                         image: DecorationImage(

@@ -19,7 +19,7 @@ class GroupbuyApp extends StatelessWidget {
       title: 'Groupbuy App',
       theme: ThemeData(
           // This is the theme of application.
-          primarySwatch: Colors.lightGreen,
+          primarySwatch: Colors.green,
           scaffoldBackgroundColor: Color(0xFFDCEFD3)),
       routes: {
         '/': (context) => NavBar(),

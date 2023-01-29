@@ -6,6 +6,7 @@ import 'package:groupbuy/models/items.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -38,26 +39,39 @@ class _AddItemPageState extends State<AddItemPage> {
       body: Form(
         key: _formKey,
         child: ListView(
-          padding: EdgeInsets.all(8),
+          padding: EdgeInsets.all(10),
           children: [
             if (pickedFile != null)
               SizedBox(
-                height: 400,
+                height: 300,
                 child: Image.file(
                   File(pickedFile!.path!),
                   width: double.infinity,
                   fit: BoxFit.fill,
                 ),
               ),
-            ElevatedButton(
-                onPressed: selectFile,
-                child: Text(
-                  "Chọn ảnh",
-                  style: TextStyle(color: Colors.white),
+            if (pickedFile == null)
+              GestureDetector(
+                onTap: selectFile,
+                child: DottedBorder(
+                  borderType: BorderType.RRect,
+                  radius: Radius.circular(5),
+                  color: Colors.indigo,
+                  dashPattern: [5, 5],
+                  strokeWidth: 1,
+                  padding: EdgeInsets.all(6),
+                  child: Container(
+                    height: 300,
+                    child: Center(
+                      child: Icon(
+                        Icons.camera_enhance,
+                        size: 50,
+                        color: Colors.indigo,
+                      ),
+                    ),
+                  ),
                 ),
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(Color(0xFF013003)))),
+              ),
             if (pickedFile != null)
               ElevatedButton(
                 style: ButtonStyle(
@@ -151,7 +165,7 @@ class _AddItemPageState extends State<AddItemPage> {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         backgroundColor: Colors.green,
                         content: Text(
-                            '"${controllerName.text}" has been added successfully!')));
+                            '"${controllerName.text}" đã lưu thành công!')));
                     Navigator.of(context).pop();
                   }
                 },
