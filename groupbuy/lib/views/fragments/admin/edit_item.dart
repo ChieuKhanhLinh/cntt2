@@ -28,7 +28,7 @@ class _EditItemPageState extends State<EditItemPage> {
   String? initialImgLink;
 
   @override
-  void iniState() {
+  void initState() {
     super.initState();
     controllerName.text = widget.item.name;
     controllerDetail.text = widget.item.detail;
@@ -107,7 +107,7 @@ class _EditItemPageState extends State<EditItemPage> {
               const SizedBox(height: 24),
               TextFormField(
                 decoration: decoration("Tên sản phẩm"),
-                controller: TextEditingController(text: widget.item.name),
+                controller: controllerName,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Bạn chưa điền tến sản phẩm!';
@@ -120,13 +120,12 @@ class _EditItemPageState extends State<EditItemPage> {
                 minLines: 6,
                 maxLines: 12,
                 decoration: decoration('Chi tiết sản phẩm'),
-                controller: TextEditingController(text: widget.item.detail),
+                controller: controllerDetail,
               ),
               SizedBox(height: 24),
               TextFormField(
                 decoration: decoration('Giá gốc'),
-                controller: TextEditingController(
-                    text: widget.item.initialprice.toString()),
+                controller: controllerInitialPrice,
                 keyboardType: TextInputType.number,
                 inputFormatters: <TextInputFormatter>[
                   FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
@@ -141,8 +140,7 @@ class _EditItemPageState extends State<EditItemPage> {
               SizedBox(height: 24),
               TextFormField(
                 decoration: decoration('Giá thấp nhất'),
-                controller: TextEditingController(
-                    text: widget.item.minprice.toString()),
+                controller: controllerMinPrice,
                 keyboardType: TextInputType.number,
                 inputFormatters: <TextInputFormatter>[
                   FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
@@ -156,9 +154,9 @@ class _EditItemPageState extends State<EditItemPage> {
               ),
               SizedBox(height: 24),
               TextFormField(
+                // initialValue: TextEditingController(widget.item.totalorder.toString()),
                 decoration: decoration('Số người mua chung'),
-                controller: TextEditingController(
-                    text: widget.item.totalorder.toString()),
+                controller: controllerTotalOrder,
                 keyboardType: TextInputType.number,
                 inputFormatters: <TextInputFormatter>[
                   FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
