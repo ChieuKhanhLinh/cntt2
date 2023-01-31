@@ -29,9 +29,10 @@ class _PersonalPageState extends State<PersonalPage> {
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
-        child: Center(
+        child: Container(
+          padding: EdgeInsets.all(10),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               if (auth.currentUser == null)
                 TextButton(
@@ -47,6 +48,9 @@ class _PersonalPageState extends State<PersonalPage> {
                       Navigator.of(context).pushNamed('/');
                     },
                     child: Text('Đăng xuất')),
+              SizedBox(
+                height: 24,
+              ),
               if (auth.currentUser != null)
                 StreamBuilder(
                     stream: FirebaseFirestore.instance
@@ -59,15 +63,30 @@ class _PersonalPageState extends State<PersonalPage> {
                       }
                       if (snapshot.hasData && snapshot.data != null) {
                         if (snapshot.data['role'] == 'admin') {
-                          return TextButton(
-                            onPressed: () {
+                          return ListTile(
+                            onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ItemOptionPage()),
+                                    builder: (context) =>
+                                        const ItemOptionPage()),
                               );
                             },
-                            child: Text('Tùy chọn sản phẩm'),
+                            leading: const Icon(
+                              Icons.wysiwyg_rounded,
+                              color: Colors.black,
+                            ),
+                            title: const Text('Tùy chọn sản phẩm'),
+                            trailing: const Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              color: Colors.grey,
+                              size: 18,
+                            ),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6)),
+                            tileColor: Colors.white,
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 10),
                           );
                         }
                       } else {

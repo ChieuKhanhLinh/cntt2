@@ -28,67 +28,69 @@ class _ItemOptionPageState extends State<ItemOptionPage> {
         elevation: 0,
         backgroundColor: Color(0xFF40C800),
       ),
-      body: ListView(padding: EdgeInsets.all(8), children: [
-        Align(
-          alignment: Alignment.topRight,
-          child: GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AddItemPage()),
-              );
-            },
-            child: RichText(
-                text: TextSpan(children: [
-              WidgetSpan(
-                  child: Icon(
-                Icons.add_circle_outline,
-                size: 18,
-                color: Color(0xFF025B05),
-              )),
-              TextSpan(
-                  text: "Thêm sản phẩm",
-                  style: TextStyle(
-                      color: Color(0xFF025B05),
-                      fontSize: 17,
-                      fontWeight: FontWeight.w500))
-            ])),
-          ),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        Text(
-          "Sản phẩm đã thêm",
-          style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF013003)),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        StreamBuilder<List<Item>>(
-          stream: readItems(),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Text('Something went wrong! ${snapshot.error}');
-            }
-            if (snapshot.hasData) {
-              final items = snapshot.data!;
-              return ListView(
-                shrinkWrap: true,
-                physics: BouncingScrollPhysics(),
-                children: items.map(_builderItem).toList(),
-              );
-            } else {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          },
-        ),
-      ]),
+      body: ListView(
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+          children: [
+            Align(
+              alignment: Alignment.topRight,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AddItemPage()),
+                  );
+                },
+                child: RichText(
+                    text: TextSpan(children: [
+                  WidgetSpan(
+                      child: Icon(
+                    Icons.add_circle_outline,
+                    size: 18,
+                    color: Color(0xFF025B05),
+                  )),
+                  TextSpan(
+                      text: "Thêm sản phẩm",
+                      style: TextStyle(
+                          color: Color(0xFF025B05),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500))
+                ])),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              "Sản phẩm đã thêm",
+              style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF013003)),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            StreamBuilder<List<Item>>(
+              stream: readItems(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Text('Something went wrong! ${snapshot.error}');
+                }
+                if (snapshot.hasData) {
+                  final items = snapshot.data!;
+                  return ListView(
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    children: items.map(_builderItem).toList(),
+                  );
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
+            ),
+          ]),
     );
   }
 
@@ -118,9 +120,13 @@ class _ItemOptionPageState extends State<ItemOptionPage> {
                 final confirmed = await confirm(
                   context,
                   title: const Text('Confirm'),
-                  content: Text('Would you like to remove "${item.name}"?'),
-                  textOK: const Text('Yes'),
-                  textCancel: const Text('Cancel'),
+                  content: Text(
+                      'Bạn có chắc muốn xóa "${item.name}" khỏi danh sách?'),
+                  textOK: const Text(
+                    'Có',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  textCancel: const Text('Quay lại'),
                 );
                 print(confirmed);
                 if (confirmed) {

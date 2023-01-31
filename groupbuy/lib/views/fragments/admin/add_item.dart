@@ -58,6 +58,7 @@ class _AddItemPageState extends State<AddItemPage> {
                   strokeWidth: 1,
                   padding: EdgeInsets.all(6),
                   child: Container(
+                    color: Color(0xFFD9D9D9),
                     height: 300,
                     child: Center(
                       child: Icon(
@@ -160,7 +161,7 @@ class _AddItemPageState extends State<AddItemPage> {
                     );
                     addItem(item);
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        backgroundColor: Color(0xFF4BB543),
+                        backgroundColor: Color(0xFF025B05),
                         content: Text(
                             '"${controllerName.text}" đã lưu thành công!')));
                     Navigator.of(context).pop();
@@ -172,7 +173,7 @@ class _AddItemPageState extends State<AddItemPage> {
                 ),
                 style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateProperty.all(Color(0xFF013003))),
+                        MaterialStateProperty.all(Color(0xFF025B05))),
               ),
             )
           ],

@@ -66,8 +66,8 @@ class _EditItemPageState extends State<EditItemPage> {
                   child: Image.file(File(pickedFile!.path!),
                       width: double.infinity, fit: BoxFit.contain),
                 ),
-              if (pickedFile == null ||
-                  (initialImgLink == null && initialImgLink == ''))
+              if (pickedFile == null &&
+                  (initialImgLink == null || initialImgLink == ''))
                 GestureDetector(
                   onTap: selectFile,
                   child: DottedBorder(
@@ -78,6 +78,7 @@ class _EditItemPageState extends State<EditItemPage> {
                     strokeWidth: 1,
                     padding: EdgeInsets.all(6),
                     child: Container(
+                      color: Color(0xFFD9D9D9),
                       height: 300,
                       child: Center(
                         child: Icon(
@@ -187,7 +188,7 @@ class _EditItemPageState extends State<EditItemPage> {
                         updateItem(item);
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text(
-                                '"${controllerName.text}" has been updated successfully!')));
+                                '"${controllerName.text}" đã sửa thành công!')));
                         Navigator.of(context).pop();
                         return;
                       }
@@ -204,9 +205,9 @@ class _EditItemPageState extends State<EditItemPage> {
                       );
                       updateItem(item);
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          backgroundColor: Color(0xFF013003),
+                          backgroundColor: Color(0xFF025B05),
                           content: Text(
-                              '"${controllerName.text}" đã được sửa thành công!')));
+                              '"${controllerName.text}" đã sửa thành công!')));
                       Navigator.of(context).pop();
                       return;
                     }
@@ -217,7 +218,7 @@ class _EditItemPageState extends State<EditItemPage> {
                   ),
                   style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all(Color(0xFF013003))),
+                          MaterialStateProperty.all(Color(0xFF025B05))),
                 ),
               )
             ],
