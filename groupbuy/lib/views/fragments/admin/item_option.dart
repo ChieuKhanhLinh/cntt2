@@ -28,7 +28,7 @@ class _ItemOptionPageState extends State<ItemOptionPage> {
         elevation: 0,
         backgroundColor: Color(0xFF40C800),
       ),
-      body: ListView(padding: EdgeInsets.all(20), children: [
+      body: ListView(padding: EdgeInsets.all(8), children: [
         Align(
           alignment: Alignment.topRight,
           child: GestureDetector(
@@ -48,7 +48,10 @@ class _ItemOptionPageState extends State<ItemOptionPage> {
               )),
               TextSpan(
                   text: "Thêm sản phẩm",
-                  style: TextStyle(color: Color(0xFF025B05), fontSize: 17))
+                  style: TextStyle(
+                      color: Color(0xFF025B05),
+                      fontSize: 17,
+                      fontWeight: FontWeight.w500))
             ])),
           ),
         ),
@@ -180,7 +183,7 @@ class _ItemOptionPageState extends State<ItemOptionPage> {
                         NumberFormat.currency(locale: 'vi')
                             .format(item.minprice),
                         style: const TextStyle(
-                            fontSize: 14.0, color: Colors.black),
+                            fontSize: 14.0, color: Colors.green),
                       ),
                       Text('time: 11-1-2023 10:00:00'),
                     ],

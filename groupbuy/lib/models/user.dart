@@ -23,8 +23,8 @@ class Users {
   }
 
   static Users fromJson(Map<String, dynamic> json) => Users(
-    email: json['email'],
-    phone: json['phone'],
-    name: json['name'],
-  );
+        email: json['email'],
+        phone: json['phone'],
+        name: json['name'],
+      );
 }

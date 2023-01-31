@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groupbuy/views/fragments/admin/item_option.dart';
@@ -47,15 +48,33 @@ class _PersonalPageState extends State<PersonalPage> {
                     },
                     child: Text('Đăng xuất')),
               if (auth.currentUser != null)
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ItemOptionPage()),
-                    );
-                  },
-                  child: Text('Tùy chọn sản phẩm'),
-                ),
+                StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(auth.currentUser!.uid)
+                        .snapshots(),
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (snapshot.hasError) {
+                        return Container();
+                      }
+                      if (snapshot.hasData && snapshot.data != null) {
+                        if (snapshot.data['role'] == 'admin') {
+                          return TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ItemOptionPage()),
+                              );
+                            },
+                            child: Text('Tùy chọn sản phẩm'),
+                          );
+                        }
+                      } else {
+                        return Container();
+                      }
+                      return Container();
+                    }),
             ],
           ),
         ),
