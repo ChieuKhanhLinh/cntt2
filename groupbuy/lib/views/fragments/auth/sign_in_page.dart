@@ -6,6 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:groupbuy/views/fragments/auth/sign_up_page.dart';
 import 'package:groupbuy/views/fragments/auth/forgot_pw_page.dart';
 
+import '../../../controllers/handle_user.dart';
+
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
   static const String routeName = '/signInPage';
@@ -235,6 +237,10 @@ class SignInState extends State<StatefulWidget> with CommonValidation {
     return IconButton(
       onPressed: () async {
         await Auth().signInWithGoogle();
+        HandleUser().userInfo(
+          username: Auth().currentUser?.displayName,
+          phone: Auth().currentUser?.phoneNumber,
+        );
         Navigator.of(context).pushNamed('/');
       },
       icon: Image.asset('assets/googleIcon.png'),
