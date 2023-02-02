@@ -3,14 +3,27 @@ import 'package:groupbuy/models/menu_item.dart';
 
 class MenuItems {
 
-  List<MoreItem> logoutList = [
+  List<MoreItem> loginList = [
+    itemLogin,
+  ];
+
+  List<MoreItem> GoogleAccount = [
+    itemLogout,
+  ];
+
+  List<MoreItem> UserList = [
     itemEdit,
     itemLogout,
   ];
 
-  List<MoreItem> loginList = [
-    itemLogin,
+  List<MoreItem> AdminMenu = [
+    itemEdit,
+    itemEdit,
+    itemEdit,
+    itemLogout,
   ];
+
+
 
   static const itemLogout = MoreItem(
       text: 'Đăng xuất',

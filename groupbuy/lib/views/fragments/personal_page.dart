@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:groupbuy/controllers/handle_user.dart';
 import 'package:groupbuy/controllers/menu_items_data.dart';
 import 'package:groupbuy/models/menu_item.dart';
 import 'package:groupbuy/views/fragments/admin/item_option.dart';
@@ -9,6 +10,8 @@ import 'package:groupbuy/views/fragments/auth/sign_in_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:groupbuy/controllers/handle_auth.dart';
 import 'package:groupbuy/views/fragments/homepage.dart';
+
+import '../../models/user.dart';
 
 
 class PersonalPage extends StatefulWidget {
@@ -26,86 +29,6 @@ class _PersonalPageState extends State<PersonalPage> {
 
   @override
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     backgroundColor: Color(0xFF40C800),
-    //     iconTheme: IconThemeData(color: Colors.white),
-    //     elevation: 0,
-    //     title: Text('Trang cá nhân'),
-    //     automaticallyImplyLeading: false,
-    //   ),
-    //   body: SafeArea(
-    //     child: Container(
-    //       padding: EdgeInsets.all(10),
-    //       child: Column(
-    //         mainAxisAlignment: MainAxisAlignment.start,
-    //         children: [
-    //           if (auth.currentUser == null)
-    //             TextButton(
-    //                 onPressed: () {
-    //                   Navigator.pushNamed(context, SignInPage.routeName);
-    //                 },
-    //                 child: Text('Đăng nhập')),
-    //           if (auth.currentUser != null) Text(user?.email ?? 'User email'),
-    //           if (auth.currentUser != null)
-    //             TextButton(
-    //                 onPressed: () {
-    //                   Auth().signOut();
-    //                   Navigator.of(context).pushNamed('/');
-    //                 },
-    //                 child: Text('Đăng xuất')),
-    //           SizedBox(
-    //             height: 24,
-    //           ),
-    //           if (auth.currentUser != null)
-    //             StreamBuilder(
-    //                 stream: FirebaseFirestore.instance
-    //                     .collection('users')
-    //                     .doc(auth.currentUser!.uid)
-    //                     .snapshots(),
-    //                 builder: (context, AsyncSnapshot snapshot) {
-    //                   if (snapshot.hasError) {
-    //                     return Container();
-    //                   }
-    //                   if (snapshot.hasData && snapshot.data != null) {
-    //                     if (snapshot.data['role'] == 'admin') {
-    //                       return ListTile(
-    //                         onTap: () {
-    //                           Navigator.push(
-    //                             context,
-    //                             MaterialPageRoute(
-    //                                 builder: (context) =>
-    //                                 const ItemOptionPage()),
-    //                           );
-    //                         },
-    //                         leading: const Icon(
-    //                           Icons.wysiwyg_rounded,
-    //                           color: Colors.black,
-    //                         ),
-    //                         title: const Text('Tùy chọn sản phẩm'),
-    //                         trailing: const Icon(
-    //                           Icons.arrow_forward_ios_rounded,
-    //                           color: Colors.grey,
-    //                           size: 18,
-    //                         ),
-    //                         shape: RoundedRectangleBorder(
-    //                             borderRadius: BorderRadius.circular(6)),
-    //                         tileColor: Colors.white,
-    //                         contentPadding: EdgeInsets.symmetric(
-    //                             vertical: 5, horizontal: 10),
-    //                       );
-    //                     }
-    //                   } else {
-    //                     return Container();
-    //                   }
-    //                   return Container();
-    //                 }),
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    // );
-
     return SafeArea(
       child: Scaffold(
         body: ListView (
@@ -145,7 +68,7 @@ class _PersonalPageState extends State<PersonalPage> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(75),
               child:
-              Image.asset('assets/raidencute.jpg', height: 99, width: 95,
+              Image.network('https://firebasestorage.googleapis.com/v0/b/groupbuy-1ec04.appspot.com/o/image%2Fdefault_ava.jpg?alt=media&token=f0ed2a8b-952c-46bc-8256-825e13873d87', height: 99, width: 95,
                 fit: BoxFit.cover,
               ),
             ),
@@ -156,7 +79,7 @@ class _PersonalPageState extends State<PersonalPage> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(75),
               child:
-              Image.network(user?.photoURL ?? 'https://picsum.photos/250?image=9', height: 99, width: 95,
+              Image.network(user?.photoURL ?? 'https://firebasestorage.googleapis.com/v0/b/groupbuy-1ec04.appspot.com/o/image%2Fdefault_ava.jpg?alt=media&token=f0ed2a8b-952c-46bc-8256-825e13873d87', height: 99, width: 95,
                 fit: BoxFit.cover,
               ),
             ),
@@ -164,45 +87,99 @@ class _PersonalPageState extends State<PersonalPage> {
           Positioned(
             top: (MediaQuery.of(context).size.height)*0.15,
             left: 120,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (auth.currentUser == null) Text(
-                  'Chào bạn',
-                  style: GoogleFonts.inter(
-                    textStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 16),
-                  ),
-                ),
-                if (auth.currentUser != null) Text(
-                  user?.displayName ?? 'Tên người dùng',
-                  style: GoogleFonts.inter(
-                    textStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 16),
-                  ),
-                ),
-                SizedBox(height: 8,),
-                if (auth.currentUser != null) Text(
-                  user?.phoneNumber ?? 'Cập nhật số điện thoại nào!',
-                  style: GoogleFonts.inter(
-                    textStyle: TextStyle(color: Color(0xFF025B05), fontWeight: FontWeight.w400, fontSize: 16),
-                  ),
-                ),
-              ],
-            ),
+            child: FutureBuilder<Users?>(
+              future: HandleUser().readUserInfo(),
+              builder: (context, AsyncSnapshot snapshot) {
+                if(snapshot.hasError) {
+                  print ('${snapshot.error}');
+                }
+                if (Auth().currentUser?.photoURL != null) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        Auth().currentUser?.displayName ?? 'Tên người dùng',
+                        style: GoogleFonts.inter(
+                          textStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 16),
+                        ),
+                      ),
+                      SizedBox(height: 8.0,),
+                      Text(
+                        Auth().currentUser?.phoneNumber ?? ' ',
+                        style: GoogleFonts.inter(
+                          textStyle: TextStyle(color: Color(0xFF025B05), fontWeight: FontWeight.w400, fontSize: 16),
+                        ),
+                      )
+                    ],
+                  );
+                }
+                  final user= snapshot.data;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      user == null? Text(
+                          'Chào bạn',
+                        style: GoogleFonts.inter(
+                          textStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 16),
+                        ),
+                      ): Text(
+                        user.name,
+                        style: GoogleFonts.inter(
+                          textStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 16),
+                        ),
+                      ),
+                      SizedBox(height: 8.0,),
+                      user == null? Text(
+                        'Đăng nhập nào!',
+                        style: GoogleFonts.inter(
+                          textStyle: TextStyle(color: Color(0xFF025B05), fontWeight: FontWeight.w400, fontSize: 16),
+                        ),
+                      ): Text(
+                        user.phone,
+                        style: GoogleFonts.inter(
+                          textStyle: TextStyle(color: Color(0xFF025B05), fontWeight: FontWeight.w400, fontSize: 14),
+                        ),
+                      ),
+                    ],
+                  );
+              },
+            )
           ),
           Positioned(
-            top: (MediaQuery.of(context).size.height)*0.15,
-            right: 3,
-            child: Center(
-              child: PopupMenuButton<MoreItem>(
-                onSelected: (item) => onSelected(context, item),
-                itemBuilder: (context) => [
-                  if (auth.currentUser != null)
-                    ...MenuItems().logoutList.map(buildItem).toList()
-                  else
-                    ...MenuItems().loginList.map(buildItem).toList()
-                ],
-              ),
-            ),
+              top: (MediaQuery.of(context).size.height)*0.15,
+              right: 3,
+              child: FutureBuilder<Users?>(
+                future: HandleUser().readUserInfo(),
+                builder: (context, AsyncSnapshot snapshot) {
+                  if(snapshot.hasError) {
+                    print ('${snapshot.error}');
+                  }
+                  if (Auth().currentUser?.photoURL != null) {
+                    return Center(
+                      child: PopupMenuButton<MoreItem>(
+                        onSelected: (item) => onSelected(context, item),
+                        itemBuilder: (context) => [
+                            ...MenuItems().GoogleAccount.map(buildItem).toList()
+                        ],
+                      ),
+                    );
+                  }
+                  final user= snapshot.data;
+                  return Center(
+                    child: PopupMenuButton<MoreItem>(
+                      onSelected: (item) => onSelected(context, item),
+                      itemBuilder: (context) => [
+                        if (user != null && user.role == 'admin')
+                          ...MenuItems().AdminMenu.map(buildItem).toList()
+                        else if (user != null && user.role == 'user')
+                          ...MenuItems().UserList.map(buildItem).toList()
+                        else
+                          ...MenuItems().loginList.map(buildItem).toList()
+                      ],
+                    ),
+                  );
+                },
+              )
           ),
         ],
       ),
@@ -238,20 +215,6 @@ class _PersonalPageState extends State<PersonalPage> {
   }
 
   Widget Body() {
-
-    List imgList = [
-      'assets/choxuly.png',
-      'assets/donggoi.png',
-      'assets/vanchuyen.png',
-      'assets/nhanhang.png',
-    ];
-
-    List itemsName = [
-      'Chờ xử lý',
-      'Đóng gói',
-      'Vận chuyển',
-      'Nhận hàng',
-    ];
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 12.0),
@@ -426,7 +389,8 @@ class _PersonalPageState extends State<PersonalPage> {
           Image.asset('assets/Message.png',scale: 0.8,),
           SizedBox(width: 8,),
           Text(
-            'Thông tin về các thành viên ',
+            // 'Thông tin về các thành viên trong nhóm bạn đã tham gia',
+            'Thông tin',
             overflow: TextOverflow.ellipsis,
             style: GoogleFonts.inter(
               textStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 16, ),

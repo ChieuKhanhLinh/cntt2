@@ -5,6 +5,17 @@ import '../models/user.dart';
 class HandleUser {
   final auth = FirebaseAuth.instance;
 
+
+  // Read userInfo
+  Future<Users?> readUserInfo() async {
+    final docUser = FirebaseFirestore.instance.collection('users').doc(auth.currentUser!.uid);
+    final snapshot = await docUser.get();
+    if(snapshot.exists) {
+      return Users.fromJson(snapshot.data()!);
+    }
+    return null;
+  }
+
   // Update user
   Future updateUser(Users user) async {
     final docUser = FirebaseFirestore.instance.collection('users').doc(auth.currentUser!.uid);
