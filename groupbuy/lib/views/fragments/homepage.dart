@@ -29,6 +29,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Color(0xFF40C800),
+        automaticallyImplyLeading: false,
         title: Text('Trang Chủ'),
       ),
       body: ListView(padding: EdgeInsets.all(20), children: [

@@ -1,15 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groupbuy/controllers/handle_user.dart';
 import 'package:groupbuy/controllers/menu_items_data.dart';
 import 'package:groupbuy/models/menu_item.dart';
-import 'package:groupbuy/views/fragments/admin/item_option.dart';
 import 'package:groupbuy/views/fragments/auth/sign_in_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:groupbuy/controllers/handle_auth.dart';
-import 'package:groupbuy/views/fragments/homepage.dart';
 
 import '../../models/user.dart';
 
@@ -85,40 +82,40 @@ class _PersonalPageState extends State<PersonalPage> {
             ),
           ),
           Positioned(
-            top: (MediaQuery.of(context).size.height)*0.15,
-            left: 120,
-            child: FutureBuilder<Users?>(
-              future: HandleUser().readUserInfo(),
-              builder: (context, AsyncSnapshot snapshot) {
-                if(snapshot.hasError) {
-                  print ('${snapshot.error}');
-                }
-                if (Auth().currentUser?.photoURL != null) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        Auth().currentUser?.displayName ?? 'Tên người dùng',
-                        style: GoogleFonts.inter(
-                          textStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 16),
+              top: (MediaQuery.of(context).size.height)*0.15,
+              left: 120,
+              child: FutureBuilder<Users?>(
+                future: HandleUser().readUserInfo(),
+                builder: (context, AsyncSnapshot snapshot) {
+                  if(snapshot.hasError) {
+                    print ('${snapshot.error}');
+                  }
+                  if (Auth().currentUser?.photoURL != null) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          Auth().currentUser?.displayName ?? 'Tên người dùng',
+                          style: GoogleFonts.inter(
+                            textStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 16),
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 8.0,),
-                      Text(
-                        Auth().currentUser?.phoneNumber ?? ' ',
-                        style: GoogleFonts.inter(
-                          textStyle: TextStyle(color: Color(0xFF025B05), fontWeight: FontWeight.w400, fontSize: 16),
-                        ),
-                      )
-                    ],
-                  );
-                }
+                        SizedBox(height: 8.0,),
+                        Text(
+                          Auth().currentUser?.phoneNumber ?? ' ',
+                          style: GoogleFonts.inter(
+                            textStyle: TextStyle(color: Color(0xFF025B05), fontWeight: FontWeight.w400, fontSize: 16),
+                          ),
+                        )
+                      ],
+                    );
+                  }
                   final user= snapshot.data;
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       user == null? Text(
-                          'Chào bạn',
+                        'Chào bạn',
                         style: GoogleFonts.inter(
                           textStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 16),
                         ),
@@ -142,8 +139,8 @@ class _PersonalPageState extends State<PersonalPage> {
                       ),
                     ],
                   );
-              },
-            )
+                },
+              )
           ),
           Positioned(
               top: (MediaQuery.of(context).size.height)*0.15,
@@ -159,7 +156,7 @@ class _PersonalPageState extends State<PersonalPage> {
                       child: PopupMenuButton<MoreItem>(
                         onSelected: (item) => onSelected(context, item),
                         itemBuilder: (context) => [
-                            ...MenuItems().GoogleAccount.map(buildItem).toList()
+                          ...MenuItems().GoogleAccount.map(buildItem).toList()
                         ],
                       ),
                     );
@@ -200,7 +197,7 @@ class _PersonalPageState extends State<PersonalPage> {
   void onSelected(BuildContext context, MoreItem item) {
     switch (item) {
       case MenuItems.itemEdit:
-          print(user.toString());
+        print(user.toString());
         break;
 
       case MenuItems.itemLogin:
@@ -208,8 +205,8 @@ class _PersonalPageState extends State<PersonalPage> {
         break;
 
       case MenuItems.itemLogout:
-          Auth().signOut();
-          Navigator.of(context).pushNamed('/');
+        Auth().signOut();
+        Navigator.of(context).pushNamed('/');
         break;
     }
   }
