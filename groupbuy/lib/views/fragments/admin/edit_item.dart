@@ -21,6 +21,7 @@ class _EditItemPageState extends State<EditItemPage> {
   final controllerInitialPrice = TextEditingController();
   final controllerMinPrice = TextEditingController();
   final controllerTotalOrder = TextEditingController();
+  final controllerEndTime = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   PlatformFile? pickedFile;
@@ -35,6 +36,7 @@ class _EditItemPageState extends State<EditItemPage> {
     controllerInitialPrice.text = widget.item.initialprice.toString();
     controllerMinPrice.text = widget.item.minprice.toString();
     controllerTotalOrder.text = widget.item.totalorder.toString();
+    controllerEndTime.text = widget.item.endtime.toString();
     initialImgLink = widget.item.imgLink;
   }
 
@@ -169,6 +171,13 @@ class _EditItemPageState extends State<EditItemPage> {
                   return null;
                 },
               ),
+              SizedBox(height: 24),
+              TextFormField(
+                minLines: 6,
+                maxLines: 12,
+                decoration: decoration('Thời gian kết thúc'),
+                controller: controllerEndTime,
+              ),
               SizedBox(height: 32),
               SizedBox(
                 height: 46.0,
@@ -183,6 +192,7 @@ class _EditItemPageState extends State<EditItemPage> {
                           initialprice: int.parse(controllerInitialPrice.text),
                           minprice: int.parse(controllerMinPrice.text),
                           totalorder: int.parse(controllerTotalOrder.text),
+                          endtime: DateTime.parse(controllerEndTime.text),
                           imgLink: initialImgLink ?? '',
                         );
                         updateItem(item);
@@ -201,6 +211,7 @@ class _EditItemPageState extends State<EditItemPage> {
                         initialprice: int.parse(controllerInitialPrice.text),
                         minprice: int.parse(controllerMinPrice.text),
                         totalorder: int.parse(controllerTotalOrder.text),
+                        endtime: DateTime.parse(controllerEndTime.text),
                         imgLink: imgLink,
                       );
                       updateItem(item);

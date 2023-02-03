@@ -21,6 +21,7 @@ class _AddItemPageState extends State<AddItemPage> {
   final controllerMinPrice = TextEditingController();
   final controllerInitialPrice = TextEditingController();
   final controllerTotalOrder = TextEditingController();
+  final controllerEndTime = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   PlatformFile? pickedFile;
@@ -144,6 +145,12 @@ class _AddItemPageState extends State<AddItemPage> {
                 return null;
               },
             ),
+            SizedBox(height: 24),
+            TextFormField(
+                minLines: 6,
+                maxLines: 10,
+                decoration: decoration('Thời gian kết thúc'),
+                controller: controllerEndTime),
             SizedBox(height: 32),
             SizedBox(
               height: 46.0,
@@ -158,6 +165,7 @@ class _AddItemPageState extends State<AddItemPage> {
                       minprice: int.parse(controllerMinPrice.text),
                       totalorder: int.parse(controllerTotalOrder.text),
                       imgLink: imgLink,
+                      endtime: DateTime.parse(controllerEndTime.text),
                     );
                     addItem(item);
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

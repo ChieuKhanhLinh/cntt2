@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Item {
   String id;
   final String name;
@@ -7,6 +9,7 @@ class Item {
   final int minprice;
   final int totalorder;
   final int ordered;
+  final DateTime endtime;
 
   Item({
     this.id = '',
@@ -17,11 +20,12 @@ class Item {
     required this.initialprice,
     required this.totalorder,
     this.ordered = 0,
+    required this.endtime,
   });
 
   @override
   String toString() {
-    return 'Item(id: $id, name: $name, detail: $detail, imgLink: $imgLink, initialprice: $initialprice, minprice: $minprice, totalorder: $totalorder, ordered: $ordered,)';
+    return 'Item(id: $id, name: $name, detail: $detail, imgLink: $imgLink, initialprice: $initialprice, minprice: $minprice, totalorder: $totalorder, ordered: $ordered, endTime: $endtime)';
   }
 
   Map<String, dynamic> toJson() {
@@ -34,6 +38,7 @@ class Item {
       'initialprice': initialprice,
       'totalorder': totalorder,
       'ordered': ordered,
+      'endtime': endtime,
     };
   }
 
@@ -46,5 +51,6 @@ class Item {
         initialprice: int.parse(json['initialprice'].toString()),
         totalorder: int.parse(json['totalorder'].toString()),
         ordered: int.parse(json['ordered'].toString()),
+        endtime: (json['endtime'] as Timestamp).toDate(),
       );
 }

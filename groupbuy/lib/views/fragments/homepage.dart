@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_countdown_timer/index.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:groupbuy/models/items.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -44,7 +48,6 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               width: 30,
             ),
-            timeBox(),
           ],
         ),
         SizedBox(
@@ -63,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisCount: 2,
                     crossAxisSpacing: 4,
                     mainAxisSpacing: 4,
-                    mainAxisExtent: 250),
+                    mainAxisExtent: 310),
                 primary: false,
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
@@ -163,11 +166,12 @@ class _HomePageState extends State<HomePage> {
                               fontWeight: FontWeight.bold),
                         ),
                       ),
+                      timeBox(item: item),
                       Spacer(),
                       Align(
                         alignment: Alignment.bottomRight,
                         child: Text(
-                          item.ordered.toString() + ' sản phẩm đặt mua',
+                          item.ordered.toString() + ' người đã đặt mua',
                           style: TextStyle(
                               fontSize: 10, color: Colors.grey.shade600),
                         ),
@@ -265,57 +269,66 @@ class _shopBannerState extends State<shopBanner> {
 }
 
 class timeBox extends StatelessWidget {
+  const timeBox({Key? key, required this.item}) : super(key: key);
+  final Item item;
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Row(
-        children: [
-          Text(
-            '24',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                background: Paint()
-                  ..strokeWidth = 19
-                  ..color = Color(0xFF013003)
-                  ..style = PaintingStyle.stroke
-                  ..strokeJoin = StrokeJoin.round),
-          ),
-          Spacer(),
-          Text(
-            ':',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          Spacer(),
-          Text(
-            '24',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                background: Paint()
-                  ..strokeWidth = 19
-                  ..color = Color(0xFF013003)
-                  ..style = PaintingStyle.stroke
-                  ..strokeJoin = StrokeJoin.round),
-          ),
-          Spacer(),
-          Text(
-            ':',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          Spacer(),
-          Text(
-            '24',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                background: Paint()
-                  ..strokeWidth = 19
-                  ..color = Color(0xFF013003)
-                  ..style = PaintingStyle.stroke
-                  ..strokeJoin = StrokeJoin.round),
-          ),
-        ],
+      child: CountdownTimer(
+        // controller: controller,
+        endTime: (item.endtime).millisecondsSinceEpoch + 1000,
+        widgetBuilder: (BuildContext context, CurrentRemainingTime? time) {
+          List<Widget> list = [];
+          if (time == null) {
+            list.add(Text(
+              '00:00:00',
+              style: TextStyle(color: Colors.white),
+            ));
+          }
+          if (time != null) {
+            if (time.days != null) {
+              list.add(Text(
+                time.days.toString() + ' ngày ',
+                style: TextStyle(color: Colors.white),
+              ));
+            } else {
+              list.add(Text(
+                ' 0 ngày ',
+                style: TextStyle(color: Colors.white),
+              ));
+            }
+            if (time.hours != null) {
+              list.add(Text(
+                time.hours.toString() + ':',
+                style: TextStyle(color: Colors.white),
+              ));
+            }
+            if (time.min != null) {
+              list.add(Text(
+                time.min.toString() + ':',
+                style: TextStyle(color: Colors.white),
+              ));
+            }
+            if (time.sec != null) {
+              list.add(Text(
+                time.sec.toString(),
+                style: TextStyle(color: Colors.white),
+              ));
+            }
+          }
+
+          return Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.orange.shade700),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: list,
+            ),
+          );
+        },
       ),
     );
   }

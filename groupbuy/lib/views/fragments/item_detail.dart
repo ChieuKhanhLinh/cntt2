@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_countdown_timer/current_remaining_time.dart';
+import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groupbuy/models/items.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:groupbuy/views/fragments/homepage.dart';
 import 'package:intl/intl.dart';
 
 class Detail extends StatefulWidget {
@@ -61,129 +64,121 @@ class _DetailState extends State<Detail> {
                     )
                 ],
               ),
-              Container(
-                child: Column(children: [
-                  Container(
-                    padding: EdgeInsets.only(top: 10, bottom: 10),
-                    height: 70,
-                    color: Colors.green.shade900,
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Column(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  NumberFormat.currency(locale: 'vi')
-                                      .format(widget.item.initialprice),
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey.shade300,
-                                      decoration: TextDecoration.lineThrough),
-                                ),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  NumberFormat.currency(locale: 'vi')
-                                      .format(widget.item.minprice),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  widget.item.ordered.toString() +
-                                      ' sản phẩm được đặt mua',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      'Kết thúc trong:',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-                                    Text(
-                                      '24:00:00',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          )
-                        ]),
-                  ),
-                  Container(
-                    height: 140,
-                    color: Colors.white,
-                    padding: EdgeInsets.all(10),
-                    width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              Column(children: [
+                Container(
+                  padding: EdgeInsets.only(top: 10, bottom: 10),
+                  height: 70,
+                  color: Colors.green.shade900,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Expanded(
-                          child: Text(
-                            widget.item.name,
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                            maxLines: 3,
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomLeft,
-                          child: RichText(
-                              text: TextSpan(children: [
-                            WidgetSpan(
-                                child: Icon(
-                              Icons.add_shopping_cart_outlined,
-                              color: Colors.lightGreen,
-                              size: 15,
-                            )),
-                            TextSpan(
-                                text:
-                                    "Cần thêm 3 đơn hàng nữa để đạt giá thấp nhất",
+                        Column(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                NumberFormat.currency(locale: 'vi')
+                                    .format(widget.item.initialprice),
                                 style: TextStyle(
-                                    fontSize: 12, color: Colors.black))
-                          ])),
+                                    fontSize: 14,
+                                    color: Colors.grey.shade300,
+                                    decoration: TextDecoration.lineThrough),
+                              ),
+                            ),
+                            Expanded(
+                              child: Text(
+                                NumberFormat.currency(locale: 'vi')
+                                    .format(widget.item.minprice),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                widget.item.ordered.toString() +
+                                    ' sản phẩm được đặt mua',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'Kết thúc sau:',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  _timeBox(item: widget.item),
+                                ],
+                              ),
+                            ),
+                          ],
                         )
-                      ],
-                    ),
+                      ]),
+                ),
+                Container(
+                  height: 140,
+                  color: Colors.white,
+                  padding: EdgeInsets.all(10),
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          widget.item.name,
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                          maxLines: 3,
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomLeft,
+                        child: RichText(
+                            text: TextSpan(children: [
+                          WidgetSpan(
+                              child: Icon(
+                            Icons.add_shopping_cart_outlined,
+                            color: Colors.lightGreen,
+                            size: 15,
+                          )),
+                          TextSpan(
+                              text:
+                                  "Cần thêm 3 đơn hàng nữa để đạt giá thấp nhất",
+                              style:
+                                  TextStyle(fontSize: 12, color: Colors.black))
+                        ])),
+                      )
+                    ],
                   ),
-                  SizedBox(
-                    height: 20,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  color: Colors.white,
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.only(bottom: 100),
+                  child: Text(
+                    widget.item.detail,
+                    style: TextStyle(fontSize: 16, color: Colors.grey.shade700),
                   ),
-                  Container(
-                    color: Colors.white,
-                    padding: EdgeInsets.all(10),
-                    child: Text(
-                      widget.item.detail,
-                      style:
-                          TextStyle(fontSize: 16, color: Colors.grey.shade700),
-                    ),
-                  )
-                ]),
-              )
+                )
+              ])
             ],
           ),
           Positioned(
@@ -261,6 +256,54 @@ class _DetailState extends State<Detail> {
               ))
         ],
       ),
+    );
+  }
+}
+
+class _timeBox extends StatelessWidget {
+  const _timeBox({Key? key, required this.item}) : super(key: key);
+  final Item item;
+
+  @override
+  Widget build(BuildContext context) {
+    return CountdownTimer(
+      // controller: controller,
+      endTime: (item.endtime).millisecondsSinceEpoch + 1000,
+      widgetBuilder: (BuildContext context, CurrentRemainingTime? time) {
+        List<Widget> list = [];
+        if (time == null) {
+          list.add(Text(
+            '00:00:00',
+            style: TextStyle(color: Colors.white),
+          ));
+        }
+        if (time != null) {
+          if (time.hours != null) {
+            list.add(Text(
+              time.hours.toString() + ':',
+              style: TextStyle(color: Colors.white),
+            ));
+          }
+          if (time.min != null) {
+            list.add(Text(
+              time.min.toString() + ':',
+              style: TextStyle(color: Colors.white),
+            ));
+          }
+          if (time.sec != null) {
+            list.add(Text(
+              time.sec.toString(),
+              style: TextStyle(color: Colors.white),
+            ));
+          }
+        }
+
+        return Row(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.center,
+          children: list,
+        );
+      },
     );
   }
 }
