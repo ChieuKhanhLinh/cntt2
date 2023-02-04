@@ -27,10 +27,10 @@ class _OrderPageState extends State<OrderPage> {
     return Obx(
           () => Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.indigo,
+            backgroundColor: Color(0xFF40C800),
             elevation: 1,
             automaticallyImplyLeading: false,
-            title: const Text('My Cart'),
+            title: const Text('Giỏ hàng'),
             actions: [
               TextButton(
                   onPressed: () {
@@ -38,7 +38,7 @@ class _OrderPageState extends State<OrderPage> {
                     Navigator.of(context).pushNamed('/');
                   },
                   child: Text(
-                    'CLEAR',
+                    'Xóa giỏ hàng',
                     style: TextStyle(color: Colors.white, fontSize: 12),
                   )),
             ],
@@ -101,8 +101,8 @@ class _OrderPageState extends State<OrderPage> {
                                             .toList()[index]);
                                       },
                                       style: ElevatedButton.styleFrom(
-                                          onPrimary: Colors.indigo,
-                                          primary: Colors.indigo.shade50,
+                                          onPrimary: Colors.white,
+                                          primary: Color(0xFF40C800),
                                           onSurface: Colors.grey.shade600,
                                           minimumSize: const Size(30, 30),
                                           elevation: 0.0),
@@ -127,8 +127,8 @@ class _OrderPageState extends State<OrderPage> {
                                             .toList()[index]);
                                       },
                                       style: ElevatedButton.styleFrom(
-                                          onPrimary: Colors.indigo,
-                                          primary: Colors.indigo.shade50,
+                                          onPrimary: Colors.white,
+                                          primary: Color(0xFF40C800),
                                           minimumSize: const Size(30, 30),
 
                                           onSurface: Colors.grey.shade600,
@@ -170,7 +170,7 @@ class _OrderPageState extends State<OrderPage> {
                           },
                           style: ElevatedButton.styleFrom(
                             onPrimary: Colors.white,
-                            primary: Colors.indigo,
+                            primary: Color(0xFF40C800),
                             minimumSize: const Size(180, 50),
                             onSurface: Colors.grey.shade600,
                           ),
@@ -178,9 +178,9 @@ class _OrderPageState extends State<OrderPage> {
                           child: Row(
                             // style: TextStyle(fontSize: 16),
                             children: [
-                              Text('${controller.items.length} items'),
+                              Text('${controller.items.length} sản phẩm'),
                               Spacer(),
-                              Text('Checkout'),
+                              Text('Thanh toán'),
                               Spacer(),
                               // Text(controller.total.toString()),
                               Text(NumberFormat.currency(locale: 'vi')

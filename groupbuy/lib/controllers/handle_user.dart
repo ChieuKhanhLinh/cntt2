@@ -37,6 +37,7 @@ class HandleUser {
       'phone': phone,
       'email': email,
       'role': 'user',
+      'urlImage': 'https://firebasestorage.googleapis.com/v0/b/groupbuy-1ec04.appspot.com/o/image%2Fdefault_ava.jpg?alt=media&token=f0ed2a8b-952c-46bc-8256-825e13873d87',
     });
   }
 

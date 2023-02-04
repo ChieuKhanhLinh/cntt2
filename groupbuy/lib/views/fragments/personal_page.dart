@@ -1,12 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:groupbuy/controllers/handle_user.dart';
 import 'package:groupbuy/controllers/menu_items_data.dart';
 import 'package:groupbuy/models/menu_item.dart';
+import 'package:groupbuy/views/fragments/auth/profile.dart';
 import 'package:groupbuy/views/fragments/auth/sign_in_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:groupbuy/controllers/handle_auth.dart';
+import 'package:groupbuy/views/fragments/auth/update_info.dart';
 
 import '../../models/user.dart';
 import 'admin/expired_item.dart';
@@ -59,35 +62,46 @@ class _PersonalPageState extends State<PersonalPage> {
               ),
             ),
           ),
-          if (user?.photoURL == null)
-            Positioned(
+          Positioned(
               top: (MediaQuery.of(context).size.height) * 0.05,
               left: 17,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(75),
-                child: Image.network(
-                  'https://firebasestorage.googleapis.com/v0/b/groupbuy-1ec04.appspot.com/o/image%2Fdefault_ava.jpg?alt=media&token=f0ed2a8b-952c-46bc-8256-825e13873d87',
-                  height: 99,
-                  width: 95,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          if (user?.photoURL != null)
-            Positioned(
-              top: (MediaQuery.of(context).size.height) * 0.05,
-              left: 17,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(75),
-                child: Image.network(
-                  user?.photoURL ??
-                      'https://firebasestorage.googleapis.com/v0/b/groupbuy-1ec04.appspot.com/o/image%2Fdefault_ava.jpg?alt=media&token=f0ed2a8b-952c-46bc-8256-825e13873d87',
-                  height: 99,
-                  width: 95,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
+              child: FutureBuilder<Users?>(
+                future: HandleUser().readUserInfo(),
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (snapshot.hasError) {
+                    print('${snapshot.error}');
+                  }
+                  if (snapshot.hasData){
+                    if (Auth().currentUser?.photoURL != null) {
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(75),
+                        child: Image.network(
+                          Auth().currentUser?.photoURL ??
+                              'https://firebasestorage.googleapis.com/v0/b/groupbuy-1ec04.appspot.com/o/image%2Fdefault_ava.jpg?alt=media&token=f0ed2a8b-952c-46bc-8256-825e13873d87',
+                          height: 99,
+                          width: 95,
+                          fit: BoxFit.cover,
+                        ),
+                      );
+                    }
+                    final user = snapshot.data;
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(75),
+                      child: Image.network(
+                        user.urlImage ??
+                            'https://firebasestorage.googleapis.com/v0/b/groupbuy-1ec04.appspot.com/o/image%2Fdefault_ava.jpg?alt=media&token=f0ed2a8b-952c-46bc-8256-825e13873d87',
+                        height: 99,
+                        width: 95,
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  }
+                  else {
+                    return const Center(child: CircularProgressIndicator(),);
+                  }
+                },
+              )
+          ),
           Positioned(
               top: (MediaQuery.of(context).size.height) * 0.15,
               left: 120,
@@ -208,7 +222,8 @@ class _PersonalPageState extends State<PersonalPage> {
                     ),
                   );
                 },
-              )),
+              )
+          ),
         ],
       ),
     );
@@ -234,7 +249,7 @@ class _PersonalPageState extends State<PersonalPage> {
   void onSelected(BuildContext context, MoreItem item) {
     switch (item) {
       case MenuItems.itemEdit:
-        print(user.toString());
+        Navigator.pushNamed(context, Profile.routeName);
         break;
 
       case MenuItems.itemProductOption:
@@ -295,7 +310,6 @@ class _PersonalPageState extends State<PersonalPage> {
           SizedBox(
             height: 9,
           ),
-          MemberInfo(),
         ],
       ),
     );
@@ -453,47 +467,6 @@ class _PersonalPageState extends State<PersonalPage> {
                   color: Colors.black,
                   fontWeight: FontWeight.w400,
                   fontSize: 16),
-            ),
-          ),
-          Spacer(),
-          Icon(
-            Icons.navigate_next_rounded,
-            size: 30,
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget MemberInfo() {
-    return Container(
-      height: 69,
-      padding: EdgeInsets.symmetric(horizontal: 12.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.asset(
-            'assets/Message.png',
-            scale: 0.8,
-          ),
-          SizedBox(
-            width: 8,
-          ),
-          Text(
-            // 'Thông tin về các thành viên trong nhóm bạn đã tham gia',
-            'Thông tin',
-            overflow: TextOverflow.ellipsis,
-            style: GoogleFonts.inter(
-              textStyle: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
-              ),
             ),
           ),
           Spacer(),

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-import 'fragments/group_page.dart';
 import 'fragments/homepage.dart';
 import 'fragments/order_page.dart';
 import 'fragments/personal_page.dart';
@@ -15,7 +13,7 @@ class NavBar extends StatefulWidget {
 
 class _NavBarState extends State<NavBar> {
   int currentIndex = 0;
-  List screens = [HomePage(), OrderPage(), GroupPage(), PersonalPage()];
+  List screens = [HomePage(), OrderPage(), PersonalPage()];
 
   void updateIndex(int value) {
     setState(() {
@@ -44,10 +42,6 @@ class _NavBarState extends State<NavBar> {
             BottomNavigationBarItem(
               label: "Giỏ hàng",
               icon: Icon(Icons.shopping_cart),
-            ),
-            BottomNavigationBarItem(
-              label: "Nhóm",
-              icon: Icon(Icons.group),
             ),
             BottomNavigationBarItem(
               label: "Cá nhân",

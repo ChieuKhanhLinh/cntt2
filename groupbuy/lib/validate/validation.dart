@@ -65,19 +65,12 @@ mixin CommonValidation {
     return null;
   }
 
-  // String? validateEditOldPassword(String? value) {
-  //   if (value!.isEmpty) {
-  //     return 'Please enter your old password';
-  //   }
-  //   return null;
-  // }
-  //
-  // String? validateEditNewPassword(String? value) {
-  //   if (value!.isEmpty) {
-  //     return 'Please enter your new password';
-  //   }
-  //   return null;
-  // }
+  String? validateEditOldPassword(String? value) {
+    if (value!.isEmpty) {
+      return 'Vui lòng nhập mật khẩu cũ của bạn';
+    }
+    return null;
+  }
 
   String? validateEditConfirmPassWord(String? value) {
     if (value!.isEmpty) {

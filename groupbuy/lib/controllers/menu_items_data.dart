@@ -33,8 +33,8 @@ class MenuItems {
   );
 
   static const itemEdit = MoreItem(
-    text: 'Chỉnh sửa',
-    icon: Icons.mode_edit_outline,
+    text: 'Hồ sơ',
+    icon: Icons.person_outline,
   );
 
   static const itemProductOption = MoreItem(
