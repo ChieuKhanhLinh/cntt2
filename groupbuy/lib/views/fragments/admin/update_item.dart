@@ -264,13 +264,13 @@ class _UpdateItemPageState extends State<UpdateItemPage> {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           backgroundColor: Color(0xFF025B05),
                           content: Text(
-                              '"${controllerName.text}" đã sửa thành công!')));
+                              '"${controllerName.text}" đã cập nhật thành công!')));
                       Navigator.of(context).pop();
                       return;
                     }
                   },
                   child: const Text(
-                    'Chỉnh sửa sản phẩm',
+                    'Cập nhật sản phẩm',
                     style: TextStyle(fontSize: 16.0),
                   ),
                   style: ButtonStyle(
