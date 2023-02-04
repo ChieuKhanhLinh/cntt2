@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:groupbuy/controllers/handle_auth.dart';
 
 import '../../models/user.dart';
+import 'admin/expired_item.dart';
 import 'admin/item_option.dart';
 
 class PersonalPage extends StatefulWidget {
@@ -240,6 +241,13 @@ class _PersonalPageState extends State<PersonalPage> {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const ItemOptionPage()),
+        );
+        break;
+
+      case MenuItems.itemExpiredProduct:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ItemExpiredPage()),
         );
         break;
 

@@ -22,6 +22,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final auth = FirebaseAuth.instance;
+  DateTime now = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +68,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisCount: 2,
                     crossAxisSpacing: 4,
                     mainAxisSpacing: 4,
-                    mainAxisExtent: 310),
+                    mainAxisExtent: 300),
                 primary: false,
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
@@ -85,7 +86,6 @@ class _HomePageState extends State<HomePage> {
   Widget _buildItem(Item item) {
     return Stack(
       children: [
-        // if (item.status != 0)
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -177,7 +177,9 @@ class _HomePageState extends State<HomePage> {
                               fontSize: 10, color: Colors.grey.shade600),
                         ),
                       ),
-                      Spacer(),
+                      SizedBox(
+                        height: 5,
+                      )
                     ],
                   ),
                 ),
@@ -191,7 +193,8 @@ class _HomePageState extends State<HomePage> {
 
   Stream<List<Item>> readItems() => FirebaseFirestore.instance
       .collection('items')
-      .orderBy('name')
+      .where('endtime', isGreaterThan: now)
+      .orderBy('endtime')
       .snapshots()
       .map((snapshot) =>
           snapshot.docs.map((doc) => Item.fromJson(doc.data())).toList());

@@ -9,15 +9,15 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'add_item.dart';
 import 'edit_item.dart';
 
-class ItemOptionPage extends StatefulWidget {
-  const ItemOptionPage({Key? key}) : super(key: key);
+class ItemExpiredPage extends StatefulWidget {
+  const ItemExpiredPage({Key? key}) : super(key: key);
   static const String routeName = '/itemOptionPage';
 
   @override
-  State<ItemOptionPage> createState() => _ItemOptionPageState();
+  State<ItemExpiredPage> createState() => _ItemExpiredPageState();
 }
 
-class _ItemOptionPageState extends State<ItemOptionPage> {
+class _ItemExpiredPageState extends State<ItemExpiredPage> {
   final auth = FirebaseAuth.instance;
   DateTime now = DateTime.now();
 
@@ -25,44 +25,15 @@ class _ItemOptionPageState extends State<ItemOptionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tùy chọn sản phẩm'),
+        title: Text('List sản phẩm hết thời gian'),
         elevation: 0,
         backgroundColor: Color(0xFF40C800),
       ),
       body: ListView(
           padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
           children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AddItemPage()),
-                  );
-                },
-                child: RichText(
-                    text: TextSpan(children: [
-                  WidgetSpan(
-                      child: Icon(
-                    Icons.add_circle_outline,
-                    size: 18,
-                    color: Color(0xFF025B05),
-                  )),
-                  TextSpan(
-                      text: "Thêm sản phẩm",
-                      style: TextStyle(
-                          color: Color(0xFF025B05),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500))
-                ])),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
             Text(
-              "Sản phẩm đã thêm",
+              "Cập nhật sản phẩm",
               style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -229,7 +200,7 @@ class _ItemOptionPageState extends State<ItemOptionPage> {
 
   Stream<List<Item>> readItems() => FirebaseFirestore.instance
       .collection('items')
-      .where('endtime', isGreaterThan: now)
+      .where('endtime', isLessThanOrEqualTo: now)
       .orderBy('endtime')
       .snapshots()
       .map((snapshot) =>
