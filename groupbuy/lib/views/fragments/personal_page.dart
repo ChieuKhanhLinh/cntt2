@@ -9,7 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:groupbuy/controllers/handle_auth.dart';
 
 import '../../models/user.dart';
-
+import 'admin/item_option.dart';
 
 class PersonalPage extends StatefulWidget {
   PersonalPage({Key? key}) : super(key: key);
@@ -28,7 +28,7 @@ class _PersonalPageState extends State<PersonalPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: ListView (
+        body: ListView(
           children: [
             Header(),
             Body(),
@@ -39,15 +39,14 @@ class _PersonalPageState extends State<PersonalPage> {
   }
 
   Widget Header() {
-
     return Container(
       // color: Colors.white,
       width: double.infinity,
-      height: (MediaQuery.of(context).size.height)*0.25,
+      height: (MediaQuery.of(context).size.height) * 0.25,
       child: Stack(
         children: [
           Positioned(
-            top: (MediaQuery.of(context).size.height)*0.12,
+            top: (MediaQuery.of(context).size.height) * 0.12,
             bottom: 0,
             right: 10,
             left: 10,
@@ -59,36 +58,43 @@ class _PersonalPageState extends State<PersonalPage> {
               ),
             ),
           ),
-          if (user?.photoURL == null) Positioned(
-            top: (MediaQuery.of(context).size.height)*0.05,
-            left: 17,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(75),
-              child:
-              Image.network('https://firebasestorage.googleapis.com/v0/b/groupbuy-1ec04.appspot.com/o/image%2Fdefault_ava.jpg?alt=media&token=f0ed2a8b-952c-46bc-8256-825e13873d87', height: 99, width: 95,
-                fit: BoxFit.cover,
+          if (user?.photoURL == null)
+            Positioned(
+              top: (MediaQuery.of(context).size.height) * 0.05,
+              left: 17,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(75),
+                child: Image.network(
+                  'https://firebasestorage.googleapis.com/v0/b/groupbuy-1ec04.appspot.com/o/image%2Fdefault_ava.jpg?alt=media&token=f0ed2a8b-952c-46bc-8256-825e13873d87',
+                  height: 99,
+                  width: 95,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
-          if (user?.photoURL != null) Positioned(
-            top: (MediaQuery.of(context).size.height)*0.05,
-            left: 17,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(75),
-              child:
-              Image.network(user?.photoURL ?? 'https://firebasestorage.googleapis.com/v0/b/groupbuy-1ec04.appspot.com/o/image%2Fdefault_ava.jpg?alt=media&token=f0ed2a8b-952c-46bc-8256-825e13873d87', height: 99, width: 95,
-                fit: BoxFit.cover,
+          if (user?.photoURL != null)
+            Positioned(
+              top: (MediaQuery.of(context).size.height) * 0.05,
+              left: 17,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(75),
+                child: Image.network(
+                  user?.photoURL ??
+                      'https://firebasestorage.googleapis.com/v0/b/groupbuy-1ec04.appspot.com/o/image%2Fdefault_ava.jpg?alt=media&token=f0ed2a8b-952c-46bc-8256-825e13873d87',
+                  height: 99,
+                  width: 95,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
           Positioned(
-              top: (MediaQuery.of(context).size.height)*0.15,
+              top: (MediaQuery.of(context).size.height) * 0.15,
               left: 120,
               child: FutureBuilder<Users?>(
                 future: HandleUser().readUserInfo(),
                 builder: (context, AsyncSnapshot snapshot) {
-                  if(snapshot.hasError) {
-                    print ('${snapshot.error}');
+                  if (snapshot.hasError) {
+                    print('${snapshot.error}');
                   }
                   if (Auth().currentUser?.photoURL != null) {
                     return Column(
@@ -97,59 +103,84 @@ class _PersonalPageState extends State<PersonalPage> {
                         Text(
                           Auth().currentUser?.displayName ?? 'Tên người dùng',
                           style: GoogleFonts.inter(
-                            textStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 16),
+                            textStyle: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16),
                           ),
                         ),
-                        SizedBox(height: 8.0,),
+                        SizedBox(
+                          height: 8.0,
+                        ),
                         Text(
                           Auth().currentUser?.phoneNumber ?? ' ',
                           style: GoogleFonts.inter(
-                            textStyle: TextStyle(color: Color(0xFF025B05), fontWeight: FontWeight.w400, fontSize: 16),
+                            textStyle: TextStyle(
+                                color: Color(0xFF025B05),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16),
                           ),
                         )
                       ],
                     );
                   }
-                  final user= snapshot.data;
+                  final user = snapshot.data;
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      user == null? Text(
-                        'Chào bạn',
-                        style: GoogleFonts.inter(
-                          textStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 16),
-                        ),
-                      ): Text(
-                        user.name,
-                        style: GoogleFonts.inter(
-                          textStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 16),
-                        ),
+                      user == null
+                          ? Text(
+                              'Chào bạn',
+                              style: GoogleFonts.inter(
+                                textStyle: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16),
+                              ),
+                            )
+                          : Text(
+                              user.name,
+                              style: GoogleFonts.inter(
+                                textStyle: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16),
+                              ),
+                            ),
+                      SizedBox(
+                        height: 8.0,
                       ),
-                      SizedBox(height: 8.0,),
-                      user == null? Text(
-                        'Đăng nhập nào!',
-                        style: GoogleFonts.inter(
-                          textStyle: TextStyle(color: Color(0xFF025B05), fontWeight: FontWeight.w400, fontSize: 16),
-                        ),
-                      ): Text(
-                        user.phone,
-                        style: GoogleFonts.inter(
-                          textStyle: TextStyle(color: Color(0xFF025B05), fontWeight: FontWeight.w400, fontSize: 14),
-                        ),
-                      ),
+                      user == null
+                          ? Text(
+                              'Đăng nhập nào!',
+                              style: GoogleFonts.inter(
+                                textStyle: TextStyle(
+                                    color: Color(0xFF025B05),
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16),
+                              ),
+                            )
+                          : Text(
+                              user.phone,
+                              style: GoogleFonts.inter(
+                                textStyle: TextStyle(
+                                    color: Color(0xFF025B05),
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14),
+                              ),
+                            ),
                     ],
                   );
                 },
-              )
-          ),
+              )),
           Positioned(
-              top: (MediaQuery.of(context).size.height)*0.15,
+              top: (MediaQuery.of(context).size.height) * 0.15,
               right: 3,
               child: FutureBuilder<Users?>(
                 future: HandleUser().readUserInfo(),
                 builder: (context, AsyncSnapshot snapshot) {
-                  if(snapshot.hasError) {
-                    print ('${snapshot.error}');
+                  if (snapshot.hasError) {
+                    print('${snapshot.error}');
                   }
                   if (Auth().currentUser?.photoURL != null) {
                     return Center(
@@ -161,7 +192,7 @@ class _PersonalPageState extends State<PersonalPage> {
                       ),
                     );
                   }
-                  final user= snapshot.data;
+                  final user = snapshot.data;
                   return Center(
                     child: PopupMenuButton<MoreItem>(
                       onSelected: (item) => onSelected(context, item),
@@ -176,28 +207,40 @@ class _PersonalPageState extends State<PersonalPage> {
                     ),
                   );
                 },
-              )
-          ),
+              )),
         ],
       ),
     );
   }
 
-  PopupMenuItem<MoreItem> buildItem (MoreItem item) => PopupMenuItem<MoreItem>(
-    value: item,
-    child: Row(
-      children: [
-        Icon(item.icon, color: Colors.black, size: 20,),
-        const SizedBox(width: 14,),
-        Text(item.text),
-      ],
-    ),
-  );
+  PopupMenuItem<MoreItem> buildItem(MoreItem item) => PopupMenuItem<MoreItem>(
+        value: item,
+        child: Row(
+          children: [
+            Icon(
+              item.icon,
+              color: Colors.black,
+              size: 20,
+            ),
+            const SizedBox(
+              width: 14,
+            ),
+            Text(item.text),
+          ],
+        ),
+      );
 
   void onSelected(BuildContext context, MoreItem item) {
     switch (item) {
       case MenuItems.itemEdit:
         print(user.toString());
+        break;
+
+      case MenuItems.itemProductOption:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ItemOptionPage()),
+        );
         break;
 
       case MenuItems.itemLogin:
@@ -212,26 +255,38 @@ class _PersonalPageState extends State<PersonalPage> {
   }
 
   Widget Body() {
-
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 12.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: (MediaQuery.of(context).size.height)*0.06,),
+          SizedBox(
+            height: (MediaQuery.of(context).size.height) * 0.06,
+          ),
           Text(
             'Cập nhật thông tin',
             style: GoogleFonts.inter(
-              textStyle: TextStyle(color: Color(0xFF013003), fontWeight: FontWeight.w400, fontSize: 16),
+              textStyle: TextStyle(
+                  color: Color(0xFF013003),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16),
             ),
           ),
-          SizedBox(height: 12,),
+          SizedBox(
+            height: 12,
+          ),
           OrderStatus(),
-          SizedBox(height: 9,),
+          SizedBox(
+            height: 9,
+          ),
           Address(),
-          SizedBox(height: 9,),
+          SizedBox(
+            height: 9,
+          ),
           Info(),
-          SizedBox(height: 9,),
+          SizedBox(
+            height: 9,
+          ),
           MemberInfo(),
         ],
       ),
@@ -259,12 +314,14 @@ class _PersonalPageState extends State<PersonalPage> {
               Text(
                 'Chờ xử lý',
                 style: GoogleFonts.inter(
-                  textStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 12),
+                  textStyle: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12),
                 ),
               ),
             ],
           ),
-
           Column(
             children: [
               IconButton(
@@ -275,12 +332,14 @@ class _PersonalPageState extends State<PersonalPage> {
               Text(
                 'Đóng gói',
                 style: GoogleFonts.inter(
-                  textStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 12),
+                  textStyle: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12),
                 ),
               ),
             ],
           ),
-
           Column(
             children: [
               IconButton(
@@ -291,12 +350,14 @@ class _PersonalPageState extends State<PersonalPage> {
               Text(
                 'Vận chuyển',
                 style: GoogleFonts.inter(
-                  textStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 12),
+                  textStyle: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12),
                 ),
               ),
             ],
           ),
-
           Column(
             children: [
               IconButton(
@@ -307,7 +368,10 @@ class _PersonalPageState extends State<PersonalPage> {
               Text(
                 'Nhận hàng',
                 style: GoogleFonts.inter(
-                  textStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 12),
+                  textStyle: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12),
                 ),
               ),
             ],
@@ -329,16 +393,27 @@ class _PersonalPageState extends State<PersonalPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset('assets/Order.png',scale: 0.8,),
-          SizedBox(width: 8,),
+          Image.asset(
+            'assets/Order.png',
+            scale: 0.8,
+          ),
+          SizedBox(
+            width: 8,
+          ),
           Text(
             'Địa chỉ nhận hàng',
             style: GoogleFonts.inter(
-              textStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 16),
+              textStyle: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16),
             ),
           ),
           Spacer(),
-          Icon(Icons.navigate_next_rounded,size: 30,)
+          Icon(
+            Icons.navigate_next_rounded,
+            size: 30,
+          )
         ],
       ),
     );
@@ -356,16 +431,27 @@ class _PersonalPageState extends State<PersonalPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset('assets/Paper.png',scale: 0.8,),
-          SizedBox(width: 8,),
+          Image.asset(
+            'assets/Paper.png',
+            scale: 0.8,
+          ),
+          SizedBox(
+            width: 8,
+          ),
           Text(
             'Thông tin đơn hàng đã đặt',
             style: GoogleFonts.inter(
-              textStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 16),
+              textStyle: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16),
             ),
           ),
           Spacer(),
-          Icon(Icons.navigate_next_rounded,size: 30,)
+          Icon(
+            Icons.navigate_next_rounded,
+            size: 30,
+          )
         ],
       ),
     );
@@ -383,21 +469,32 @@ class _PersonalPageState extends State<PersonalPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset('assets/Message.png',scale: 0.8,),
-          SizedBox(width: 8,),
+          Image.asset(
+            'assets/Message.png',
+            scale: 0.8,
+          ),
+          SizedBox(
+            width: 8,
+          ),
           Text(
             // 'Thông tin về các thành viên trong nhóm bạn đã tham gia',
             'Thông tin',
             overflow: TextOverflow.ellipsis,
             style: GoogleFonts.inter(
-              textStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 16, ),
+              textStyle: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+              ),
             ),
           ),
           Spacer(),
-          Icon(Icons.navigate_next_rounded,size: 30,)
+          Icon(
+            Icons.navigate_next_rounded,
+            size: 30,
+          )
         ],
       ),
     );
   }
-
 }

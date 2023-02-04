@@ -47,6 +47,7 @@ dependencies:
   dotted_border: ^2.0.0+3
   confirm_dialog: ^1.0.1
   flutter_countdown_timer: ^4.1.0
+  intl: ^0.18.0
   get: ^4.6.5
 
 dev_dependencies:

@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:intl/intl.dart';
 
 class AddItemPage extends StatefulWidget {
   const AddItemPage({Key? key}) : super(key: key);
@@ -147,10 +148,33 @@ class _AddItemPageState extends State<AddItemPage> {
             ),
             SizedBox(height: 24),
             TextFormField(
-                minLines: 6,
-                maxLines: 10,
-                decoration: decoration('Thời gian kết thúc'),
-                controller: controllerEndTime),
+              decoration: decoration(
+                'Thời gian kết thúc',
+              ),
+              controller: controllerEndTime,
+              onTap: () async {
+                TimeOfDay time = TimeOfDay.now();
+                FocusScope.of(context).requestFocus(new FocusNode());
+                TimeOfDay? picked =
+                    await showTimePicker(context: context, initialTime: time);
+                if (picked != null && picked != time) {
+                  DateTime now = DateTime.now();
+                  var dt = DateTime(
+                      now.year, now.month, now.day, picked.hour, picked.minute);
+                  controllerEndTime.text =
+                      DateFormat('yyyy-MM-dd HH:mm').format(dt);
+                  setState(() {
+                    time = picked;
+                  });
+                }
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'cant be empty';
+                }
+                return null;
+              },
+            ),
             SizedBox(height: 32),
             SizedBox(
               height: 46.0,

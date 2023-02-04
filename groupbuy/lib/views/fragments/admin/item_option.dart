@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groupbuy/models/items.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:groupbuy/models/menu_item.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'add_item.dart';
@@ -191,7 +191,19 @@ class _ItemOptionPageState extends State<ItemOptionPage> {
                         style: const TextStyle(
                             fontSize: 14.0, color: Colors.green),
                       ),
-                      Text('time: 11-1-2023 10:00:00'),
+                      Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.access_alarm_outlined,
+                            color: Colors.indigo,
+                          ),
+                          Text(
+                            DateFormat('yyyy-MM-dd HH:mm:ss')
+                                .format(item.endtime),
+                          ),
+                        ],
+                      )
                     ],
                   ),
                 ),

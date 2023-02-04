@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:intl/intl.dart';
 
 class EditItemPage extends StatefulWidget {
   const EditItemPage({Key? key, required this.item}) : super(key: key);
@@ -157,7 +158,6 @@ class _EditItemPageState extends State<EditItemPage> {
               ),
               SizedBox(height: 24),
               TextFormField(
-                // initialValue: TextEditingController(widget.item.totalorder.toString()),
                 decoration: decoration('Số người mua chung'),
                 controller: controllerTotalOrder,
                 keyboardType: TextInputType.number,
@@ -173,10 +173,32 @@ class _EditItemPageState extends State<EditItemPage> {
               ),
               SizedBox(height: 24),
               TextFormField(
-                minLines: 6,
-                maxLines: 12,
-                decoration: decoration('Thời gian kết thúc'),
+                decoration: decoration(
+                  'Thời gian kết thúc',
+                ),
                 controller: controllerEndTime,
+                onTap: () async {
+                  TimeOfDay time = TimeOfDay.now();
+                  FocusScope.of(context).requestFocus(new FocusNode());
+                  TimeOfDay? picked =
+                      await showTimePicker(context: context, initialTime: time);
+                  if (picked != null && picked != time) {
+                    DateTime now = DateTime.now();
+                    var dt = DateTime(now.year, now.month, now.day, picked.hour,
+                        picked.minute);
+                    controllerEndTime.text =
+                        DateFormat('yyyy-MM-dd HH:mm').format(dt);
+                    setState(() {
+                      time = picked;
+                    });
+                  }
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'cant be empty';
+                  }
+                  return null;
+                },
               ),
               SizedBox(height: 32),
               SizedBox(

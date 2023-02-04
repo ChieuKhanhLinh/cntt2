@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:groupbuy/models/menu_item.dart';
 
 class MenuItems {
-
   List<MoreItem> loginList = [
     itemLogin,
   ];
@@ -18,16 +17,14 @@ class MenuItems {
 
   List<MoreItem> AdminMenu = [
     itemEdit,
-    itemEdit,
+    itemProductOption,
     itemEdit,
     itemLogout,
   ];
 
-
-
   static const itemLogout = MoreItem(
-      text: 'Đăng xuất',
-      icon: Icons.logout_outlined,
+    text: 'Đăng xuất',
+    icon: Icons.logout_outlined,
   );
 
   static const itemLogin = MoreItem(
@@ -37,6 +34,11 @@ class MenuItems {
 
   static const itemEdit = MoreItem(
     text: 'Chỉnh sửa',
+    icon: Icons.mode_edit_outline,
+  );
+
+  static const itemProductOption = MoreItem(
+    text: 'Tùy chọn sản phẩm',
     icon: Icons.mode_edit_outline,
   );
 }
