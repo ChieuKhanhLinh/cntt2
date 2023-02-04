@@ -175,34 +175,35 @@ class _UpdateItemPageState extends State<UpdateItemPage> {
                 },
               ),
               SizedBox(height: 24),
-              TextFormField(
-                decoration: decoration(
-                  'Thời gian kết thúc',
+              if (widget.item.ordered < widget.item.totalorder)
+                TextFormField(
+                  decoration: decoration(
+                    'Thời gian kết thúc',
+                  ),
+                  controller: controllerEndTime,
+                  onTap: () async {
+                    TimeOfDay time = TimeOfDay.now();
+                    FocusScope.of(context).requestFocus(new FocusNode());
+                    TimeOfDay? picked = await showTimePicker(
+                        context: context, initialTime: time);
+                    if (picked != null && picked != time) {
+                      DateTime now = DateTime.now();
+                      var dt = DateTime(now.year, now.month, now.day,
+                          picked.hour, picked.minute);
+                      controllerEndTime.text =
+                          DateFormat('yyyy-MM-dd HH:mm').format(dt);
+                      setState(() {
+                        time = picked;
+                      });
+                    }
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'cant be empty';
+                    }
+                    return null;
+                  },
                 ),
-                controller: controllerEndTime,
-                onTap: () async {
-                  TimeOfDay time = TimeOfDay.now();
-                  FocusScope.of(context).requestFocus(new FocusNode());
-                  TimeOfDay? picked =
-                      await showTimePicker(context: context, initialTime: time);
-                  if (picked != null && picked != time) {
-                    DateTime now = DateTime.now();
-                    var dt = DateTime(now.year, now.month, now.day, picked.hour,
-                        picked.minute);
-                    controllerEndTime.text =
-                        DateFormat('yyyy-MM-dd HH:mm').format(dt);
-                    setState(() {
-                      time = picked;
-                    });
-                  }
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'cant be empty';
-                  }
-                  return null;
-                },
-              ),
               SizedBox(height: 24),
               if (widget.item.ordered == widget.item.totalorder)
                 TextField(
