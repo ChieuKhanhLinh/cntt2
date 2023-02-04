@@ -4,6 +4,7 @@ import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:groupbuy/models/menu_item.dart';
+import 'package:groupbuy/views/fragments/admin/update_item.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'add_item.dart';
@@ -25,21 +26,21 @@ class _ItemExpiredPageState extends State<ItemExpiredPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('List sản phẩm hết thời gian'),
+        title: const Text('List sản phẩm hết thời gian'),
         elevation: 0,
-        backgroundColor: Color(0xFF40C800),
+        backgroundColor: const Color(0xFF40C800),
       ),
       body: ListView(
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
           children: [
-            Text(
+            const Text(
               "Cập nhật sản phẩm",
               style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF013003)),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             StreamBuilder<List<Item>>(
@@ -52,12 +53,12 @@ class _ItemExpiredPageState extends State<ItemExpiredPage> {
                   final items = snapshot.data!;
                   return ListView(
                     shrinkWrap: true,
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     children: items.map(_builderItem).toList(),
                   );
                 } else {
-                  return Center(
-                    child: CircularProgressIndicator(),
+                  return const Center(
+                    child: const CircularProgressIndicator(),
                   );
                 }
               },
@@ -72,20 +73,20 @@ class _ItemExpiredPageState extends State<ItemExpiredPage> {
       child: Slidable(
         key: const ValueKey(0),
         endActionPane: ActionPane(
-          motion: ScrollMotion(),
+          motion: const ScrollMotion(),
           children: [
             SlidableAction(
               onPressed: (BuildContext context) {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => EditItemPage(item: item)),
+                      builder: (context) => UpdateItemPage(item: item)),
                 );
               },
-              backgroundColor: Color.fromARGB(255, 25, 211, 155),
+              backgroundColor: Color.fromARGB(255, 25, 211, 115),
               foregroundColor: Colors.white,
-              icon: Icons.edit_outlined,
-              label: 'Edit',
+              icon: Icons.system_update_alt_rounded,
+              label: 'Update',
             ),
             SlidableAction(
               onPressed: (BuildContext slidableContext) async {
@@ -114,7 +115,7 @@ class _ItemExpiredPageState extends State<ItemExpiredPage> {
                 print('pressedCancel');
                 return;
               },
-              backgroundColor: Color(0xFFFE4A49),
+              backgroundColor: const Color(0xFFFE4A49),
               foregroundColor: Colors.white,
               icon: Icons.delete,
               label: 'Delete',

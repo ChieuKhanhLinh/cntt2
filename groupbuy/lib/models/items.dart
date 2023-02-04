@@ -10,6 +10,7 @@ class Item {
   final int totalorder;
   final int ordered;
   final DateTime endtime;
+  final String status;
 
   Item({
     this.id = '',
@@ -21,11 +22,12 @@ class Item {
     required this.totalorder,
     this.ordered = 0,
     required this.endtime,
+    this.status = '',
   });
 
   @override
   String toString() {
-    return 'Item(id: $id, name: $name, detail: $detail, imgLink: $imgLink, initialprice: $initialprice, minprice: $minprice, totalorder: $totalorder, ordered: $ordered, endTime: $endtime)';
+    return 'Item(id: $id, name: $name, detail: $detail, imgLink: $imgLink, initialprice: $initialprice, minprice: $minprice, totalorder: $totalorder, ordered: $ordered, endTime: $endtime, status: $status)';
   }
 
   Map<String, dynamic> toJson() {
@@ -39,6 +41,7 @@ class Item {
       'totalorder': totalorder,
       'ordered': ordered,
       'endtime': endtime,
+      'status': status,
     };
   }
 
@@ -52,5 +55,6 @@ class Item {
         totalorder: int.parse(json['totalorder'].toString()),
         ordered: int.parse(json['ordered'].toString()),
         endtime: (json['endtime'] as Timestamp).toDate(),
+        status: json['status'],
       );
 }
