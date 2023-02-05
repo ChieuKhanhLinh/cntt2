@@ -7,7 +7,6 @@ import 'package:groupbuy/views/fragments/check_out_page.dart';
 import '../../controllers/handle_cart.dart';
 import 'package:intl/intl.dart';
 
-
 class OrderPage extends StatefulWidget {
   const OrderPage({Key? key}) : super(key: key);
   static const String routeName = '/orderPage';
@@ -17,7 +16,6 @@ class OrderPage extends StatefulWidget {
 }
 
 class _OrderPageState extends State<OrderPage> {
-
   final CartController controller = Get.find();
   late final Item item;
   late final int quantity;
@@ -26,7 +24,7 @@ class _OrderPageState extends State<OrderPage> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-          () => Scaffold(
+      () => Scaffold(
           appBar: AppBar(
             backgroundColor: Color(0xFF40C800),
             elevation: 1,
@@ -88,8 +86,8 @@ class _OrderPageState extends State<OrderPage> {
                                     Text(
                                       NumberFormat.currency(locale: 'vi')
                                           .format(controller.items.keys
-                                          .toList()[index]
-                                          .minprice),
+                                              .toList()[index]
+                                              .minprice),
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 14),
@@ -123,15 +121,13 @@ class _OrderPageState extends State<OrderPage> {
                                     SizedBox(width: 10.0),
                                     ElevatedButton(
                                       onPressed: () {
-                                        controller.addItem(controller
-                                            .items.keys
+                                        controller.addItem(controller.items.keys
                                             .toList()[index]);
                                       },
                                       style: ElevatedButton.styleFrom(
                                           onPrimary: Colors.white,
                                           primary: Color(0xFF40C800),
                                           minimumSize: const Size(30, 30),
-
                                           onSurface: Colors.grey.shade600,
                                           elevation: 0.0),
                                       child: const FaIcon(
@@ -144,8 +140,7 @@ class _OrderPageState extends State<OrderPage> {
                               ],
                             ),
                           ),
-                          separatorBuilder:
-                              (BuildContext context, int index) {
+                          separatorBuilder: (BuildContext context, int index) {
                             return const Divider();
                           },
                         ),
@@ -166,13 +161,15 @@ class _OrderPageState extends State<OrderPage> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         ElevatedButton(
-                          onPressed:  controller.items.length == 0? null: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => CheckOut()));
-                            print(controller.items.length);
-                          },
+                          onPressed: controller.items.length == 0
+                              ? null
+                              : () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => CheckOut()));
+                                  print(controller.items.length);
+                                },
                           style: ElevatedButton.styleFrom(
                             onPrimary: Colors.white,
                             primary: Color(0xFF40C800),

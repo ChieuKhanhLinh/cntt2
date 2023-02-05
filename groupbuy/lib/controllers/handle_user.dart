@@ -5,12 +5,13 @@ import '../models/user.dart';
 class HandleUser {
   final auth = FirebaseAuth.instance;
 
-
   // Read userInfo
   Future<Users?> readUserInfo() async {
-    final docUser = FirebaseFirestore.instance.collection('users').doc(auth.currentUser!.uid);
+    final docUser = FirebaseFirestore.instance
+        .collection('users')
+        .doc(auth.currentUser?.uid);
     final snapshot = await docUser.get();
-    if(snapshot.exists) {
+    if (snapshot.exists) {
       return Users.fromJson(snapshot.data()!);
     }
     return null;
@@ -18,7 +19,9 @@ class HandleUser {
 
   // Update user
   Future updateUser(Users user) async {
-    final docUser = FirebaseFirestore.instance.collection('users').doc(auth.currentUser!.uid);
+    final docUser = FirebaseFirestore.instance
+        .collection('users')
+        .doc(auth.currentUser!.uid);
     final json = user.toJson();
     await docUser.update(json);
   }
@@ -38,7 +41,8 @@ class HandleUser {
       'email': email,
       'address': '',
       'role': 'user',
-      'urlImage': 'https://firebasestorage.googleapis.com/v0/b/groupbuy-1ec04.appspot.com/o/image%2Fdefault_ava.jpg?alt=media&token=f0ed2a8b-952c-46bc-8256-825e13873d87',
+      'urlImage':
+          'https://firebasestorage.googleapis.com/v0/b/groupbuy-1ec04.appspot.com/o/image%2Fdefault_ava.jpg?alt=media&token=f0ed2a8b-952c-46bc-8256-825e13873d87',
     });
   }
 
@@ -50,9 +54,9 @@ class HandleUser {
     final oldEmail = auth.currentUser!.email;
     await auth
         .signInWithEmailAndPassword(
-        email: oldEmail!, password: yourConfirmPassword)
-        .then((userCredential) async { await
-    userCredential.user!.updateEmail(newEmail);
+            email: oldEmail!, password: yourConfirmPassword)
+        .then((userCredential) async {
+      await userCredential.user!.updateEmail(newEmail);
     });
   }
 
@@ -64,7 +68,7 @@ class HandleUser {
     final oldEmail = auth.currentUser!.email;
     await auth
         .signInWithEmailAndPassword(
-        email: oldEmail!, password: yourConfirmPassword)
+            email: oldEmail!, password: yourConfirmPassword)
         .then((userCredential) {
       userCredential.user!.updatePassword(newPassword);
     });

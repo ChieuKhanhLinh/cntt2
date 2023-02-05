@@ -29,7 +29,7 @@ class _UpdateItemPageState extends State<UpdateItemPage> {
   PlatformFile? pickedFile;
   UploadTask? uploadTask;
   String? initialImgLink;
-  List<String> status = ["Chờ xử lý", "Đóng gói", "Vận chuyển", "Nhận hàng"];
+  List<String> status = ["Success"];
 
   @override
   void initState() {

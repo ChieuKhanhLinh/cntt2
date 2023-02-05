@@ -25,11 +25,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 //   }
 
 class CartController extends GetxController {
-
   final _items = {}.obs;
   final auth = FirebaseAuth.instance;
   late bool checkList = false;
-
 
   void addItems(Item item, int quantity) {
     // print(item.id);
@@ -47,8 +45,9 @@ class CartController extends GetxController {
     // }
     // print(checkList);
 
-    if (_items.containsKey(item) ) {
+    if (_items.containsKey(item)) {
       _items[item] += quantity;
+      _items[item.ordered] += 1;
     } else {
       _items[item] = quantity;
     }
@@ -66,7 +65,6 @@ class CartController extends GetxController {
     //Set user Info from database
     // final uid = FirebaseAuth.instance.currentUser!.uid;
     // final cartInfo = FirebaseFirestore.instance.collection('carts').doc();
-
   }
 
   void removeItem(Item item) {
@@ -80,6 +78,7 @@ class CartController extends GetxController {
   void removeOneItem(Item item) {
     if (_items.containsKey(item)) {
       _items.removeWhere((key, value) => key == item);
+      _items[item.ordered] -= 1;
     }
   }
 
@@ -90,12 +89,12 @@ class CartController extends GetxController {
   get items => _items;
 
   get itemSubtotal =>
-      _items.entries.map((item) => item.key.minprice* item.value).toList();
+      _items.entries.map((item) => item.key.minprice * item.value).toList();
 
   get total => _items.isNotEmpty
       ? _items.entries
-      .map((item) => item.key.minprice * item.value)
-      .toList()
-      .reduce((value, element) => value + element)
+          .map((item) => item.key.minprice * item.value)
+          .toList()
+          .reduce((value, element) => value + element)
       : 0;
 }

@@ -19,7 +19,6 @@ class Detail extends StatefulWidget {
 }
 
 class _DetailState extends State<Detail> {
-
   int itemCount = 1;
   bool isBtnDisabled = true;
 
@@ -161,18 +160,21 @@ class _DetailState extends State<Detail> {
                             alignment: Alignment.bottomLeft,
                             child: RichText(
                                 text: TextSpan(children: [
-                                  WidgetSpan(
-                                      child: Icon(
-                                        Icons.add_shopping_cart_outlined,
-                                        color: Colors.lightGreen,
-                                        size: 15,
-                                      )),
-                                  TextSpan(
-                                      text:
-                                      "Cần thêm 3 đơn hàng nữa để đạt giá thấp nhất",
-                                      style:
-                                      TextStyle(fontSize: 12, color: Colors.black))
-                                ])),
+                              WidgetSpan(
+                                  child: Icon(
+                                Icons.add_shopping_cart_outlined,
+                                color: Colors.lightGreen,
+                                size: 15,
+                              )),
+                              TextSpan(
+                                  text: 'Cần thêm ' +
+                                      (widget.item.totalorder -
+                                              widget.item.ordered)
+                                          .toString() +
+                                      ' đơn hàng nữa để đạt giá thấp nhất',
+                                  style: TextStyle(
+                                      fontSize: 12, color: Colors.black))
+                            ])),
                           )
                         ],
                       ),
@@ -186,7 +188,8 @@ class _DetailState extends State<Detail> {
                       margin: EdgeInsets.only(bottom: 100),
                       child: Text(
                         widget.item.detail,
-                        style: TextStyle(fontSize: 16, color: Colors.grey.shade700),
+                        style: TextStyle(
+                            fontSize: 16, color: Colors.grey.shade700),
                       ),
                     )
                   ])

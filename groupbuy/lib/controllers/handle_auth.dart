@@ -17,7 +17,7 @@ class Auth {
       password: password,
     );
     final user = _firebaseAuth.currentUser?.email;
-    if (user!=null) {
+    if (user != null) {
       print('Đăng nhập thành công');
     }
   }
@@ -38,10 +38,11 @@ class Auth {
 
   signInWithGoogle() async {
     // await GoogleSignIn().disconnect();
-    final GoogleSignInAccount? googleUser = await GoogleSignIn(
-      scopes: <String>['email']).signIn();
+    final GoogleSignInAccount? googleUser =
+        await GoogleSignIn(scopes: <String>['email']).signIn();
 
-    final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser!.authentication;
 
     //create a new credential
     final credential = GoogleAuthProvider.credential(
@@ -53,13 +54,14 @@ class Auth {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
-  Future<void> signOut() async {
+  Future signOut() async {
     await _firebaseAuth.signOut();
     print('Đăng xuất thành công');
   }
 
-  Future passwordReset({required String email,}) async {
-      await _firebaseAuth.sendPasswordResetEmail(email: email);
+  Future passwordReset({
+    required String email,
+  }) async {
+    await _firebaseAuth.sendPasswordResetEmail(email: email);
   }
-
 }

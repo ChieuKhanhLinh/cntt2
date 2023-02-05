@@ -68,134 +68,163 @@ class _ItemExpiredPageState extends State<ItemExpiredPage> {
   }
 
   Widget _builderItem(Item item) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Slidable(
-        key: const ValueKey(0),
-        endActionPane: ActionPane(
-          motion: const ScrollMotion(),
-          children: [
-            SlidableAction(
-              onPressed: (BuildContext context) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => UpdateItemPage(item: item)),
-                );
-              },
-              backgroundColor: Color.fromARGB(255, 25, 211, 115),
-              foregroundColor: Colors.white,
-              icon: Icons.system_update_alt_rounded,
-              label: 'Update',
-            ),
-            SlidableAction(
-              onPressed: (BuildContext slidableContext) async {
-                final confirmed = await confirm(
-                  context,
-                  title: const Text('Confirm'),
-                  content: Text(
-                      'Bạn có chắc muốn xóa "${item.name}" khỏi danh sách?'),
-                  textOK: const Text(
-                    'Có',
-                    style: TextStyle(color: Colors.red),
-                  ),
-                  textCancel: const Text('Quay lại'),
-                );
-                print(confirmed);
-                if (confirmed) {
-                  final docItem = FirebaseFirestore.instance
-                      .collection('items')
-                      .doc(item.id);
-                  docItem.delete();
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      backgroundColor: Colors.red,
-                      content: Text(
-                          '"${item.name}" has been removed successfully!')));
-                }
-                print('pressedCancel');
-                return;
-              },
-              backgroundColor: const Color(0xFFFE4A49),
-              foregroundColor: Colors.white,
-              icon: Icons.delete,
-              label: 'Delete',
-            ),
-          ],
-        ),
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border(
-                  bottom: BorderSide(width: 1.0, color: Colors.grey.shade300))),
-          height: 140.0,
-          width: double.infinity,
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: Slidable(
+            key: const ValueKey(0),
+            endActionPane: ActionPane(
+              motion: const ScrollMotion(),
               children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        item.name,
-                        style: const TextStyle(
-                            fontSize: 16.0, color: Colors.black),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        softWrap: false,
+                SlidableAction(
+                  onPressed: (BuildContext context) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => UpdateItemPage(item: item)),
+                    );
+                  },
+                  backgroundColor: Color.fromARGB(255, 25, 211, 115),
+                  foregroundColor: Colors.white,
+                  icon: Icons.system_update_alt_rounded,
+                  label: 'Update',
+                ),
+                SlidableAction(
+                  onPressed: (BuildContext slidableContext) async {
+                    final confirmed = await confirm(
+                      context,
+                      title: const Text('Confirm'),
+                      content: Text(
+                          'Bạn có chắc muốn xóa "${item.name}" khỏi danh sách?'),
+                      textOK: const Text(
+                        'Có',
+                        style: TextStyle(color: Colors.red),
                       ),
-                      Text(
-                        item.detail,
-                        style: TextStyle(
-                          fontSize: 12.0,
-                          color: Colors.grey.shade600,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        softWrap: false,
-                      ),
-                      const Spacer(),
-                      Text(
-                        NumberFormat.currency(locale: 'vi')
-                            .format(item.minprice),
-                        style: const TextStyle(
-                            fontSize: 14.0, color: Colors.green),
-                      ),
-                      Wrap(
-                        crossAxisAlignment: WrapCrossAlignment.center,
+                      textCancel: const Text('Quay lại'),
+                    );
+                    print(confirmed);
+                    if (confirmed) {
+                      final docItem = FirebaseFirestore.instance
+                          .collection('items')
+                          .doc(item.id);
+                      docItem.delete();
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          backgroundColor: Colors.red,
+                          content: Text(
+                              '"${item.name}" has been removed successfully!')));
+                    }
+                    print('pressedCancel');
+                    return;
+                  },
+                  backgroundColor: const Color(0xFFFE4A49),
+                  foregroundColor: Colors.white,
+                  icon: Icons.delete,
+                  label: 'Delete',
+                ),
+              ],
+            ),
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border(
+                      bottom:
+                          BorderSide(width: 1.0, color: Colors.grey.shade300))),
+              height: 140.0,
+              width: double.infinity,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Icon(
-                            Icons.access_alarm_outlined,
-                            color: Colors.indigo,
+                          Text(
+                            item.name,
+                            style: const TextStyle(
+                                fontSize: 16.0, color: Colors.black),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            softWrap: false,
                           ),
                           Text(
-                            DateFormat('yyyy-MM-dd HH:mm:ss')
-                                .format(item.endtime),
+                            item.detail,
+                            style: TextStyle(
+                              fontSize: 12.0,
+                              color: Colors.grey.shade600,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            softWrap: false,
                           ),
+                          const Spacer(),
+                          Text(
+                            NumberFormat.currency(locale: 'vi')
+                                .format(item.minprice),
+                            style: const TextStyle(
+                                fontSize: 14.0, color: Colors.green),
+                          ),
+                          Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.access_alarm_outlined,
+                                color: Colors.indigo,
+                              ),
+                              Text(
+                                DateFormat('yyyy-MM-dd HH:mm:ss')
+                                    .format(item.endtime),
+                              ),
+                            ],
+                          )
                         ],
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 16.0),
-                if (item.imgLink != '')
-                  Container(
-                    width: 100.0,
-                    height: 200.0,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      image: DecorationImage(
-                        image: NetworkImage(item.imgLink),
-                        fit: BoxFit.cover,
                       ),
                     ),
-                  ),
-              ]),
+                    const SizedBox(width: 16.0),
+                    if (item.imgLink != '')
+                      Container(
+                        width: 100.0,
+                        height: 200.0,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          image: DecorationImage(
+                            image: NetworkImage(item.imgLink),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                  ]),
+            ),
+          ),
         ),
-      ),
+        if (item.ordered == item.totalorder)
+          Positioned(
+              right: 0,
+              child: Container(
+                width: 70,
+                color: Colors.green,
+                child: Center(
+                    child: Text(
+                  'Thành công',
+                  style: TextStyle(color: Colors.white, fontSize: 10),
+                )),
+              )),
+        if (item.ordered < item.totalorder)
+          Positioned(
+              right: 0,
+              child: Container(
+                width: 70,
+                color: Colors.red,
+                child: Center(
+                    child: Text(
+                  'Thất bại',
+                  style: TextStyle(color: Colors.white, fontSize: 10),
+                )),
+              ))
+      ],
     );
   }
 
