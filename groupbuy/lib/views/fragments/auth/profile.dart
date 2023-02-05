@@ -1,12 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:groupbuy/views/fragments/auth/update_info.dart';
-import '../../../controllers/handle_cart.dart';
 import '../../../controllers/handle_user.dart';
 import '../../../models/user.dart';
 import 'change_password.dart';

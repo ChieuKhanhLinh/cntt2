@@ -70,6 +70,15 @@ class _PersonalPageState extends State<PersonalPage> {
                 builder: (context, AsyncSnapshot snapshot) {
                   if (snapshot.hasError) {
                     print('${snapshot.error}');
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(75),
+                      child: Image.network(
+                            'https://firebasestorage.googleapis.com/v0/b/groupbuy-1ec04.appspot.com/o/image%2Fdefault_ava.jpg?alt=media&token=f0ed2a8b-952c-46bc-8256-825e13873d87',
+                        height: 99,
+                        width: 95,
+                        fit: BoxFit.cover,
+                      ),
+                    );
                   }
                   if (snapshot.hasData){
                     if (Auth().currentUser?.photoURL != null) {

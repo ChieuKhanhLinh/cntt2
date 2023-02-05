@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:groupbuy/models/items.dart';
+import 'package:groupbuy/views/fragments/check_out_page.dart';
 import '../../controllers/handle_cart.dart';
 import 'package:intl/intl.dart';
 
@@ -166,7 +167,11 @@ class _OrderPageState extends State<OrderPage> {
                       children: [
                         ElevatedButton(
                           onPressed:  controller.items.length == 0? null: () {
-                            // print(controller.items.keys.toList());
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CheckOut()));
+                            print(controller.items.length);
                           },
                           style: ElevatedButton.styleFrom(
                             onPrimary: Colors.white,
