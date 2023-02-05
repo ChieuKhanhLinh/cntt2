@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import '../../controllers/handle_auth.dart';
 import '../../controllers/handle_cart.dart';
 import '../../controllers/handle_user.dart';
+import '../../models/bills.dart';
 import '../../models/items.dart';
 import '../../models/user.dart';
 
@@ -326,6 +327,12 @@ class _CheckOutState extends State<CheckOut> {
     await docItem.update(json);
   }
 
+  Future createBill(Bill bill) async {
+    final docBill = FirebaseFirestore.instance.collection('bills').doc();
+    final json = bill.toJson();
+    await docBill.set(json);
+  }
+
   Future updateItemOrdered() async {
     final keyItemList = controller.items.keys.toList();
     String itemStatus ;
@@ -352,18 +359,18 @@ class _CheckOutState extends State<CheckOut> {
     final docBill = FirebaseFirestore.instance.collection('bills').doc();
     final DateTime now = DateTime.now();
     final String time = DateFormat('HH:mm dd/MM/yyyy').format(now).toString();
-    for (final item in keyItemList)  {
-      final itemData = {
-        'billId': docBill.id,
-        'userId': uid,
-        'itemId': item.id,
-        'status': 'Đang xử lý',
-        'quantity': controller.items[item],
-        'totalPrice': controller.total,
-        'createdAt': time,
-        'address': addressChange,
-      };
-      await docBill.set(itemData);
+    for (final a in keyItemList) {
+      final bill = Bill(
+        billId: docBill.id,
+        userId: uid,
+        itemId: a.id,
+        status: 'Đang xử lý',
+        quantity: controller.items[a],
+        totalPrice: controller.total,
+        createdAt: time,
+        address: addressChange,
+      );
+      createBill(bill);
     }
   }
 }
