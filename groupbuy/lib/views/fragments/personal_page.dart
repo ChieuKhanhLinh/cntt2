@@ -260,6 +260,20 @@ class _PersonalPageState extends State<PersonalPage> {
         Navigator.pushNamed(context, Profile.routeName);
         break;
 
+      case MenuItems.itemOption:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ItemOptionPage()),
+        );
+        break;
+
+      case MenuItems.itemExpired:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ItemExpiredPage()),
+        );
+        break;
+
       case MenuItems.itemLogin:
         Navigator.pushNamed(context, SignInPage.routeName);
         break;
@@ -296,11 +310,11 @@ class _PersonalPageState extends State<PersonalPage> {
           SizedBox(
             height: 9,
           ),
-          OptionItem(),
+          billInfo(),
           SizedBox(
             height: 9,
           ),
-          ExpiredItem(),
+          appInfo(),
           SizedBox(
             height: 9,
           ),
@@ -397,14 +411,9 @@ class _PersonalPageState extends State<PersonalPage> {
     );
   }
 
-  Widget OptionItem() {
+  Widget billInfo() {
     return GestureDetector(
-      onTap: (() {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const ItemOptionPage()),
-        );
-      }),
+      onTap: (() {}),
       child: Container(
         height: 69,
         padding: EdgeInsets.symmetric(horizontal: 12.0),
@@ -424,7 +433,7 @@ class _PersonalPageState extends State<PersonalPage> {
               width: 8,
             ),
             Text(
-              'Tùy chọn sản phẩm',
+              'Xem đơn hàng',
               style: GoogleFonts.inter(
                 textStyle: TextStyle(
                     color: Colors.black,
@@ -443,14 +452,9 @@ class _PersonalPageState extends State<PersonalPage> {
     );
   }
 
-  Widget ExpiredItem() {
+  Widget appInfo() {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const ItemExpiredPage()),
-        );
-      },
+      onTap: () {},
       child: Container(
         height: 69,
         padding: EdgeInsets.symmetric(horizontal: 12.0),
@@ -470,7 +474,7 @@ class _PersonalPageState extends State<PersonalPage> {
               width: 8,
             ),
             Text(
-              'Sản phẩm hết thời gian',
+              'Thông tin ứng dụng',
               style: GoogleFonts.inter(
                 textStyle: TextStyle(
                     color: Colors.black,
