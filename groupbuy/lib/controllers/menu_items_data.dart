@@ -17,8 +17,6 @@ class MenuItems {
 
   List<MoreItem> AdminMenu = [
     itemEdit,
-    itemProductOption,
-    itemExpiredProduct,
     itemLogout,
   ];
 
@@ -35,15 +33,5 @@ class MenuItems {
   static const itemEdit = MoreItem(
     text: 'Hồ sơ',
     icon: Icons.person_outline,
-  );
-
-  static const itemProductOption = MoreItem(
-    text: 'Tùy chọn sản phẩm',
-    icon: Icons.list_alt_rounded,
-  );
-
-  static const itemExpiredProduct = MoreItem(
-    text: 'Sản phẩm hết hạn',
-    icon: Icons.list_alt_rounded,
   );
 }

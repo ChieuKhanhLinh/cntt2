@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class ChangeAddress extends StatefulWidget {
-
   static String routeName = '/change-address';
   final String address;
 
@@ -12,25 +11,31 @@ class ChangeAddress extends StatefulWidget {
 }
 
 class _ChangeAddressState extends State<ChangeAddress> {
-
   final textController = TextEditingController();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     textController.text = widget.address;
   }
 
   late String newAddress;
 
-
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Color(0xFF40C800),
-          title: Text("Cập nhật thông tin cá nhân")),
+        elevation: 0,
+        backgroundColor: Color(0xFF40C800),
+        title: Text("Đổi địa chỉ giao hàng"),
+        automaticallyImplyLeading: false,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context, widget.address);
+          },
+          child: Icon(Icons.arrow_back),
+        ),
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -51,33 +56,29 @@ class _ChangeAddressState extends State<ChangeAddress> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-            decoration: BoxDecoration(
-              color: Colors.green,
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: SizedBox(
-              height: 46.0,
-              child: ElevatedButton(
-                onPressed: () {
+              margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+              decoration: BoxDecoration(
+                color: Colors.green,
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: SizedBox(
+                height: 46.0,
+                child: ElevatedButton(
+                  onPressed: () {
                     final newAddress = textController.text;
                     Navigator.pop(context, newAddress);
-                },
-                child: const Text(
-                  'Cập nhật địa chỉ',
-                  style: TextStyle(fontSize: 16.0, color: Colors.white),
+                  },
+                  child: const Text(
+                    'Cập nhật địa chỉ',
+                    style: TextStyle(fontSize: 16.0, color: Colors.white),
+                  ),
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Color(0xFF025B05))),
                 ),
-                style: ButtonStyle(
-                    backgroundColor:
-                    MaterialStateProperty.all(Color(0xFF025B05))),
-              ),
-            )
-          ),
+              )),
         ],
       ),
     );
   }
 }
-
-
-

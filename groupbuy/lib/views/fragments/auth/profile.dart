@@ -7,7 +7,6 @@ import '../../../models/user.dart';
 import 'change_password.dart';
 
 class Profile extends StatefulWidget {
-
   static String routeName = '/profile';
   const Profile({Key? key}) : super(key: key);
 
@@ -16,7 +15,6 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-
   final auth = FirebaseAuth.instance.currentUser!.uid;
 
   @override
@@ -37,39 +35,28 @@ class _ProfileState extends State<Profile> {
                 }
                 if (snapshot.hasData) {
                   final user = snapshot.data;
-                  return user == null? Center(child: Text('No User')): SingleChildScrollView(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 10,),
-                          SizedBox(
-                            height: 300,
-                            child: Image.network(user.urlImage, width: double.infinity, fit: BoxFit.contain),
-                          ),
-                          SizedBox(height: 10,),
-                          Text(
-                            'Tên người dùng',
-                            style: GoogleFonts.inter(
-                              textStyle: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16),
-                            ),
-                          ),
-                          SizedBox(height: 10,),
-                          Container(
-                            height: 40,
+                  return user == null
+                      ? Center(child: Text('No User'))
+                      : SingleChildScrollView(
+                          child: Container(
                             padding: EdgeInsets.symmetric(horizontal: 10.0),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(6.0),
-                            ),
-                            child: Row(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                SizedBox(
+                                  height: 300,
+                                  child: Image.network(user.urlImage,
+                                      width: double.infinity,
+                                      fit: BoxFit.contain),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
                                 Text(
-                                  user.name,
+                                  'Tên người dùng',
                                   style: GoogleFonts.inter(
                                     textStyle: TextStyle(
                                         color: Colors.black,
@@ -77,31 +64,36 @@ class _ProfileState extends State<Profile> {
                                         fontSize: 16),
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 16,),
-                          Text(
-                            'Số điện thoại',
-                            style: GoogleFonts.inter(
-                              textStyle: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16),
-                            ),
-                          ),
-                          SizedBox(height: 10,),
-                          Container(
-                            height: 40,
-                            padding: EdgeInsets.symmetric(horizontal: 10.0),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(6.0),
-                            ),
-                            child: Row(
-                              children: [
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  height: 40,
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 10.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(6.0),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        user.name,
+                                        style: GoogleFonts.inter(
+                                          textStyle: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 16),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 16,
+                                ),
                                 Text(
-                                  user.phone,
+                                  'Số điện thoại',
                                   style: GoogleFonts.inter(
                                     textStyle: TextStyle(
                                         color: Colors.black,
@@ -109,31 +101,36 @@ class _ProfileState extends State<Profile> {
                                         fontSize: 16),
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 16,),
-                          Text(
-                            'Địa chỉ email',
-                            style: GoogleFonts.inter(
-                              textStyle: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16),
-                            ),
-                          ),
-                          SizedBox(height: 10,),
-                          Container(
-                            height: 40,
-                            padding: EdgeInsets.symmetric(horizontal: 10.0),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(6.0),
-                            ),
-                            child: Row(
-                              children: [
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  height: 40,
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 10.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(6.0),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        user.phone,
+                                        style: GoogleFonts.inter(
+                                          textStyle: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 16),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 16,
+                                ),
                                 Text(
-                                  user.email,
+                                  'Địa chỉ email',
                                   style: GoogleFonts.inter(
                                     textStyle: TextStyle(
                                         color: Colors.black,
@@ -141,21 +138,79 @@ class _ProfileState extends State<Profile> {
                                         fontSize: 16),
                                   ),
                                 ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  height: 40,
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 10.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(6.0),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        user.email,
+                                        style: GoogleFonts.inter(
+                                          textStyle: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 16),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Text(
+                                  'Địa chỉ nhà',
+                                  style: GoogleFonts.inter(
+                                    textStyle: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 16),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  height: 40,
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 10.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(6.0),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        user.address,
+                                        style: GoogleFonts.inter(
+                                          textStyle: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 16),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 40,
+                                ),
+                                Row(
+                                  children: [
+                                    editButton(user),
+                                    Spacer(),
+                                    ChangePassword(),
+                                  ],
+                                )
                               ],
                             ),
                           ),
-                          SizedBox(height: 40,),
-                          Row(
-                            children: [
-                              editButton(user),
-                              Spacer(),
-                              ChangePassword(),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  );
+                        );
                 } else {
                   return const Center(child: CircularProgressIndicator());
                 }
@@ -170,28 +225,27 @@ class _ProfileState extends State<Profile> {
       margin: const EdgeInsets.only(bottom: 6, top: 6),
       height: 38,
       decoration:
-      BoxDecoration(borderRadius: BorderRadius.zero, color: Colors.white),
+          BoxDecoration(borderRadius: BorderRadius.zero, color: Colors.white),
       child: ElevatedButton(
         onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => UpdateInfo(user: user,)),
-              );
-        } ,
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => UpdateInfo(
+                      user: user,
+                    )),
+          );
+        },
         child: const Text(
           'Chỉnh sửa thông tin',
           style: TextStyle(fontSize: 16.0, color: Colors.white),
         ),
         style: ButtonStyle(
-            backgroundColor:
-            MaterialStateProperty.all(Color(0xFF025B05))),
+            backgroundColor: MaterialStateProperty.all(Color(0xFF025B05))),
       ),
     );
   }
 }
-
-
 
 class ChangePassword extends StatelessWidget {
   const ChangePassword({Key? key}) : super(key: key);
@@ -202,22 +256,20 @@ class ChangePassword extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 6, top: 6),
       height: 38,
       decoration:
-      BoxDecoration(borderRadius: BorderRadius.zero, color: Colors.white),
+          BoxDecoration(borderRadius: BorderRadius.zero, color: Colors.white),
       child: ElevatedButton(
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-                builder: (context) => ChangePass()),
+            MaterialPageRoute(builder: (context) => ChangePass()),
           );
-        } ,
+        },
         child: const Text(
-          'Đổi mật khât khẩu',
+          'Đổi mật khẩu',
           style: TextStyle(fontSize: 16.0, color: Colors.white),
         ),
         style: ButtonStyle(
-            backgroundColor:
-            MaterialStateProperty.all(Color(0xFF025B05))),
+            backgroundColor: MaterialStateProperty.all(Color(0xFF025B05))),
       ),
     );
   }

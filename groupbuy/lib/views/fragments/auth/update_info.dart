@@ -15,7 +15,6 @@ import '../../../controllers/handle_user.dart';
 import '../../../validate/validation.dart';
 
 class UpdateInfo extends StatefulWidget {
-
   static String routeName = '/updateInfo';
   final Users user;
 
@@ -26,11 +25,12 @@ class UpdateInfo extends StatefulWidget {
 }
 
 class _UpdateInfoState extends State<UpdateInfo> with CommonValidation {
-
   final controllerName = TextEditingController();
-  final controlerPhone = TextEditingController();
-  final controlerEmail = TextEditingController();
+  final controllerPhone = TextEditingController();
+  final controllerEmail = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  final controllerAddress = TextEditingController();
+
   late String userRole;
   late String confirmPassword;
   bool _passwordVisible = true;
@@ -44,12 +44,12 @@ class _UpdateInfoState extends State<UpdateInfo> with CommonValidation {
   void initState() {
     super.initState();
     controllerName.text = widget.user.name;
-    controlerPhone.text = widget.user.phone;
-    controlerEmail.text = widget.user.email;
+    controllerPhone.text = widget.user.phone;
+    controllerEmail.text = widget.user.email;
     userRole = widget.user.role;
     initialImgLink = widget.user.urlImage;
+    controllerAddress.text = widget.user.address;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -106,8 +106,7 @@ class _UpdateInfoState extends State<UpdateInfo> with CommonValidation {
                 (initialImgLink != null && initialImgLink != ''))
               ElevatedButton(
                 style: ButtonStyle(
-                  backgroundColor:
-                  MaterialStateProperty.all(Color(0xFFff0f0f)),
+                  backgroundColor: MaterialStateProperty.all(Color(0xFFff0f0f)),
                 ),
                 onPressed: () {
                   setState(() {
@@ -117,7 +116,9 @@ class _UpdateInfoState extends State<UpdateInfo> with CommonValidation {
                 },
                 child: Text('Xóa ảnh'),
               ),
-            SizedBox(height: 24,),
+            SizedBox(
+              height: 24,
+            ),
             TextFormField(
               decoration: decoration('Họ Tên'),
               controller: controllerName,
@@ -131,7 +132,7 @@ class _UpdateInfoState extends State<UpdateInfo> with CommonValidation {
             SizedBox(height: 24),
             TextFormField(
               decoration: decoration('Số điện thoại'),
-              controller: controlerPhone,
+              controller: controllerPhone,
               inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
               ],
@@ -140,7 +141,7 @@ class _UpdateInfoState extends State<UpdateInfo> with CommonValidation {
             SizedBox(height: 24),
             TextFormField(
               decoration: decoration('Email'),
-              controller: controlerEmail,
+              controller: controllerEmail,
               validator: validateLoginEmail,
             ),
             SizedBox(height: 24),
@@ -150,7 +151,9 @@ class _UpdateInfoState extends State<UpdateInfo> with CommonValidation {
                 border: OutlineInputBorder(),
                 suffixIcon: IconButton(
                   icon: Icon(
-                    _passwordVisible? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                    _passwordVisible
+                        ? Icons.visibility_outlined
+                        : Icons.visibility_off_outlined,
                   ),
                   onPressed: () {
                     setState(() {
@@ -168,6 +171,13 @@ class _UpdateInfoState extends State<UpdateInfo> with CommonValidation {
                 });
               },
             ),
+            SizedBox(height: 24),
+            TextFormField(
+              minLines: 1,
+              maxLines: 2,
+              decoration: decoration('Nhập địa chỉ nhà'),
+              controller: controllerAddress,
+            ),
             SizedBox(height: 32),
             SizedBox(
               height: 46.0,
@@ -179,17 +189,20 @@ class _UpdateInfoState extends State<UpdateInfo> with CommonValidation {
                       final imgLink = await uploadFile();
                       await HandleUser().updateUserEmail(
                           yourConfirmPassword: confirmPassword,
-                          newEmail: controlerEmail.text);
+                          newEmail: controllerEmail.text);
 
                       if (initialImgLink != null && initialImgLink != '') {
                         final user = Users(
-                          phone: controlerPhone.text,
-                          email: controlerEmail.text,
+                          phone: controllerPhone.text,
+                          email: controllerEmail.text,
                           name: controllerName.text,
                           role: userRole,
                           urlImage: initialImgLink ?? '',
+                          address: controllerAddress.text,
                         );
-                        HandleUser().updateUser(user,);
+                        HandleUser().updateUser(
+                          user,
+                        );
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             backgroundColor: Color(0xFF025B05),
                             content: Text(
@@ -199,13 +212,16 @@ class _UpdateInfoState extends State<UpdateInfo> with CommonValidation {
                       }
 
                       final user = Users(
-                        phone: controlerPhone.text,
-                        email: controlerEmail.text,
+                        phone: controllerPhone.text,
+                        email: controllerEmail.text,
                         name: controllerName.text,
                         role: userRole,
                         urlImage: imgLink,
+                        address: controllerAddress.text,
                       );
-                      HandleUser().updateUser(user,);
+                      HandleUser().updateUser(
+                        user,
+                      );
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           backgroundColor: Color(0xFF025B05),
                           content: Text(
@@ -228,14 +244,14 @@ class _UpdateInfoState extends State<UpdateInfo> with CommonValidation {
                       ));
                     }
                   }
-                } ,
+                },
                 child: const Text(
                   'Cập nhật thông tin',
                   style: TextStyle(fontSize: 16.0, color: Colors.white),
                 ),
                 style: ButtonStyle(
                     backgroundColor:
-                    MaterialStateProperty.all(Color(0xFF025B05))),
+                        MaterialStateProperty.all(Color(0xFF025B05))),
               ),
             )
           ],
@@ -245,9 +261,9 @@ class _UpdateInfoState extends State<UpdateInfo> with CommonValidation {
   }
 
   InputDecoration decoration(String label) => InputDecoration(
-    labelText: label,
-    border: OutlineInputBorder(),
-  );
+        labelText: label,
+        border: OutlineInputBorder(),
+      );
 
   Future addItem(Item item) async {
     final docItem = FirebaseFirestore.instance.collection('items').doc();
@@ -286,5 +302,3 @@ class _UpdateInfoState extends State<UpdateInfo> with CommonValidation {
     return urlDownload;
   }
 }
-
-

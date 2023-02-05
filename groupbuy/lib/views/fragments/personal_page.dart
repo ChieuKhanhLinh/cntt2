@@ -73,14 +73,14 @@ class _PersonalPageState extends State<PersonalPage> {
                     return ClipRRect(
                       borderRadius: BorderRadius.circular(75),
                       child: Image.network(
-                            'https://firebasestorage.googleapis.com/v0/b/groupbuy-1ec04.appspot.com/o/image%2Fdefault_ava.jpg?alt=media&token=f0ed2a8b-952c-46bc-8256-825e13873d87',
+                        'https://firebasestorage.googleapis.com/v0/b/groupbuy-1ec04.appspot.com/o/image%2Fdefault_ava.jpg?alt=media&token=f0ed2a8b-952c-46bc-8256-825e13873d87',
                         height: 99,
                         width: 95,
                         fit: BoxFit.cover,
                       ),
                     );
                   }
-                  if (snapshot.hasData){
+                  if (snapshot.hasData) {
                     if (Auth().currentUser?.photoURL != null) {
                       return ClipRRect(
                         borderRadius: BorderRadius.circular(75),
@@ -104,13 +104,13 @@ class _PersonalPageState extends State<PersonalPage> {
                         fit: BoxFit.cover,
                       ),
                     );
-                  }
-                  else {
-                    return const Center(child: CircularProgressIndicator(),);
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
                   }
                 },
-              )
-          ),
+              )),
           Positioned(
               top: (MediaQuery.of(context).size.height) * 0.15,
               left: 120,
@@ -231,8 +231,7 @@ class _PersonalPageState extends State<PersonalPage> {
                     ),
                   );
                 },
-              )
-          ),
+              )),
         ],
       ),
     );
@@ -259,20 +258,6 @@ class _PersonalPageState extends State<PersonalPage> {
     switch (item) {
       case MenuItems.itemEdit:
         Navigator.pushNamed(context, Profile.routeName);
-        break;
-
-      case MenuItems.itemProductOption:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const ItemOptionPage()),
-        );
-        break;
-
-      case MenuItems.itemExpiredProduct:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const ItemExpiredPage()),
-        );
         break;
 
       case MenuItems.itemLogin:
@@ -311,11 +296,11 @@ class _PersonalPageState extends State<PersonalPage> {
           SizedBox(
             height: 9,
           ),
-          Address(),
+          OptionItem(),
           SizedBox(
             height: 9,
           ),
-          Info(),
+          ExpiredItem(),
           SizedBox(
             height: 9,
           ),
@@ -412,78 +397,94 @@ class _PersonalPageState extends State<PersonalPage> {
     );
   }
 
-  Widget Address() {
-    return Container(
-      height: 69,
-      padding: EdgeInsets.symmetric(horizontal: 12.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.asset(
-            'assets/Order.png',
-            scale: 0.8,
-          ),
-          SizedBox(
-            width: 8,
-          ),
-          Text(
-            'Địa chỉ nhận hàng',
-            style: GoogleFonts.inter(
-              textStyle: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16),
+  Widget OptionItem() {
+    return GestureDetector(
+      onTap: (() {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ItemOptionPage()),
+        );
+      }),
+      child: Container(
+        height: 69,
+        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/Order.png',
+              scale: 0.8,
             ),
-          ),
-          Spacer(),
-          Icon(
-            Icons.navigate_next_rounded,
-            size: 30,
-          )
-        ],
+            SizedBox(
+              width: 8,
+            ),
+            Text(
+              'Tùy chọn sản phẩm',
+              style: GoogleFonts.inter(
+                textStyle: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16),
+              ),
+            ),
+            Spacer(),
+            Icon(
+              Icons.navigate_next_rounded,
+              size: 30,
+            )
+          ],
+        ),
       ),
     );
   }
 
-  Widget Info() {
-    return Container(
-      height: 69,
-      padding: EdgeInsets.symmetric(horizontal: 12.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.asset(
-            'assets/Paper.png',
-            scale: 0.8,
-          ),
-          SizedBox(
-            width: 8,
-          ),
-          Text(
-            'Thông tin đơn hàng đã đặt',
-            style: GoogleFonts.inter(
-              textStyle: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16),
+  Widget ExpiredItem() {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ItemExpiredPage()),
+        );
+      },
+      child: Container(
+        height: 69,
+        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/Paper.png',
+              scale: 0.8,
             ),
-          ),
-          Spacer(),
-          Icon(
-            Icons.navigate_next_rounded,
-            size: 30,
-          )
-        ],
+            SizedBox(
+              width: 8,
+            ),
+            Text(
+              'Sản phẩm hết thời gian',
+              style: GoogleFonts.inter(
+                textStyle: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16),
+              ),
+            ),
+            Spacer(),
+            Icon(
+              Icons.navigate_next_rounded,
+              size: 30,
+            )
+          ],
+        ),
       ),
     );
   }
