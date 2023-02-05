@@ -124,7 +124,9 @@ class _EditItemPageState extends State<EditItemPage> {
               SizedBox(height: 24),
               TextFormField(
                 minLines: 6,
-                maxLines: 12,
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
+                textInputAction: TextInputAction.newline,
                 decoration: decoration('Chi tiết sản phẩm'),
                 controller: controllerDetail,
               ),

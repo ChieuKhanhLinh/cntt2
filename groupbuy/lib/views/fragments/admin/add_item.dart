@@ -98,7 +98,9 @@ class _AddItemPageState extends State<AddItemPage> {
             SizedBox(height: 24),
             TextFormField(
                 minLines: 6,
-                maxLines: 10,
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
+                textInputAction: TextInputAction.newline,
                 decoration: decoration('Chi tiết sản phẩm'),
                 controller: controllerDetail),
             SizedBox(height: 24),
