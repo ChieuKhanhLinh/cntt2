@@ -195,80 +195,81 @@ class _DetailState extends State<Detail> {
                   ])
                 ],
               ),
-              Positioned(
-                bottom: 0,
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.white,
-                  height: 90,
-                  padding: EdgeInsets.all(20),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            if (itemCount > 1) {
-                              setState(() {
-                                itemCount--;
-                              });
-                            }
-                          },
-                          child: FaIcon(
-                            FontAwesomeIcons.minus,
-                            size: 10,
+              if (widget.item.ordered < widget.item.totalorder)
+                Positioned(
+                  bottom: 0,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.white,
+                    height: 90,
+                    padding: EdgeInsets.all(20),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              if (itemCount > 1) {
+                                setState(() {
+                                  itemCount--;
+                                });
+                              }
+                            },
+                            child: FaIcon(
+                              FontAwesomeIcons.minus,
+                              size: 10,
+                            ),
+                            style: ElevatedButton.styleFrom(
+                                onPrimary: Colors.green.shade900,
+                                primary: Colors.lightGreen.shade50,
+                                onSurface: Colors.grey.shade600,
+                                minimumSize: Size(30, 30),
+                                elevation: 0.0),
                           ),
-                          style: ElevatedButton.styleFrom(
-                              onPrimary: Colors.green.shade900,
-                              primary: Colors.lightGreen.shade50,
-                              onSurface: Colors.grey.shade600,
-                              minimumSize: Size(30, 30),
-                              elevation: 0.0),
-                        ),
-                        Text(
-                          itemCount.toString(),
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              itemCount++;
-                            });
-                          },
-                          child: FaIcon(
-                            FontAwesomeIcons.plus,
-                            size: 10,
-                          ),
-                          style: ElevatedButton.styleFrom(
-                              onPrimary: Colors.green.shade900,
-                              primary: Colors.lightGreen.shade50,
-                              minimumSize: Size(30, 30),
-                              onSurface: Colors.grey.shade600,
-                              elevation: 0.0),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            if (auth.currentUser != null) {
-                              cartController.addItems(widget.item, itemCount);
-                              // print(widget.item);
-                            } else {
-                              // Navigator.pushNamed(context, SignInPage.routeName);
-                              Get.off(SignInPage());
-                            }
-                          },
-                          child: Text(
-                            'Thêm vào giỏ',
+                          Text(
+                            itemCount.toString(),
                             style: TextStyle(fontSize: 16),
                           ),
-                          style: ElevatedButton.styleFrom(
-                            onPrimary: Colors.white,
-                            primary: Colors.green.shade900,
-                            minimumSize: Size(180, 50),
-                            onSurface: Colors.grey.shade600,
+                          ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                itemCount++;
+                              });
+                            },
+                            child: FaIcon(
+                              FontAwesomeIcons.plus,
+                              size: 10,
+                            ),
+                            style: ElevatedButton.styleFrom(
+                                onPrimary: Colors.green.shade900,
+                                primary: Colors.lightGreen.shade50,
+                                minimumSize: Size(30, 30),
+                                onSurface: Colors.grey.shade600,
+                                elevation: 0.0),
                           ),
-                        ),
-                      ]),
+                          ElevatedButton(
+                            onPressed: () {
+                              if (auth.currentUser != null) {
+                                cartController.addItems(widget.item, itemCount);
+                                // print(widget.item);
+                              } else {
+                                // Navigator.pushNamed(context, SignInPage.routeName);
+                                Get.off(SignInPage());
+                              }
+                            },
+                            child: Text(
+                              'Thêm vào giỏ',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              onPrimary: Colors.white,
+                              primary: Colors.green.shade900,
+                              minimumSize: Size(180, 50),
+                              onSurface: Colors.grey.shade600,
+                            ),
+                          ),
+                        ]),
+                  ),
                 ),
-              ),
               Positioned(
                   top: 30,
                   child: ElevatedButton(
