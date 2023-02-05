@@ -168,7 +168,6 @@ class _OrderPageState extends State<OrderPage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => CheckOut()));
-                                  print(controller.items.length);
                                 },
                           style: ElevatedButton.styleFrom(
                             onPrimary: Colors.white,
@@ -193,6 +192,7 @@ class _OrderPageState extends State<OrderPage> {
                       ]),
                 ),
               ),
+
             ],
           )),
     );

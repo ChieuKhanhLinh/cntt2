@@ -146,6 +146,13 @@ class _UpdateInfoState extends State<UpdateInfo> with CommonValidation {
             ),
             SizedBox(height: 24),
             TextFormField(
+              minLines: 1,
+              maxLines: 2,
+              decoration: decoration('Nhập địa chỉ nhà'),
+              controller: controllerAddress,
+            ),
+            SizedBox(height: 24),
+            TextFormField(
               decoration: InputDecoration(
                 labelText: 'Xác nhận mật khẩu ',
                 border: OutlineInputBorder(),
@@ -170,13 +177,6 @@ class _UpdateInfoState extends State<UpdateInfo> with CommonValidation {
                   confirmPassword = value.trim();
                 });
               },
-            ),
-            SizedBox(height: 24),
-            TextFormField(
-              minLines: 1,
-              maxLines: 2,
-              decoration: decoration('Nhập địa chỉ nhà'),
-              controller: controllerAddress,
             ),
             SizedBox(height: 32),
             SizedBox(

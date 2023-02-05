@@ -4,54 +4,17 @@ import 'package:groupbuy/models/items.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-// class CartController  {
-//   final auth = FirebaseAuth.instance;
-//
-//   //Set Cart Info from database
-//   Future cartInfo({
-//     Item? item,
-//     Int? quantity,
-//   }) async {
-//     String uid = FirebaseAuth.instance.currentUser!.uid;
-//     FirebaseFirestore.instance
-//         .collection('carts')
-//         .doc(auth.currentUser!.uid)
-//         .set({
-//       'name': username,
-//       'phone': phone,
-//       'email': email,
-//       'role': 'user',
-//     });
-//   }
-
 class CartController extends GetxController {
   final _items = {}.obs;
   final auth = FirebaseAuth.instance;
   late bool checkList = false;
 
   void addItems(Item item, int quantity) {
-    // print(item.id);
-    //
-    // final currentList = _items.keys.toList();
-    // print(currentList);
-    // print(currentList.length);
-    // if (currentList.length!=0) {
-    //   for (final a in currentList) {
-    //     if (a.id == item.id ) {
-    //       checkList = true;
-    //       break;
-    //     }
-    //   }
-    // }
-    // print(checkList);
-
-    if (_items.containsKey(item)) {
+    if (_items != null  && _items.containsKey(item)) {
       _items[item] += quantity;
-      _items[item.ordered] += 1;
     } else {
       _items[item] = quantity;
     }
-    print(_items);
 
     Get.snackbar(
       'Thêm vào giỏ hàng',
@@ -61,10 +24,6 @@ class CartController extends GetxController {
       duration: const Duration(seconds: 1),
     );
     checkList = false;
-
-    //Set user Info from database
-    // final uid = FirebaseAuth.instance.currentUser!.uid;
-    // final cartInfo = FirebaseFirestore.instance.collection('carts').doc();
   }
 
   void removeItem(Item item) {
@@ -78,7 +37,6 @@ class CartController extends GetxController {
   void removeOneItem(Item item) {
     if (_items.containsKey(item)) {
       _items.removeWhere((key, value) => key == item);
-      _items[item.ordered] -= 1;
     }
   }
 

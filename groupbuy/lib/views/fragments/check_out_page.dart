@@ -66,8 +66,18 @@ class _CheckOutState extends State<CheckOut> {
                   if (snapshot.hasError) {
                     print('${snapshot.error}');
                     return GestureDetector(
-                      onTap: () {
-
+                      onTap: () async {
+                        final finalAddress = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ChangeAddress (
+                              address: addressChange,
+                            ),
+                          ),
+                        );
+                        setState(() {
+                          addressChange = finalAddress;
+                        });
                       },
                       child: Container(
                         color: Colors.white,
@@ -83,7 +93,7 @@ class _CheckOutState extends State<CheckOut> {
                             ),
                           ),
                           subtitle: Text(
-                            'Bạn chưa nhập địa chỉ nào cả',
+                            addressChange,
                             style: GoogleFonts.inter(
                               textStyle: TextStyle(
                                   color: Color(0xFF654C24),
@@ -146,7 +156,155 @@ class _CheckOutState extends State<CheckOut> {
                   }
                 },
               ),
+              SizedBox(height: 12,),
+              Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border(
+                        bottom: BorderSide(
+                            width: 1.0, color: Colors.grey.shade300))),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Text(
+                        'Đơn hàng của bạn',
+                        style:
+                        TextStyle(fontSize: 15, color: Colors.blueGrey),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {},
+                      child: ListView.separated(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: controller.items.length,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index) => Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                'x ${controller.items.values.toList()[index].toString()}',
+                                style: TextStyle(
+                                    color: Colors.blueGrey,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  controller.items.keys.toList()[index].name,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  softWrap: false,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                NumberFormat.currency(locale: 'vi').format(
+                                    controller.itemSubtotal.toList()[index]),
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    overflow: TextOverflow.ellipsis),
+                                maxLines: 1,
+                              ),
+                              ElevatedButton(
+                                child: Icon(
+                                  Icons.clear,
+                                  size: 10,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    controller.removeOneItem(controller
+                                        .items.keys
+                                        .toList()[index]);
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    onPrimary: Colors.white,
+                                    primary: Colors.black54.withOpacity(0.3),
+                                    shape: CircleBorder(),
+                                    minimumSize: Size(20, 20),
+                                    elevation: 0.0),
+                              )
+                            ],
+                          ),
+                        ),
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const Divider();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
+          ),
+          Positioned(
+            bottom: 0,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              color: Colors.white,
+              height: 90,
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Tổng cộng',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        SizedBox(height: 10,),
+                        Text(
+                          NumberFormat.currency(locale: 'vi')
+                              .format(controller.total),
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    ElevatedButton(
+                      onPressed: controller.items.length == 0 || addressChange.compareTo('') ==0
+                          ? () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                                backgroundColor: Colors.red,
+                                content: Text('Chưa nhập địa chỉ hoặc bạn đã xóa hết đơn hàng trong giỏ. Vui lòng thử lại')));
+                      }
+                          : () {
+                        fetch();
+                        updateItemOrdered();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                                backgroundColor: Colors.green,
+                                content: Text('Tham gia nhóm thành công!')));
+                        controller.items.clear();
+                        Navigator.popAndPushNamed(
+                            context, '/');
+                      },
+                      child: const Text(
+                        'Đặt hàng',
+                        style: TextStyle(fontSize: 16.0, color: Colors.white),
+                      ),
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(Color(0xFF025B05))),
+                    ),
+                  ]),
+            ),
           ),
         ],
       )
@@ -160,5 +318,52 @@ class _CheckOutState extends State<CheckOut> {
       return documentSnapshot.data();
     }
     return null;
+  }
+
+  Future updateItem(Item item) async {
+    final docItem = FirebaseFirestore.instance.collection('items').doc(item.id);
+    final json = item.toJson();
+    await docItem.update(json);
+  }
+
+  Future updateItemOrdered() async {
+    final keyItemList = controller.items.keys.toList();
+    String itemStatus ;
+    for (final a in keyItemList) {
+      a.ordered + 1 == a.totalorder
+          ? itemStatus = 'Thành công'
+          : itemStatus = 'Đang diễn ra';
+      final item = Item(
+        id: a.id,
+        name: a.name,
+        detail: a.detail,
+        initialprice: a.initialprice,
+        minprice: a.minprice,
+        totalorder: a.totalorder,
+        ordered : a.ordered + 1,
+        endtime: a.endtime,
+        imgLink: a.imgLink ,
+        status: itemStatus,
+      );
+      updateItem(item);
+    }
+
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final docBill = FirebaseFirestore.instance.collection('bills').doc();
+    final DateTime now = DateTime.now();
+    final String time = DateFormat('HH:mm dd/MM/yyyy').format(now).toString();
+    for (final item in keyItemList)  {
+      final itemData = {
+        'billId': docBill.id,
+        'userId': uid,
+        'itemId': item.id,
+        'status': 'Đang xử lý',
+        'quantity': controller.items[item],
+        'totalPrice': controller.total,
+        'createdAt': time,
+        'address': addressChange,
+      };
+      await docBill.set(itemData);
+    }
   }
 }
