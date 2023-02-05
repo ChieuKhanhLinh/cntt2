@@ -9,7 +9,7 @@ class HandleUser {
   Future<Users?> readUserInfo() async {
     final docUser = FirebaseFirestore.instance
         .collection('users')
-        .doc(auth.currentUser?.uid);
+        .doc(auth.currentUser!.uid);
     final snapshot = await docUser.get();
     if (snapshot.exists) {
       return Users.fromJson(snapshot.data()!);
