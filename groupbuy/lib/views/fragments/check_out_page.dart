@@ -355,14 +355,11 @@ class _CheckOutState extends State<CheckOut> {
       updateItem(item);
     }
 
-    final uid = FirebaseAuth.instance.currentUser!.uid;
-    final docBill = FirebaseFirestore.instance.collection('bills').doc();
     final DateTime now = DateTime.now();
     final String time = DateFormat('HH:mm dd/MM/yyyy').format(now).toString();
     for (final a in keyItemList) {
       final bill = Bill(
-        billId: docBill.id,
-        userId: uid,
+        userId: FirebaseAuth.instance.currentUser!.uid,
         itemId: a.id,
         status: 'Đang xử lý',
         quantity: controller.items[a],
