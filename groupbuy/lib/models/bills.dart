@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Bill {
+  String billId;
   final String userId;
   final String itemId;
   final String status;
@@ -10,6 +11,7 @@ class Bill {
   final String address;
 
   Bill({
+    this.billId = '',
     this.userId = '',
     this.itemId = '',
     this.status = '',
@@ -21,11 +23,12 @@ class Bill {
 
   @override
   String toString() {
-    return 'Bill( userId: $userId, itemId: $itemId, status: $status, quantity: $quantity, totalPrice: $totalPrice, createdAt: $createdAt, address: $address,)';
+    return 'Bill( billId: $billId, userId: $userId, itemId: $itemId, status: $status, quantity: $quantity, totalPrice: $totalPrice, createdAt: $createdAt, address: $address,)';
   }
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
+      'billId': billId,
       'userId': userId,
       'itemId': itemId,
       'status': status,
@@ -37,6 +40,7 @@ class Bill {
   }
 
   static Bill fromJson(Map<String, dynamic> json) => Bill(
+    billId: json['billId'],
     userId: json['userId'],
     itemId: json['itemId'],
     status: json['status'],

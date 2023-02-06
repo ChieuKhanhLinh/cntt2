@@ -329,6 +329,7 @@ class _CheckOutState extends State<CheckOut> {
 
   Future createBill(Bill bill) async {
     final docBill = FirebaseFirestore.instance.collection('bills').doc();
+    bill.billId = docBill.id;
     final json = bill.toJson();
     await docBill.set(json);
   }
@@ -354,7 +355,6 @@ class _CheckOutState extends State<CheckOut> {
       );
       updateItem(item);
     }
-
     final DateTime now = DateTime.now();
     final String time = DateFormat('HH:mm dd/MM/yyyy').format(now).toString();
     for (final a in keyItemList) {
