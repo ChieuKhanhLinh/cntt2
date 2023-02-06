@@ -38,19 +38,15 @@ class _HomePageState extends State<HomePage> {
         SizedBox(
           height: 30,
         ),
-        Row(
-          children: [
-            Text(
-              'Phiên hết hạn sau:',
-              style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF013003)),
-            ),
-            SizedBox(
-              width: 30,
-            ),
-          ],
+        Text(
+          'Phiên hết hạn sau:',
+          style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF013003)),
+        ),
+        SizedBox(
+          width: 30,
         ),
         SizedBox(
           height: 30,

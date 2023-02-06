@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuy/views/fragments/admin/expired_item.dart';
+import 'package:groupbuy/views/fragments/admin/manage_bill.dart';
 import 'package:groupbuy/views/fragments/auth/change_password.dart';
 import 'package:groupbuy/views/fragments/auth/profile.dart';
 import 'package:groupbuy/views/fragments/check_out_page.dart';
@@ -34,9 +36,11 @@ class GroupbuyApp extends StatelessWidget {
         '/signUpPage': (context) => const SignUpPage(),
         '/forgotPassword': (context) => const ForgotPasswordPage(),
         '/itemOptionPage': (context) => const ItemOptionPage(),
-        '/profile' : (context) => const Profile(),
-        '/changePass' : (context) => const ChangePass(),
-        '/check-out' : (context) => const CheckOut(),
+        '/expiredItem': (context) => const ItemExpiredPage(),
+        '/manageBill': (context) => const ManageBillPage(),
+        '/profile': (context) => const Profile(),
+        '/changePass': (context) => const ChangePass(),
+        '/check-out': (context) => const CheckOut(),
       },
       initialRoute: '/',
     );

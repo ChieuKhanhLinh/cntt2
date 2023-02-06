@@ -43,7 +43,7 @@ class _ChangeAddressState extends State<ChangeAddress> {
             margin: EdgeInsets.all(16),
             child: TextFormField(
               decoration: InputDecoration(
-                labelText: 'Cập nhật địa chỉ',
+                labelText: 'Cập nhật địa chỉ - Số nhà - Tên đường - Quận huyện',
                 border: OutlineInputBorder(),
               ),
               controller: textController,

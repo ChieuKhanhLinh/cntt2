@@ -247,7 +247,7 @@ class _UpdateItemPageState extends State<UpdateItemPage> {
                         updateItem(item);
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text(
-                                '"${controllerName.text}" đã sửa thành công!')));
+                                '"${controllerName.text}" đã cập nhật thành công!')));
                         Navigator.of(context).pop();
                         return;
                       }

@@ -10,10 +10,12 @@ import 'package:groupbuy/views/fragments/auth/sign_in_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:groupbuy/controllers/handle_auth.dart';
 import 'package:groupbuy/views/fragments/auth/update_info.dart';
+import 'package:groupbuy/views/fragments/bill_info.dart';
 
 import '../../models/user.dart';
 import 'admin/expired_item.dart';
 import 'admin/item_option.dart';
+import 'admin/manage_bill.dart';
 
 class PersonalPage extends StatefulWidget {
   PersonalPage({Key? key}) : super(key: key);
@@ -74,7 +76,7 @@ class _PersonalPageState extends State<PersonalPage> {
                       borderRadius: BorderRadius.circular(75),
                       child: Image.network(
                         Auth().currentUser?.photoURL ??
-                        'https://firebasestorage.googleapis.com/v0/b/groupbuy-1ec04.appspot.com/o/image%2Fdefault_ava.jpg?alt=media&token=f0ed2a8b-952c-46bc-8256-825e13873d87',
+                            'https://firebasestorage.googleapis.com/v0/b/groupbuy-1ec04.appspot.com/o/image%2Fdefault_ava.jpg?alt=media&token=f0ed2a8b-952c-46bc-8256-825e13873d87',
                         height: 99,
                         width: 95,
                         fit: BoxFit.cover,
@@ -311,7 +313,44 @@ class _PersonalPageState extends State<PersonalPage> {
           SizedBox(
             height: 9,
           ),
-          billInfo(),
+          if (auth.currentUser != null)
+            StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(auth.currentUser!.uid)
+                  .snapshots(),
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.hasError) {
+                  return Container();
+                }
+                if (snapshot.hasData && snapshot.data != null) {
+                  if (snapshot.data['role'] == 'user') {
+                    return billInfo();
+                  }
+                  return Container();
+                }
+                return Container();
+              },
+            ),
+          if (auth.currentUser != null)
+            StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(auth.currentUser!.uid)
+                  .snapshots(),
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.hasError) {
+                  return Container();
+                }
+                if (snapshot.hasData && snapshot.data != null) {
+                  if (snapshot.data['role'] == 'admin') {
+                    return manageBill();
+                  }
+                  return Container();
+                }
+                return Container();
+              },
+            ),
           SizedBox(
             height: 9,
           ),
@@ -414,7 +453,12 @@ class _PersonalPageState extends State<PersonalPage> {
 
   Widget billInfo() {
     return GestureDetector(
-      onTap: (() {}),
+      onTap: (() {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => BillInfoPage()),
+        );
+      }),
       child: Container(
         height: 69,
         padding: EdgeInsets.symmetric(horizontal: 12.0),
@@ -435,6 +479,52 @@ class _PersonalPageState extends State<PersonalPage> {
             ),
             Text(
               'Xem đơn hàng',
+              style: GoogleFonts.inter(
+                textStyle: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16),
+              ),
+            ),
+            Spacer(),
+            Icon(
+              Icons.navigate_next_rounded,
+              size: 30,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget manageBill() {
+    return GestureDetector(
+      onTap: (() {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ManageBillPage()),
+        );
+      }),
+      child: Container(
+        height: 69,
+        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/Order.png',
+              scale: 0.8,
+            ),
+            SizedBox(
+              width: 8,
+            ),
+            Text(
+              'Quản lý đơn hàng',
               style: GoogleFonts.inter(
                 textStyle: TextStyle(
                     color: Colors.black,

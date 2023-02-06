@@ -112,7 +112,7 @@ class _DetailState extends State<Detail> {
                                 Expanded(
                                   child: Text(
                                     widget.item.ordered.toString() +
-                                        ' sản phẩm được đặt mua',
+                                        ' người tham gia nhóm',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 14,
@@ -171,7 +171,7 @@ class _DetailState extends State<Detail> {
                                       (widget.item.totalorder -
                                               widget.item.ordered)
                                           .toString() +
-                                      ' đơn hàng nữa để đạt giá thấp nhất',
+                                      ' người tham gia nữa để đạt giá thấp nhất',
                                   style: TextStyle(
                                       fontSize: 12, color: Colors.black))
                             ])),

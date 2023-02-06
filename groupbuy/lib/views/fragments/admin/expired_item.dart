@@ -12,7 +12,7 @@ import 'edit_item.dart';
 
 class ItemExpiredPage extends StatefulWidget {
   const ItemExpiredPage({Key? key}) : super(key: key);
-  static const String routeName = '/itemOptionPage';
+  static const String routeName = '/expiredItem';
 
   @override
   State<ItemExpiredPage> createState() => _ItemExpiredPageState();
