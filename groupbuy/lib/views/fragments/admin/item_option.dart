@@ -196,7 +196,7 @@ class _ItemOptionPageState extends State<ItemOptionPage> {
                                 fontSize: 14.0, color: Colors.green),
                           ),
                           Wrap(
-                            crossAxisAlignment: WrapCrossAlignment.center,
+                            crossAxisAlignment: WrapCrossAlignment.start,
                             children: [
                               const Icon(
                                 Icons.access_alarm_outlined,

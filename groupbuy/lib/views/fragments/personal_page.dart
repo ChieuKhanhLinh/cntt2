@@ -11,6 +11,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:groupbuy/controllers/handle_auth.dart';
 import 'package:groupbuy/views/fragments/auth/update_info.dart';
 import 'package:groupbuy/views/fragments/bill_info.dart';
+import 'package:groupbuy/views/fragments/status_bill_button/delivery_btn.dart';
+import 'package:groupbuy/views/fragments/status_bill_button/package_btn.dart';
+import 'package:groupbuy/views/fragments/status_bill_button/receive_btn.dart';
+import 'package:groupbuy/views/fragments/status_bill_button/waiting_progess_btn.dart';
 
 import '../../models/user.dart';
 import 'admin/expired_item.dart';
@@ -309,7 +313,25 @@ class _PersonalPageState extends State<PersonalPage> {
           SizedBox(
             height: 12,
           ),
-          OrderStatus(),
+          if (auth.currentUser != null)
+            StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(auth.currentUser!.uid)
+                  .snapshots(),
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.hasError) {
+                  return Container();
+                }
+                if (snapshot.hasData && snapshot.data != null) {
+                  if (snapshot.data['role'] == 'user') {
+                    return OrderStatus();
+                  }
+                  return Container();
+                }
+                return Container();
+              },
+            ),
           SizedBox(
             height: 9,
           ),
@@ -377,7 +399,13 @@ class _PersonalPageState extends State<PersonalPage> {
           Column(
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => WaitingProgressBillPage()),
+                  );
+                },
                 icon: Image.asset('assets/choxuly.png'),
                 iconSize: 30,
               ),
@@ -395,7 +423,12 @@ class _PersonalPageState extends State<PersonalPage> {
           Column(
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PakageBillPage()),
+                  );
+                },
                 icon: Image.asset('assets/donggoi.png'),
                 iconSize: 30,
               ),
@@ -413,7 +446,12 @@ class _PersonalPageState extends State<PersonalPage> {
           Column(
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DeliveryBillPage()),
+                  );
+                },
                 icon: Image.asset('assets/vanchuyen.png'),
                 iconSize: 30,
               ),
@@ -431,7 +469,12 @@ class _PersonalPageState extends State<PersonalPage> {
           Column(
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ReceiveBillPage()),
+                  );
+                },
                 icon: Image.asset('assets/nhanhang.png'),
                 iconSize: 30,
               ),

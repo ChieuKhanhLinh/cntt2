@@ -184,6 +184,7 @@ class _DetailState extends State<Detail> {
                     ),
                     Container(
                       color: Colors.white,
+                      width: MediaQuery.of(context).size.width,
                       padding: EdgeInsets.all(10),
                       margin: EdgeInsets.only(bottom: 100),
                       child: Text(

@@ -3,6 +3,7 @@ import 'package:groupbuy/views/fragments/admin/expired_item.dart';
 import 'package:groupbuy/views/fragments/admin/manage_bill.dart';
 import 'package:groupbuy/views/fragments/auth/change_password.dart';
 import 'package:groupbuy/views/fragments/auth/profile.dart';
+import 'package:groupbuy/views/fragments/bill_info.dart';
 import 'package:groupbuy/views/fragments/check_out_page.dart';
 import 'package:groupbuy/views/navigation_bar.dart';
 
@@ -41,6 +42,7 @@ class GroupbuyApp extends StatelessWidget {
         '/profile': (context) => const Profile(),
         '/changePass': (context) => const ChangePass(),
         '/check-out': (context) => const CheckOut(),
+        '/billInfo': (context) => const BillInfoPage(),
       },
       initialRoute: '/',
     );

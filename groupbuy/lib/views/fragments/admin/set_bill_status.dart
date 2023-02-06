@@ -72,6 +72,7 @@ class _SetBillStatusPageState extends State<SetBillStatusPage> {
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: TextField(
             controller: controllerBillStatus,
+            readOnly: true,
             decoration: InputDecoration(
               border: InputBorder.none,
               suffixIcon: PopupMenuButton<String>(
@@ -114,6 +115,9 @@ class _SetBillStatusPageState extends State<SetBillStatusPage> {
                     totalPrice: widget.bill['totalPrice'],
                     createdAt: widget.bill['createdAt'],
                     address: widget.bill['address'],
+                    itemImg: widget.bill['itemImg'],
+                    itemMinprice: widget.bill['itemMinprice'],
+                    itemName: widget.bill['itemName'],
                     status: controllerBillStatus.text);
                 updateStatus(bill);
                 ScaffoldMessenger.of(context).showSnackBar(

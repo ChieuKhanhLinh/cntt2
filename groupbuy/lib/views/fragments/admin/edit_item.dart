@@ -207,6 +207,7 @@ class _EditItemPageState extends State<EditItemPage> {
               SizedBox(height: 24),
               if (widget.item.ordered == widget.item.totalorder)
                 TextField(
+                  readOnly: true,
                   controller: controllerStatus,
                   decoration: InputDecoration(
                     suffixIcon: PopupMenuButton<String>(

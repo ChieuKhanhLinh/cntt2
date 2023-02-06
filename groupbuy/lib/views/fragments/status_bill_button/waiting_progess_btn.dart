@@ -2,17 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../../controllers/handle_auth.dart';
-import 'item_detail.dart';
+import '../../../controllers/handle_auth.dart';
 
-class BillInfoPage extends StatefulWidget {
-  const BillInfoPage({Key? key}) : super(key: key);
+class WaitingProgressBillPage extends StatefulWidget {
+  const WaitingProgressBillPage({Key? key}) : super(key: key);
   static const String routeName = '/billInfo';
   @override
-  State<BillInfoPage> createState() => _BillInfoPageState();
+  State<WaitingProgressBillPage> createState() =>
+      _WaitingProgressBillPageState();
 }
 
-class _BillInfoPageState extends State<BillInfoPage> {
+class _WaitingProgressBillPageState extends State<WaitingProgressBillPage> {
   final auth = FirebaseAuth.instance;
   final User? user = Auth().currentUser;
 
@@ -22,7 +22,7 @@ class _BillInfoPageState extends State<BillInfoPage> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Color(0xFF40C800),
-          title: Text('Thông tin đơn hàng đã đặt'),
+          title: Text('Đơn hàng đang xử lý'),
         ),
         body: StreamBuilder<List<Map<String, dynamic>>>(
             stream: readCustomerBuild(),
@@ -43,6 +43,7 @@ class _BillInfoPageState extends State<BillInfoPage> {
 
   Widget _buildItem(Map<String, dynamic> bill) {
     return Container(
+      margin: EdgeInsets.only(top: 10),
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
           color: Colors.white,
@@ -138,6 +139,7 @@ class _BillInfoPageState extends State<BillInfoPage> {
     final bills = FirebaseFirestore.instance
         .collection('bills')
         .where('userId', isEqualTo: auth.currentUser!.uid)
+        .where('status', isEqualTo: 'Đang xử lý')
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
