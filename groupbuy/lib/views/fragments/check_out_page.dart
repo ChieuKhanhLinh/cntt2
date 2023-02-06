@@ -382,6 +382,9 @@ class _CheckOutState extends State<CheckOut> {
       final bill = Bill(
         userId: FirebaseAuth.instance.currentUser!.uid,
         itemId: a.id,
+        itemName: a.name,
+        itemMinprice: a.minprice,
+        itemImg: a.imgLink,
         status: 'Đang xử lý',
         quantity: controller.items[a],
         totalPrice: controller.total,

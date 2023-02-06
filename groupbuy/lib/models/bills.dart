@@ -4,6 +4,9 @@ class Bill {
   String billId;
   final String userId;
   final String itemId;
+  final String itemName;
+  final int itemMinprice;
+  final String itemImg;
   final String status;
   final int quantity;
   final int totalPrice;
@@ -14,6 +17,9 @@ class Bill {
     this.billId = '',
     this.userId = '',
     this.itemId = '',
+    this.itemName = '',
+    this.itemMinprice = 0,
+    this.itemImg = '',
     this.status = '',
     this.quantity = 0,
     this.totalPrice = 0,
@@ -23,7 +29,7 @@ class Bill {
 
   @override
   String toString() {
-    return 'Bill( billId: $billId, userId: $userId, itemId: $itemId, status: $status, quantity: $quantity, totalPrice: $totalPrice, createdAt: $createdAt, address: $address,)';
+    return 'Bill( billId: $billId, userId: $userId, itemId: $itemId, itemName: $itemName, itemMinprice: $itemMinprice, itemImg: $itemImg, status: $status, quantity: $quantity, totalPrice: $totalPrice, createdAt: $createdAt, address: $address,)';
   }
 
   Map<String, dynamic> toJson() {
@@ -31,6 +37,9 @@ class Bill {
       'billId': billId,
       'userId': userId,
       'itemId': itemId,
+      'itemName': itemName,
+      'itemMinprice': itemMinprice,
+      'itemImg': itemImg,
       'status': status,
       'quantity': quantity,
       'totalPrice': totalPrice,
@@ -43,6 +52,9 @@ class Bill {
     billId: json['billId'],
     userId: json['userId'],
     itemId: json['itemId'],
+    itemName: json['itemName'],
+    itemMinprice: int.parse(json['itemMinprice'].toString()),
+    itemImg: json['itemImg'],
     status: json['status'],
     quantity: int.parse(json['quantity'].toString()),
     totalPrice: int.parse(json['totalPrice'].toString()),
