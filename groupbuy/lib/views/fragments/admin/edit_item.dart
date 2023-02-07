@@ -239,6 +239,7 @@ class _EditItemPageState extends State<EditItemPage> {
                           initialprice: int.parse(controllerInitialPrice.text),
                           minprice: int.parse(controllerMinPrice.text),
                           totalorder: int.parse(controllerTotalOrder.text),
+                          ordered: widget.item.ordered,
                           endtime: DateTime.parse(controllerEndTime.text),
                           imgLink: initialImgLink ?? '',
                           status: controllerStatus.text,
@@ -261,6 +262,8 @@ class _EditItemPageState extends State<EditItemPage> {
                         totalorder: int.parse(controllerTotalOrder.text),
                         endtime: DateTime.parse(controllerEndTime.text),
                         imgLink: imgLink,
+                        ordered: widget.item.ordered,
+                        status: widget.item.status,
                       );
                       updateItem(item);
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
