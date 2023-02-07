@@ -21,7 +21,7 @@ class _DeliveryBillPageState extends State<DeliveryBillPage> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Color(0xFF40C800),
-          title: Text('Đơn hàng đang xử lý'),
+          title: Text('Đơn hàng đang vận chuyển'),
         ),
         body: StreamBuilder<List<Map<String, dynamic>>>(
             stream: readCustomerBuild(),

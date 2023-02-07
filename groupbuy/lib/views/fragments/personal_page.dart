@@ -301,6 +301,7 @@ class _PersonalPageState extends State<PersonalPage> {
           SizedBox(
             height: (MediaQuery.of(context).size.height) * 0.06,
           ),
+          if (auth.currentUser != null)
           Text(
             'Cập nhật thông tin',
             style: GoogleFonts.inter(
@@ -376,10 +377,10 @@ class _PersonalPageState extends State<PersonalPage> {
           SizedBox(
             height: 9,
           ),
-          appInfo(),
-          SizedBox(
-            height: 9,
-          ),
+          // appInfo(),
+          // SizedBox(
+          //   height: 9,
+          // ),
         ],
       ),
     );

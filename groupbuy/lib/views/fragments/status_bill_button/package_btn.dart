@@ -21,7 +21,7 @@ class _PakageBillPageState extends State<PakageBillPage> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Color(0xFF40C800),
-          title: Text('Đơn hàng đang xử lý'),
+          title: Text('Đơn hàng đang đóng gói'),
         ),
         body: StreamBuilder<List<Map<String, dynamic>>>(
             stream: readCustomerBuild(),

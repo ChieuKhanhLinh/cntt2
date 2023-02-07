@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/current_remaining_time.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
@@ -8,6 +9,8 @@ import 'package:intl/intl.dart';
 import 'package:groupbuy/controllers/handle_cart.dart';
 import 'package:get/get.dart';
 
+import '../../controllers/handle_auth.dart';
+import '../../models/bills.dart';
 import 'auth/sign_in_page.dart';
 
 class Detail extends StatefulWidget {
@@ -26,7 +29,20 @@ class _DetailState extends State<Detail> {
 
   final auth = FirebaseAuth.instance;
 
+
+  Stream<List<Map<String, dynamic>>> readBillInfo(){
+    final docBill = FirebaseFirestore.instance
+        .collection('bills')
+        .where('userId', isEqualTo: auth.currentUser?.uid )
+        .where('itemId', isEqualTo: widget.item.id)
+        .snapshots()
+        .asyncMap((snapshot) => snapshot.docs.map((e) => e.data()).toList());
+    return docBill;
+  }
+
+
   @override
+  
   Widget build(BuildContext context) {
     return GetMaterialApp(
       home: SafeArea(
@@ -197,80 +213,245 @@ class _DetailState extends State<Detail> {
                 ],
               ),
               if (widget.item.ordered < widget.item.totalorder)
-                Positioned(
+              Positioned(
                   bottom: 0,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    color: Colors.white,
-                    height: 90,
-                    padding: EdgeInsets.all(20),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              if (itemCount > 1) {
-                                setState(() {
-                                  itemCount--;
-                                });
-                              }
-                            },
-                            child: FaIcon(
-                              FontAwesomeIcons.minus,
-                              size: 10,
-                            ),
-                            style: ElevatedButton.styleFrom(
-                                onPrimary: Colors.green.shade900,
-                                primary: Colors.lightGreen.shade50,
-                                onSurface: Colors.grey.shade600,
-                                minimumSize: Size(30, 30),
-                                elevation: 0.0),
-                          ),
-                          Text(
-                            itemCount.toString(),
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                itemCount++;
-                              });
-                            },
-                            child: FaIcon(
-                              FontAwesomeIcons.plus,
-                              size: 10,
-                            ),
-                            style: ElevatedButton.styleFrom(
-                                onPrimary: Colors.green.shade900,
-                                primary: Colors.lightGreen.shade50,
-                                minimumSize: Size(30, 30),
-                                onSurface: Colors.grey.shade600,
-                                elevation: 0.0),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              if (auth.currentUser != null) {
-                                cartController.addItems(widget.item, itemCount);
-                                // print(widget.item);
-                              } else {
-                                // Navigator.pushNamed(context, SignInPage.routeName);
-                                Get.off(SignInPage());
-                              }
-                            },
-                            child: Text(
-                              'Thêm vào giỏ',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              onPrimary: Colors.white,
-                              primary: Colors.green.shade900,
-                              minimumSize: Size(180, 50),
-                              onSurface: Colors.grey.shade600,
-                            ),
-                          ),
-                        ]),
-                  ),
-                ),
+                  child: StreamBuilder (
+                    stream: readBillInfo(),
+                    builder: (context, AsyncSnapshot snapshot) {
+
+                      if (auth.currentUser == null) {
+                        return Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.white,
+                          height: 90,
+                          padding: EdgeInsets.all(20),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    if (itemCount > 1) {
+                                      setState(() {
+                                        itemCount--;
+                                      });
+                                    }
+                                  },
+                                  child: FaIcon(
+                                    FontAwesomeIcons.minus,
+                                    size: 10,
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                      onPrimary: Colors.green.shade900,
+                                      primary: Colors.lightGreen.shade50,
+                                      onSurface: Colors.grey.shade600,
+                                      minimumSize: Size(30, 30),
+                                      elevation: 0.0),
+                                ),
+                                Text(
+                                  itemCount.toString(),
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      itemCount++;
+                                    });
+                                  },
+                                  child: FaIcon(
+                                    FontAwesomeIcons.plus,
+                                    size: 10,
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                      onPrimary: Colors.green.shade900,
+                                      primary: Colors.lightGreen.shade50,
+                                      minimumSize: Size(30, 30),
+                                      onSurface: Colors.grey.shade600,
+                                      elevation: 0.0),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    if (auth.currentUser != null) {
+                                      cartController.addItems(widget.item, itemCount);
+                                      // print(widget.item);
+                                    } else {
+                                      // Navigator.pushNamed(context, SignInPage.routeName);
+                                      Get.off(SignInPage());
+                                    }
+                                  },
+                                  child: Text(
+                                    'Thêm vào giỏ',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    onPrimary: Colors.white,
+                                    primary: Colors.green.shade900,
+                                    minimumSize: Size(180, 50),
+                                    onSurface: Colors.grey.shade600,
+                                  ),
+                                ),
+                              ]),
+                        );
+                      }
+
+                      if (snapshot.hasError) {
+                        print('Xảy ra lỗi ${snapshot.error}');
+                        return Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.white,
+                          height: 90,
+                          padding: EdgeInsets.all(20),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    if (itemCount > 1) {
+                                      setState(() {
+                                        itemCount--;
+                                      });
+                                    }
+                                  },
+                                  child: FaIcon(
+                                    FontAwesomeIcons.minus,
+                                    size: 10,
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                      onPrimary: Colors.green.shade900,
+                                      primary: Colors.lightGreen.shade50,
+                                      onSurface: Colors.grey.shade600,
+                                      minimumSize: Size(30, 30),
+                                      elevation: 0.0),
+                                ),
+                                Text(
+                                  itemCount.toString(),
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      itemCount++;
+                                    });
+                                  },
+                                  child: FaIcon(
+                                    FontAwesomeIcons.plus,
+                                    size: 10,
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                      onPrimary: Colors.green.shade900,
+                                      primary: Colors.lightGreen.shade50,
+                                      minimumSize: Size(30, 30),
+                                      onSurface: Colors.grey.shade600,
+                                      elevation: 0.0),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    if (auth.currentUser != null) {
+                                      cartController.addItems(widget.item, itemCount);
+                                      // print(widget.item);
+                                    } else {
+                                      // Navigator.pushNamed(context, SignInPage.routeName);
+                                      Get.off(SignInPage());
+                                    }
+                                  },
+                                  child: Text(
+                                    'Thêm vào giỏ',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    onPrimary: Colors.white,
+                                    primary: Colors.green.shade900,
+                                    minimumSize: Size(180, 50),
+                                    onSurface: Colors.grey.shade600,
+                                  ),
+                                ),
+                              ]),
+                        );
+                      }
+                      if (snapshot.hasData ) {
+                        final bill = snapshot.data;
+                        if (bill?.isEmpty ) {
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            color: Colors.white,
+                            height: 90,
+                            padding: EdgeInsets.all(20),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      if (itemCount > 1) {
+                                        setState(() {
+                                          itemCount--;
+                                        });
+                                      }
+                                    },
+                                    child: FaIcon(
+                                      FontAwesomeIcons.minus,
+                                      size: 10,
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                        onPrimary: Colors.green.shade900,
+                                        primary: Colors.lightGreen.shade50,
+                                        onSurface: Colors.grey.shade600,
+                                        minimumSize: Size(30, 30),
+                                        elevation: 0.0),
+                                  ),
+                                  Text(
+                                    itemCount.toString(),
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        itemCount++;
+                                      });
+                                    },
+                                    child: FaIcon(
+                                      FontAwesomeIcons.plus,
+                                      size: 10,
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                        onPrimary: Colors.green.shade900,
+                                        primary: Colors.lightGreen.shade50,
+                                        minimumSize: Size(30, 30),
+                                        onSurface: Colors.grey.shade600,
+                                        elevation: 0.0),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      if (auth.currentUser != null) {
+                                        cartController.addItems(widget.item, itemCount);
+                                        // print(widget.item);
+                                      } else {
+                                        // Navigator.pushNamed(context, SignInPage.routeName);
+                                        Get.off(SignInPage());
+                                      }
+                                    },
+                                    child: Text(
+                                      'Thêm vào giỏ',
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      onPrimary: Colors.white,
+                                      primary: Colors.green.shade900,
+                                      minimumSize: Size(180, 50),
+                                      onSurface: Colors.grey.shade600,
+                                    ),
+                                  ),
+                                ]),
+                          );
+                        } else {
+                          return Container();
+                        }
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
+                  )
+              ),
               Positioned(
                   top: 30,
                   child: ElevatedButton(
@@ -292,6 +473,7 @@ class _DetailState extends State<Detail> {
       ),
     );
   }
+
 }
 
 class _timeBox extends StatelessWidget {
