@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:groupbuy/models/items.dart';
-import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:groupbuy/models/menu_item.dart';
 import 'package:groupbuy/views/fragments/admin/set_bill_status.dart';
-import 'package:groupbuy/views/fragments/admin/update_item.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class ManageBillPage extends StatefulWidget {
   const ManageBillPage({Key? key}) : super(key: key);
@@ -89,7 +84,7 @@ class _ManageBillPageState extends State<ManageBillPage> {
                   border: Border(
                       bottom:
                           BorderSide(width: 1.0, color: Colors.grey.shade300))),
-              height: 140.0,
+              height: 160.0,
               width: double.infinity,
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -103,15 +98,25 @@ class _ManageBillPageState extends State<ManageBillPage> {
                           Text(
                             'Đơn từ: ${bill['address']}',
                             style: const TextStyle(
-                                fontSize: 16.0, color: Colors.black),
+                                fontSize: 14.0, color: Colors.black),
                             overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
+                            maxLines: 1,
+                            softWrap: false,
+                          ),
+                          Text(
+                            'Đơn từ: ${bill['itemName']}',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14.0,
+                                color: Colors.black),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                             softWrap: false,
                           ),
                           Text(
                             'Tình trạng: ${bill['status']}',
                             style: const TextStyle(
-                                fontSize: 16.0,
+                                fontSize: 14.0,
                                 color: Color.fromARGB(255, 141, 140, 140)),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,

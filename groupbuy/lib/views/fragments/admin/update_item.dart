@@ -23,13 +23,11 @@ class _UpdateItemPageState extends State<UpdateItemPage> {
   final controllerMinPrice = TextEditingController();
   final controllerTotalOrder = TextEditingController();
   final controllerEndTime = TextEditingController();
-  final controllerStatus = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   PlatformFile? pickedFile;
   UploadTask? uploadTask;
   String? initialImgLink;
-  List<String> status = ["Success"];
 
   @override
   void initState() {
@@ -41,7 +39,6 @@ class _UpdateItemPageState extends State<UpdateItemPage> {
     controllerTotalOrder.text = widget.item.totalorder.toString();
     controllerEndTime.text = widget.item.endtime.toString();
     initialImgLink = widget.item.imgLink;
-    controllerStatus.text = widget.item.status;
   }
 
   @override
@@ -206,27 +203,6 @@ class _UpdateItemPageState extends State<UpdateItemPage> {
                     return null;
                   },
                 ),
-              SizedBox(height: 24),
-              if (widget.item.ordered == widget.item.totalorder)
-                TextField(
-                  readOnly: true,
-                  controller: controllerStatus,
-                  decoration: InputDecoration(
-                    suffixIcon: PopupMenuButton<String>(
-                      icon: const Icon(Icons.arrow_drop_down),
-                      onSelected: (String value) {
-                        controllerStatus.text = value;
-                      },
-                      itemBuilder: (BuildContext context) {
-                        return status
-                            .map<PopupMenuItem<String>>((String value) {
-                          return new PopupMenuItem(
-                              child: new Text(value), value: value);
-                        }).toList();
-                      },
-                    ),
-                  ),
-                ),
               SizedBox(height: 32),
               SizedBox(
                 height: 46.0,
@@ -244,7 +220,8 @@ class _UpdateItemPageState extends State<UpdateItemPage> {
                             totalorder: int.parse(controllerTotalOrder.text),
                             endtime: DateTime.parse(controllerEndTime.text),
                             imgLink: initialImgLink ?? '',
-                            status: controllerStatus.text);
+                            status: widget.item.status,
+                            ordered: widget.item.ordered);
                         updateItem(item);
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text(
@@ -263,7 +240,8 @@ class _UpdateItemPageState extends State<UpdateItemPage> {
                           totalorder: int.parse(controllerTotalOrder.text),
                           endtime: DateTime.parse(controllerEndTime.text),
                           imgLink: imgLink,
-                          status: controllerStatus.text);
+                          status: widget.item.status,
+                          ordered: widget.item.ordered);
                       updateItem(item);
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           backgroundColor: Color(0xFF025B05),

@@ -22,7 +22,7 @@ class Item {
     required this.totalorder,
     this.ordered = 0,
     required this.endtime,
-    this.status = '',
+    this.status = 'Đang diễn ra',
   });
 
   @override

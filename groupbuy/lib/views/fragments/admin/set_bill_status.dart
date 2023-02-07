@@ -269,56 +269,41 @@ class _SetBillStatusPageState extends State<SetBillStatusPage> {
     );
   }
 
-  StreamBuilder<DocumentSnapshot<Map<String, dynamic>>> itemInform() {
-    return StreamBuilder(
-      stream: FirebaseFirestore.instance
-          .collection('items')
-          .doc(widget.bill['itemId'])
-          .snapshots(),
-      builder: (context, AsyncSnapshot snapshot) {
-        if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        }
-        if (snapshot.hasData && snapshot.data != null) {
-          return Container(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            color: Colors.white,
-            child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              SizedBox(
-                width: 40,
-                child: Text(
-                  'x ${widget.bill['quantity'].toString()}',
-                  style: const TextStyle(
-                      color: Colors.blueGrey,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              Expanded(
-                child: Text(
-                  snapshot.data['name'],
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  softWrap: false,
-                ),
-              ),
-              const SizedBox(width: 10),
-              Text(
-                NumberFormat.currency(locale: 'vi')
-                    .format(snapshot.data['minprice']),
-                maxLines: 1,
-                style: const TextStyle(
-                    fontSize: 14, overflow: TextOverflow.ellipsis),
-              ),
-            ]),
-          );
-        }
-        return Container();
-      },
+  Widget itemInform() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      color: Colors.white,
+      child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        SizedBox(
+          width: 40,
+          child: Text(
+            'x ${widget.bill['quantity'].toString()}',
+            style: const TextStyle(
+                color: Colors.blueGrey,
+                fontSize: 14,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+        Expanded(
+          child: Text(
+            '${widget.bill['itemName']}',
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            softWrap: false,
+          ),
+        ),
+        const SizedBox(width: 10),
+        Text(
+          NumberFormat.currency(locale: 'vi')
+              .format(widget.bill['itemMinprice']),
+          maxLines: 1,
+          style: const TextStyle(fontSize: 14, overflow: TextOverflow.ellipsis),
+        ),
+      ]),
     );
   }
 }

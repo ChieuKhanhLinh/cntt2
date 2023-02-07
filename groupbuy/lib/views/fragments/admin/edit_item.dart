@@ -23,13 +23,11 @@ class _EditItemPageState extends State<EditItemPage> {
   final controllerMinPrice = TextEditingController();
   final controllerTotalOrder = TextEditingController();
   final controllerEndTime = TextEditingController();
-  final controllerStatus = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   PlatformFile? pickedFile;
   UploadTask? uploadTask;
   String? initialImgLink;
-  List<String> status = ["Success"];
 
   @override
   void initState() {
@@ -204,27 +202,6 @@ class _EditItemPageState extends State<EditItemPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 24),
-              if (widget.item.ordered == widget.item.totalorder)
-                TextField(
-                  readOnly: true,
-                  controller: controllerStatus,
-                  decoration: InputDecoration(
-                    suffixIcon: PopupMenuButton<String>(
-                      icon: const Icon(Icons.arrow_drop_down),
-                      onSelected: (String value) {
-                        controllerStatus.text = value;
-                      },
-                      itemBuilder: (BuildContext context) {
-                        return status
-                            .map<PopupMenuItem<String>>((String value) {
-                          return new PopupMenuItem(
-                              child: new Text(value), value: value);
-                        }).toList();
-                      },
-                    ),
-                  ),
-                ),
               SizedBox(height: 32),
               SizedBox(
                 height: 46.0,
@@ -242,7 +219,7 @@ class _EditItemPageState extends State<EditItemPage> {
                           ordered: widget.item.ordered,
                           endtime: DateTime.parse(controllerEndTime.text),
                           imgLink: initialImgLink ?? '',
-                          status: controllerStatus.text,
+                          status: widget.item.status,
                         );
                         updateItem(item);
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
