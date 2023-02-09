@@ -88,7 +88,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> with CommonVali
                   );
                 },
             );
-            Navigator.pushNamed(context, SignInPage.routeName);
+            Navigator.push(
+              context,
+              new MaterialPageRoute(
+                builder: (context) => new SignInPage(),
+              ),
+            );
           } on FirebaseAuthException catch (e) {
             if (e.code == 'user-not-found') {
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
