@@ -387,7 +387,7 @@ class _CheckOutState extends State<CheckOut> {
         itemImg: a.imgLink,
         status: 'Đang xử lý',
         quantity: controller.items[a],
-        totalPrice: controller.total,
+        totalPrice: controller.items[a]*a.minprice,
         createdAt: time,
         address: addressChange,
       );
