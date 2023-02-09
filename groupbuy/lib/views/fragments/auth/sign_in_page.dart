@@ -165,7 +165,12 @@ class SignInState extends State<StatefulWidget> with CommonValidation {
   Widget forgetPassword() {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, ForgotPasswordPage.routeName);
+        Navigator.push(
+          context,
+          new MaterialPageRoute(
+            builder: (context) => new ForgotPasswordPage(),
+          ),
+        );
       },
       child: Row(
         children: [

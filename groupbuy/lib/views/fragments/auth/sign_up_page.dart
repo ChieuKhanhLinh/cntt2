@@ -286,7 +286,12 @@ class _SignUpPageState extends State<SignUpPage> with CommonValidation {
               phone: _phone,
             );
             await Auth().signOut();
-            Navigator.pushNamed(context, SignInPage.routeName);
+            Navigator.push(
+              context,
+              new MaterialPageRoute(
+                builder: (context) => new SignInPage(),
+              ),
+            );
           }
         } on FirebaseAuthException catch (e) {
           if (e.code == 'email-already-in-use') {
@@ -329,7 +334,12 @@ class _SignUpPageState extends State<SignUpPage> with CommonValidation {
         ),
         GestureDetector(
           onTap: () {
-            Navigator.pushNamed(context, SignInPage.routeName);
+            Navigator.push(
+              context,
+              new MaterialPageRoute(
+                builder: (context) => new SignInPage(),
+              ),
+            );
           },
           child: Text('Hãy đăng nhập',
             style: GoogleFonts.inter(
