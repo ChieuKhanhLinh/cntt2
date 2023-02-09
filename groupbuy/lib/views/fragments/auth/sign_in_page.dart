@@ -259,7 +259,12 @@ class SignInState extends State<StatefulWidget> with CommonValidation {
         ),
         GestureDetector(
           onTap: () {
-            Navigator.pushNamed(context, SignUpPage.routeName);
+            Navigator.push(
+              context,
+              new MaterialPageRoute(
+                builder: (context) => new SignUpPage(),
+              ),
+            );
           },
           child: Text('Hãy đăng ký',
             style: GoogleFonts.inter(

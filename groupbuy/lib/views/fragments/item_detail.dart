@@ -425,7 +425,7 @@ class _DetailState extends State<Detail> {
                                         // print(widget.item);
                                       } else {
                                         // Navigator.pushNamed(context, SignInPage.routeName);
-                                        Get.off(SignInPage());
+                                        Get.off(() =>SignInPage());
                                       }
                                     },
                                     child: Text(
