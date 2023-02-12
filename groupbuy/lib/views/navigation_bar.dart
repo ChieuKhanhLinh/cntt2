@@ -13,7 +13,7 @@ class NavBar extends StatefulWidget {
 
 class _NavBarState extends State<NavBar> {
   int currentIndex = 0;
-  List screens = [HomePage(), OrderPage(), PersonalPage()];
+  List<Widget> screens = <Widget>[HomePage(), OrderPage(), PersonalPage()];
 
   void updateIndex(int value) {
     setState(() {
@@ -24,7 +24,11 @@ class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: screens[currentIndex],
+      // body: screens[currentIndex],
+      body: IndexedStack(
+        index: currentIndex,
+        children: screens,
+      ),
       bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           currentIndex: currentIndex,

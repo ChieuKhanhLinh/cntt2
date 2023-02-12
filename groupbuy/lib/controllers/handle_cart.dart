@@ -7,10 +7,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 class CartController extends GetxController {
   final _items = {}.obs;
   final auth = FirebaseAuth.instance;
-  late bool checkList = false;
 
   void addItems(Item item, int quantity) {
-    if (_items != null  && _items.containsKey(item)) {
+    if (_items.containsKey(item)) {
       _items[item] += quantity;
     } else {
       _items[item] = quantity;
@@ -23,7 +22,6 @@ class CartController extends GetxController {
       backgroundColor: Colors.white,
       duration: const Duration(seconds: 1),
     );
-    checkList = false;
   }
 
   void removeItem(Item item) {
