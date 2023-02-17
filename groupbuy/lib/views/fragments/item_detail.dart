@@ -44,8 +44,7 @@ class _DetailState extends State<Detail> {
   @override
   
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      home: SafeArea(
+    return SafeArea(
         child: Scaffold(
           body: Stack(
             children: [
@@ -218,7 +217,6 @@ class _DetailState extends State<Detail> {
                   child: StreamBuilder (
                     stream: readBillInfo(),
                     builder: (context, AsyncSnapshot snapshot) {
-
                       if (auth.currentUser == null) {
                         return Container(
                           width: MediaQuery.of(context).size.width,
@@ -272,10 +270,15 @@ class _DetailState extends State<Detail> {
                                   onPressed: () {
                                     if (auth.currentUser != null) {
                                       cartController.addItems(widget.item, itemCount);
-                                      // print(widget.item);
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                              backgroundColor: Colors.green,
+                                              duration: const Duration(seconds: 1),
+                                              content:
+                                              Text('Bạn đã thêm ${widget.item.name} x $itemCount vào giỏ hàng')));
+                                      // Navigator.pushNamed(context, '/');
                                     } else {
-                                      // Navigator.pushNamed(context, SignInPage.routeName);
-                                      Get.off(SignInPage());
+                                      Navigator.pushNamed(context, '/signInPage');
                                     }
                                   },
                                   child: Text(
@@ -292,7 +295,6 @@ class _DetailState extends State<Detail> {
                               ]),
                         );
                       }
-
                       if (snapshot.hasError) {
                         print('Xảy ra lỗi ${snapshot.error}');
                         return Container(
@@ -347,10 +349,15 @@ class _DetailState extends State<Detail> {
                                   onPressed: () {
                                     if (auth.currentUser != null) {
                                       cartController.addItems(widget.item, itemCount);
-                                      // print(widget.item);
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                              backgroundColor: Colors.green,
+                                              duration: const Duration(seconds: 1),
+                                              content:
+                                              Text('Bạn đã thêm ${widget.item.name} x $itemCount vào giỏ hàng')));
+                                      // Navigator.pushNamed(context, '/');
                                     } else {
-                                      // Navigator.pushNamed(context, SignInPage.routeName);
-                                      Get.off(SignInPage());
+                                      Navigator.pushNamed(context, '/signInPage');
                                     }
                                   },
                                   child: Text(
@@ -422,10 +429,15 @@ class _DetailState extends State<Detail> {
                                     onPressed: () {
                                       if (auth.currentUser != null) {
                                         cartController.addItems(widget.item, itemCount);
-                                        // print(widget.item);
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                                backgroundColor: Colors.green,
+                                                duration: const Duration(seconds: 1),
+                                                content:
+                                                Text('Bạn đã thêm ${widget.item.name} x $itemCount vào giỏ hàng')));
+                                        // Navigator.pushNamed(context, '/');
                                       } else {
-                                        // Navigator.pushNamed(context, SignInPage.routeName);
-                                        Get.off(() =>SignInPage());
+                                        Navigator.pushNamed(context, '/signInPage');
                                       }
                                     },
                                     child: Text(
@@ -470,7 +482,6 @@ class _DetailState extends State<Detail> {
             ],
           ),
         ),
-      ),
     );
   }
 

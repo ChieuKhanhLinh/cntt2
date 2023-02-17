@@ -15,13 +15,13 @@ class CartController extends GetxController {
       _items[item] = quantity;
     }
 
-    Get.snackbar(
-      'Thêm vào giỏ hàng',
-      'Bạn đã thêm ${item.name} x $quantity vào giỏ hàng',
-      snackPosition: SnackPosition.TOP,
-      backgroundColor: Colors.white,
-      duration: const Duration(seconds: 1),
-    );
+    // Get.snackbar(
+    //   'Thêm vào giỏ hàng',
+    //   'Bạn đã thêm ${item.name} x $quantity vào giỏ hàng',
+    //   snackPosition: SnackPosition.TOP,
+    //   backgroundColor: Colors.white,
+    //   duration: const Duration(seconds: 1),
+    // );
   }
 
   void removeItem(Item item) {
