@@ -287,17 +287,6 @@ class timeBox extends StatelessWidget {
             ));
           }
           if (time != null) {
-            if (time.days != null) {
-              list.add(Text(
-                time.days.toString() + ' ngày ',
-                style: TextStyle(color: Colors.white),
-              ));
-            } else {
-              list.add(Text(
-                ' 0 ngày ',
-                style: TextStyle(color: Colors.white),
-              ));
-            }
             if (time.hours != null) {
               list.add(Text(
                 time.hours.toString() + ':',

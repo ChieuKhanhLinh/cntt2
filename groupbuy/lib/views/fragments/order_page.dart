@@ -32,7 +32,6 @@ class _OrderPageState extends State<OrderPage> {
           appBar: AppBar(
             backgroundColor: Color(0xFF40C800),
             elevation: 1,
-            automaticallyImplyLeading: false,
             title: const Text('Giỏ hàng'),
             actions: [
               TextButton(
@@ -165,7 +164,8 @@ class _OrderPageState extends State<OrderPage> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         ElevatedButton(
-                          onPressed: (controller.items.length == 0 || auth.currentUser == null)
+                          onPressed: (controller.items.length == 0 ||
+                                  auth.currentUser == null)
                               ? null
                               : () {
                                   Navigator.push(
@@ -196,7 +196,6 @@ class _OrderPageState extends State<OrderPage> {
                       ]),
                 ),
               ),
-
             ],
           )),
     );

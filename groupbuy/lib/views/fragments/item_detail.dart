@@ -5,6 +5,7 @@ import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groupbuy/models/items.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:groupbuy/views/fragments/order_page.dart';
 import 'package:intl/intl.dart';
 import 'package:groupbuy/controllers/handle_cart.dart';
 import 'package:get/get.dart';
@@ -29,192 +30,189 @@ class _DetailState extends State<Detail> {
 
   final auth = FirebaseAuth.instance;
 
-
-  Stream<List<Map<String, dynamic>>> readBillInfo(){
+  Stream<List<Map<String, dynamic>>> readBillInfo() {
     final docBill = FirebaseFirestore.instance
         .collection('bills')
-        .where('userId', isEqualTo: auth.currentUser?.uid )
+        .where('userId', isEqualTo: auth.currentUser?.uid)
         .where('itemId', isEqualTo: widget.item.id)
         .snapshots()
         .asyncMap((snapshot) => snapshot.docs.map((e) => e.data()).toList());
     return docBill;
   }
 
-
   @override
-  
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-          body: Stack(
-            children: [
-              ListView(
-                children: [
-                  Stack(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 300,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: NetworkImage(widget.item.imgLink != ''
-                                  ? widget.item.imgLink
-                                  : 'https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg'),
-                              fit: BoxFit.cover),
+      child: Scaffold(
+        body: Stack(
+          children: [
+            ListView(
+              children: [
+                Stack(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 300,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: NetworkImage(widget.item.imgLink != ''
+                                ? widget.item.imgLink
+                                : 'https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg'),
+                            fit: BoxFit.cover),
+                      ),
+                    ),
+                    if (widget.item.ordered == widget.item.totalorder)
+                      Positioned(
+                        top: 100,
+                        left: 110,
+                        child: Container(
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.all(10),
+                          height: 65,
+                          decoration: BoxDecoration(
+                              color: Colors.blueGrey.shade900,
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Text(
+                            'Hết lượt mua',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25,
+                              letterSpacing: 0.5,
+                              color: const Color(0xFFE7E7E7),
+                            ),
+                          ),
                         ),
-                      ),
-                      if (widget.item.ordered == widget.item.totalorder)
-                        Positioned(
-                          top: 100,
-                          left: 110,
-                          child: Container(
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.all(10),
-                            height: 65,
-                            decoration: BoxDecoration(
-                                color: Colors.blueGrey.shade900,
-                                shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Text(
-                              'Hết lượt mua',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 25,
-                                letterSpacing: 0.5,
-                                color: const Color(0xFFE7E7E7),
-                              ),
-                            ),
-                          ),
-                        )
-                    ],
-                  ),
-                  Column(children: [
-                    Container(
-                      padding: EdgeInsets.only(top: 10, bottom: 10),
-                      height: 70,
-                      color: Colors.green.shade900,
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    NumberFormat.currency(locale: 'vi')
-                                        .format(widget.item.initialprice),
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey.shade300,
-                                        decoration: TextDecoration.lineThrough),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    NumberFormat.currency(locale: 'vi')
-                                        .format(widget.item.minprice),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    widget.item.ordered.toString() +
-                                        ' người tham gia nhóm',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        'Kết thúc sau:',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      _timeBox(item: widget.item),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            )
-                          ]),
-                    ),
-                    Container(
-                      height: 140,
-                      color: Colors.white,
-                      padding: EdgeInsets.all(10),
-                      width: MediaQuery.of(context).size.width,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      )
+                  ],
+                ),
+                Column(children: [
+                  Container(
+                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                    height: 70,
+                    color: Colors.green.shade900,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Expanded(
-                            child: Text(
-                              widget.item.name,
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                              maxLines: 3,
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomLeft,
-                            child: RichText(
-                                text: TextSpan(children: [
-                              WidgetSpan(
-                                  child: Icon(
-                                Icons.add_shopping_cart_outlined,
-                                color: Colors.lightGreen,
-                                size: 15,
-                              )),
-                              TextSpan(
-                                  text: 'Cần thêm ' +
-                                      (widget.item.totalorder -
-                                              widget.item.ordered)
-                                          .toString() +
-                                      ' người tham gia nữa để đạt giá thấp nhất',
+                          Column(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  NumberFormat.currency(locale: 'vi')
+                                      .format(widget.item.initialprice),
                                   style: TextStyle(
-                                      fontSize: 12, color: Colors.black))
-                            ])),
+                                      fontSize: 14,
+                                      color: Colors.grey.shade300,
+                                      decoration: TextDecoration.lineThrough),
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  NumberFormat.currency(locale: 'vi')
+                                      .format(widget.item.minprice),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  widget.item.ordered.toString() +
+                                      ' người tham gia nhóm',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Kết thúc sau:',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    _timeBox(item: widget.item),
+                                  ],
+                                ),
+                              ),
+                            ],
                           )
-                        ],
-                      ),
+                        ]),
+                  ),
+                  Container(
+                    height: 140,
+                    color: Colors.white,
+                    padding: EdgeInsets.all(10),
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            widget.item.name,
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                            maxLines: 3,
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.bottomLeft,
+                          child: RichText(
+                              text: TextSpan(children: [
+                            WidgetSpan(
+                                child: Icon(
+                              Icons.add_shopping_cart_outlined,
+                              color: Colors.lightGreen,
+                              size: 15,
+                            )),
+                            TextSpan(
+                                text: 'Cần thêm ' +
+                                    (widget.item.totalorder -
+                                            widget.item.ordered)
+                                        .toString() +
+                                    ' người tham gia nữa để đạt giá thấp nhất',
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.black))
+                          ])),
+                        )
+                      ],
                     ),
-                    SizedBox(
-                      height: 10,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    color: Colors.white,
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.all(10),
+                    margin: EdgeInsets.only(bottom: 100),
+                    child: Text(
+                      widget.item.detail,
+                      style:
+                          TextStyle(fontSize: 16, color: Colors.grey.shade700),
                     ),
-                    Container(
-                      color: Colors.white,
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.all(10),
-                      margin: EdgeInsets.only(bottom: 100),
-                      child: Text(
-                        widget.item.detail,
-                        style: TextStyle(
-                            fontSize: 16, color: Colors.grey.shade700),
-                      ),
-                    )
-                  ])
-                ],
-              ),
-              if (widget.item.ordered < widget.item.totalorder)
+                  )
+                ])
+              ],
+            ),
+            if (widget.item.ordered < widget.item.totalorder)
               Positioned(
                   bottom: 0,
-                  child: StreamBuilder (
+                  child: StreamBuilder(
                     stream: readBillInfo(),
                     builder: (context, AsyncSnapshot snapshot) {
                       if (auth.currentUser == null) {
@@ -269,16 +267,19 @@ class _DetailState extends State<Detail> {
                                 ElevatedButton(
                                   onPressed: () {
                                     if (auth.currentUser != null) {
-                                      cartController.addItems(widget.item, itemCount);
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(
+                                      cartController.addItems(
+                                          widget.item, itemCount);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
                                               backgroundColor: Colors.green,
-                                              duration: const Duration(seconds: 1),
-                                              content:
-                                              Text('Bạn đã thêm ${widget.item.name} x $itemCount vào giỏ hàng')));
+                                              duration:
+                                                  const Duration(seconds: 1),
+                                              content: Text(
+                                                  'Bạn đã thêm ${widget.item.name} x $itemCount vào giỏ hàng')));
                                       // Navigator.pushNamed(context, '/');
                                     } else {
-                                      Navigator.pushNamed(context, '/signInPage');
+                                      Navigator.pushNamed(
+                                          context, '/signInPage');
                                     }
                                   },
                                   child: Text(
@@ -348,16 +349,19 @@ class _DetailState extends State<Detail> {
                                 ElevatedButton(
                                   onPressed: () {
                                     if (auth.currentUser != null) {
-                                      cartController.addItems(widget.item, itemCount);
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(
+                                      cartController.addItems(
+                                          widget.item, itemCount);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
                                               backgroundColor: Colors.green,
-                                              duration: const Duration(seconds: 1),
-                                              content:
-                                              Text('Bạn đã thêm ${widget.item.name} x $itemCount vào giỏ hàng')));
+                                              duration:
+                                                  const Duration(seconds: 1),
+                                              content: Text(
+                                                  'Bạn đã thêm ${widget.item.name} x $itemCount vào giỏ hàng')));
                                       // Navigator.pushNamed(context, '/');
                                     } else {
-                                      Navigator.pushNamed(context, '/signInPage');
+                                      Navigator.pushNamed(
+                                          context, '/signInPage');
                                     }
                                   },
                                   child: Text(
@@ -374,16 +378,17 @@ class _DetailState extends State<Detail> {
                               ]),
                         );
                       }
-                      if (snapshot.hasData ) {
+                      if (snapshot.hasData) {
                         final bill = snapshot.data;
-                        if (bill?.isEmpty ) {
+                        if (bill?.isEmpty) {
                           return Container(
                             width: MediaQuery.of(context).size.width,
                             color: Colors.white,
                             height: 90,
                             padding: EdgeInsets.all(20),
                             child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   ElevatedButton(
                                     onPressed: () {
@@ -428,16 +433,19 @@ class _DetailState extends State<Detail> {
                                   ElevatedButton(
                                     onPressed: () {
                                       if (auth.currentUser != null) {
-                                        cartController.addItems(widget.item, itemCount);
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                            SnackBar(
+                                        cartController.addItems(
+                                            widget.item, itemCount);
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
                                                 backgroundColor: Colors.green,
-                                                duration: const Duration(seconds: 1),
-                                                content:
-                                                Text('Bạn đã thêm ${widget.item.name} x $itemCount vào giỏ hàng')));
+                                                duration:
+                                                    const Duration(seconds: 1),
+                                                content: Text(
+                                                    'Bạn đã thêm ${widget.item.name} x $itemCount vào giỏ hàng')));
                                         // Navigator.pushNamed(context, '/');
                                       } else {
-                                        Navigator.pushNamed(context, '/signInPage');
+                                        Navigator.pushNamed(
+                                            context, '/signInPage');
                                       }
                                     },
                                     child: Text(
@@ -462,29 +470,62 @@ class _DetailState extends State<Detail> {
                         );
                       }
                     },
-                  )
-              ),
-              Positioned(
-                  top: 30,
-                  child: ElevatedButton(
-                    child: Icon(
-                      Icons.clear,
-                      size: 20,
+                  )),
+            Positioned(
+              bottom: 100,
+              right: 20,
+              child: Stack(
+                children: [
+                  FloatingActionButton(
+                    backgroundColor: Colors.white,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => OrderPage()),
+                      );
+                    },
+                    child: const Icon(
+                      Icons.shopping_bag_outlined,
+                      color: Colors.black,
+                      size: 30,
                     ),
-                    onPressed: () => Navigator.pop(context),
-                    style: ElevatedButton.styleFrom(
-                        onPrimary: Colors.white,
-                        primary: Colors.black54.withOpacity(0.3),
-                        shape: CircleBorder(),
-                        minimumSize: Size(30, 30),
-                        elevation: 0.0),
-                  ))
-            ],
-          ),
+                  ),
+                  Positioned(
+                      top: 5,
+                      right: 5,
+                      child: CircleAvatar(
+                        radius: 8,
+                        backgroundColor: Colors.red,
+                        child: Obx(
+                          () => Text(
+                            cartController.items.length.toString(),
+                            style: TextStyle(color: Colors.white, fontSize: 12),
+                          ),
+                        ),
+                      ))
+                ],
+              ),
+            ),
+            Positioned(
+                top: 30,
+                child: ElevatedButton(
+                  child: Icon(
+                    Icons.clear,
+                    size: 20,
+                  ),
+                  onPressed: () => Navigator.pop(context),
+                  style: ElevatedButton.styleFrom(
+                      onPrimary: Colors.white,
+                      primary: Colors.black54.withOpacity(0.3),
+                      shape: CircleBorder(),
+                      minimumSize: Size(30, 30),
+                      elevation: 0.0),
+                ))
+          ],
         ),
+      ),
     );
   }
-
 }
 
 class _timeBox extends StatelessWidget {

@@ -159,20 +159,21 @@ class _UpdateItemPageState extends State<UpdateItemPage> {
                 },
               ),
               SizedBox(height: 24),
-              TextFormField(
-                decoration: decoration('Số người mua chung'),
-                controller: controllerTotalOrder,
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                ],
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Hãy điền số người mua chung sản phẩm!';
-                  }
-                  return null;
-                },
-              ),
+              if (widget.item.ordered < widget.item.totalorder)
+                TextFormField(
+                  decoration: decoration('Số người mua chung'),
+                  controller: controllerTotalOrder,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                  ],
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Hãy điền số người mua chung sản phẩm!';
+                    }
+                    return null;
+                  },
+                ),
               SizedBox(height: 24),
               if (widget.item.ordered < widget.item.totalorder)
                 TextFormField(
@@ -190,7 +191,7 @@ class _UpdateItemPageState extends State<UpdateItemPage> {
                       var dt = DateTime(now.year, now.month, now.day,
                           picked.hour, picked.minute);
                       controllerEndTime.text =
-                          DateFormat('yyyy-MM-dd HH:mm').format(dt);
+                          DateFormat('yyyy-MM-dd HH:mm:ss').format(dt);
                       setState(() {
                         time = picked;
                       });

@@ -189,7 +189,7 @@ class _EditItemPageState extends State<EditItemPage> {
                     var dt = DateTime(now.year, now.month, now.day, picked.hour,
                         picked.minute);
                     controllerEndTime.text =
-                        DateFormat('yyyy-MM-dd HH:mm').format(dt);
+                        DateFormat('yyyy-MM-dd HH:mm:ss').format(dt);
                     setState(() {
                       time = picked;
                     });

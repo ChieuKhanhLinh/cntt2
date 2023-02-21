@@ -104,13 +104,13 @@ class _ManageBillPageState extends State<ManageBillPage> {
                             softWrap: false,
                           ),
                           Text(
-                            'Đơn từ: ${bill['itemName']}',
+                            'Tên: ${bill['itemName']}',
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14.0,
                                 color: Colors.black),
                             overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
+                            maxLines: 2,
                             softWrap: false,
                           ),
                           Text(
