@@ -16,6 +16,7 @@ import 'package:groupbuy/views/fragments/status_bill_button/package_btn.dart';
 import 'package:groupbuy/views/fragments/status_bill_button/receive_btn.dart';
 import 'package:groupbuy/views/fragments/status_bill_button/waiting_progess_btn.dart';
 
+import '../../controllers/handle_cart.dart';
 import '../../models/user.dart';
 import 'admin/expired_item.dart';
 import 'admin/item_option.dart';
@@ -30,6 +31,8 @@ class PersonalPage extends StatefulWidget {
 }
 
 class _PersonalPageState extends State<PersonalPage> {
+
+  final CartController controller = Get.find();
   final auth = FirebaseAuth.instance;
   final db = FirebaseFirestore.instance;
   final User? user = Auth().currentUser;
@@ -288,6 +291,7 @@ class _PersonalPageState extends State<PersonalPage> {
       case MenuItems.itemLogout:
         Auth().signOut();
         Navigator.of(context).pushNamed('/');
+        controller.items.clear();
         break;
     }
   }
