@@ -472,41 +472,6 @@ class _DetailState extends State<Detail> {
                     },
                   )),
             Positioned(
-              bottom: 100,
-              right: 20,
-              child: Stack(
-                children: [
-                  FloatingActionButton(
-                    backgroundColor: Colors.white,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => OrderPage()),
-                      );
-                    },
-                    child: const Icon(
-                      Icons.shopping_bag_outlined,
-                      color: Colors.black,
-                      size: 30,
-                    ),
-                  ),
-                  Positioned(
-                      top: 5,
-                      right: 5,
-                      child: CircleAvatar(
-                        radius: 8,
-                        backgroundColor: Colors.red,
-                        child: Obx(
-                          () => Text(
-                            cartController.items.length.toString(),
-                            style: TextStyle(color: Colors.white, fontSize: 12),
-                          ),
-                        ),
-                      ))
-                ],
-              ),
-            ),
-            Positioned(
                 top: 30,
                 child: ElevatedButton(
                   child: Icon(

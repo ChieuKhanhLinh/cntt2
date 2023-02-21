@@ -31,6 +31,7 @@ class _OrderPageState extends State<OrderPage> {
       () => Scaffold(
           appBar: AppBar(
             backgroundColor: Color(0xFF40C800),
+            automaticallyImplyLeading: false,
             elevation: 1,
             title: const Text('Giỏ hàng'),
             actions: [
