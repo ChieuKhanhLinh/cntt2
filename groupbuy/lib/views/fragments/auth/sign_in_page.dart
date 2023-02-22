@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:groupbuy/validate/validation.dart';
 import 'package:groupbuy/controllers/handle_auth.dart';
@@ -242,10 +244,18 @@ class SignInState extends State<StatefulWidget> with CommonValidation {
     return IconButton(
       onPressed: () async {
         await Auth().signInWithGoogle();
-        HandleUser().userInfo(
-          username: Auth().currentUser?.displayName,
-          phone: Auth().currentUser?.phoneNumber,
-        );
+        String? email = Auth().currentUser?.providerData[0].email.toString();
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .set({
+          'name': Auth().currentUser?.displayName,
+          'phone': Auth().currentUser?.phoneNumber ?? '',
+          'email': email,
+          'address': '',
+          'role': 'user',
+          'urlImage': Auth().currentUser?.photoURL,
+        });
         Navigator.of(context).pushNamed('/');
       },
       icon: Image.asset('assets/googleIcon.png'),

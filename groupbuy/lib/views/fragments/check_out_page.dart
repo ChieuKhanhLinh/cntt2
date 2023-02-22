@@ -30,6 +30,7 @@ class _CheckOutState extends State<CheckOut> {
   late final int index;
 
   String addressChange = '';
+  String phoneChange = '';
 
   @override
   void initState() {
@@ -39,11 +40,13 @@ class _CheckOutState extends State<CheckOut> {
     fetch().then((user) {
       setState(() {
         addressChange = user["address"];
+        phoneChange = user["phone"];
       });
     });
   }
 
   Widget build(BuildContext context) {
+
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -63,18 +66,23 @@ class _CheckOutState extends State<CheckOut> {
                   builder: (context, AsyncSnapshot snapshot) {
                     if (snapshot.hasError) {
                       print('${snapshot.error}');
+                      late List listInfo = [];
                       return GestureDetector(
                         onTap: () async {
-                          final finalAddress = await Navigator.push(
+                          final listInfo = await Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => ChangeAddress(
                                 address: addressChange,
+                                phone: phoneChange,
                               ),
                             ),
                           );
                           setState(() {
-                            addressChange = finalAddress;
+                            setState(() {
+                              addressChange = listInfo[0];
+                              phoneChange = listInfo[1];
+                            });
                           });
                         },
                         child: Container(
@@ -90,14 +98,39 @@ class _CheckOutState extends State<CheckOut> {
                                     fontSize: 16),
                               ),
                             ),
-                            subtitle: Text(
-                              addressChange,
-                              style: GoogleFonts.inter(
-                                textStyle: TextStyle(
-                                    color: Color(0xFF654C24),
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14),
-                              ),
+                            // subtitle: Text(
+                            //   addressChange,
+                            //   style: GoogleFonts.inter(
+                            //     textStyle: TextStyle(
+                            //         color: Color(0xFF654C24),
+                            //         fontWeight: FontWeight.w400,
+                            //         fontSize: 14),
+                            //   ),
+                            // ),
+                            subtitle: Row(
+                              children: [
+                                Text(
+                                  addressChange,
+                                  style: GoogleFonts.inter(
+                                    textStyle: TextStyle(
+                                      color: Color(0xFF654C24),
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 14,
+                                    )
+                                  ),
+                                ),
+                                Text(' - '),
+                                Text(
+                                  phoneChange,
+                                  style: GoogleFonts.inter(
+                                      textStyle: TextStyle(
+                                        color: Color(0xFF654C24),
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14,
+                                      )
+                                  ),
+                                ),
+                              ],
                             ),
                             leading: Icon(
                               Icons.add_location_alt_outlined,
@@ -115,18 +148,21 @@ class _CheckOutState extends State<CheckOut> {
                     }
                     if (snapshot.hasData) {
                       final user = snapshot.data;
+                       late List listInfo = [];
                       return GestureDetector(
                         onTap: () async {
-                          final finalAddress = await Navigator.push(
+                          listInfo = await Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => ChangeAddress(
-                                address: user.address,
+                                address: addressChange,
+                                phone: phoneChange,
                               ),
                             ),
                           );
                           setState(() {
-                            addressChange = finalAddress;
+                              addressChange = listInfo[0];
+                              phoneChange = listInfo[1];
                           });
                         },
                         child: Container(
@@ -142,14 +178,30 @@ class _CheckOutState extends State<CheckOut> {
                                     fontSize: 16),
                               ),
                             ),
-                            subtitle: Text(
-                              addressChange,
-                              style: GoogleFonts.inter(
-                                textStyle: TextStyle(
-                                    color: Color(0xFF654C24),
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14),
-                              ),
+                            subtitle: Row(
+                              children: [
+                                Text(
+                                  addressChange,
+                                  style: GoogleFonts.inter(
+                                      textStyle: TextStyle(
+                                        color: Color(0xFF654C24),
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14,
+                                      )
+                                  ),
+                                ),
+                                Text(' - '),
+                                Text(
+                                  phoneChange,
+                                  style: GoogleFonts.inter(
+                                      textStyle: TextStyle(
+                                        color: Color(0xFF654C24),
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14,
+                                      )
+                                  ),
+                                ),
+                              ],
                             ),
                             leading: Icon(
                               Icons.add_location_alt_outlined,
@@ -299,12 +351,13 @@ class _CheckOutState extends State<CheckOut> {
                       ),
                       ElevatedButton(
                         onPressed: controller.items.length == 0 ||
-                                addressChange.compareTo('') == 0
+                                addressChange.compareTo('') == 0 ||
+                                phoneChange.compareTo('') == 0
                             ? () {
                                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                     backgroundColor: Colors.red,
                                     content: Text(
-                                        'Chưa nhập địa chỉ hoặc bạn đã xóa hết đơn hàng trong giỏ. Vui lòng thử lại')));
+                                        'Chưa nhập địa chỉ (số điện thoại) hoặc bạn đã xóa hết đơn hàng trong giỏ. Vui lòng thử lại')));
                               }
                             : () {
                                 fetch();
@@ -390,6 +443,7 @@ class _CheckOutState extends State<CheckOut> {
         totalPrice: controller.items[a]*a.minprice,
         createdAt: time,
         address: addressChange,
+        phone: phoneChange,
       );
       createBill(bill);
     }

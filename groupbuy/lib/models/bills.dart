@@ -12,6 +12,7 @@ class Bill {
   final int totalPrice;
   final String createdAt;
   final String address;
+  final String phone;
 
   Bill({
     this.billId = '',
@@ -25,11 +26,12 @@ class Bill {
     this.totalPrice = 0,
     this.createdAt = '',
     this.address = '',
+    this.phone = '',
   });
 
   @override
   String toString() {
-    return 'Bill( billId: $billId, userId: $userId, itemId: $itemId, itemName: $itemName, itemMinprice: $itemMinprice, itemImg: $itemImg, status: $status, quantity: $quantity, totalPrice: $totalPrice, createdAt: $createdAt, address: $address,)';
+    return 'Bill( billId: $billId, userId: $userId, itemId: $itemId, itemName: $itemName, itemMinprice: $itemMinprice, itemImg: $itemImg, status: $status, quantity: $quantity, totalPrice: $totalPrice, createdAt: $createdAt, address: $address, phone: $phone)';
   }
 
   Map<String, dynamic> toJson() {
@@ -45,6 +47,7 @@ class Bill {
       'totalPrice': totalPrice,
       'createdAt': createdAt,
       'address': address,
+      'phone': phone,
     };
   }
 
@@ -60,5 +63,6 @@ class Bill {
     totalPrice: int.parse(json['totalPrice'].toString()),
     createdAt: json['createdAt'],
     address: json['address'],
+    phone: json['phone'],
   );
 }
