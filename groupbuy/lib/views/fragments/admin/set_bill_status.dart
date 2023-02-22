@@ -247,7 +247,7 @@ class _SetBillStatusPageState extends State<SetBillStatusPage> {
                       ),
                       const SizedBox(height: 4.0),
                       Text(
-                        'Số điện thoại:  ${snapshot.data['phone']}',
+                        'Số điện thoại:  ${widget.bill['phone']}',
                         style: const TextStyle(
                             fontSize: 12.0, color: Colors.black54),
                       ),

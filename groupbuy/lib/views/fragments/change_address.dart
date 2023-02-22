@@ -5,7 +5,8 @@ class ChangeAddress extends StatefulWidget {
   final String address;
   final String phone;
 
-  const ChangeAddress({Key? key, required this.address, required this.phone}) : super(key: key);
+  const ChangeAddress({Key? key, required this.address, required this.phone})
+      : super(key: key);
 
   @override
   State<ChangeAddress> createState() => _ChangeAddressState();
@@ -32,11 +33,11 @@ class _ChangeAddressState extends State<ChangeAddress> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Color(0xFF40C800),
-        title: Text("Đổi địa chỉ giao hàng"),
+        title: Text("Đổi thông tin đặt hàng"),
         automaticallyImplyLeading: false,
         leading: GestureDetector(
           onTap: () {
-            Navigator.pop(context,[widget.address, widget.phone]);
+            Navigator.pop(context, [widget.address, widget.phone]);
           },
           child: Icon(Icons.arrow_back),
         ),
@@ -50,7 +51,8 @@ class _ChangeAddressState extends State<ChangeAddress> {
               margin: EdgeInsets.all(16),
               child: TextFormField(
                 decoration: InputDecoration(
-                  labelText: 'Cập nhật địa chỉ - Số nhà - Tên đường - Quận huyện',
+                  labelText:
+                      'Cập nhật địa chỉ - Số nhà - Tên đường - Quận huyện',
                   border: OutlineInputBorder(),
                 ),
                 controller: addressController,
@@ -79,7 +81,8 @@ class _ChangeAddressState extends State<ChangeAddress> {
               ),
             ),
             Container(
-                margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                margin:
+                    const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                 decoration: BoxDecoration(
                   color: Colors.green,
                   borderRadius: BorderRadius.circular(6),
@@ -88,17 +91,15 @@ class _ChangeAddressState extends State<ChangeAddress> {
                   height: 46.0,
                   child: ElevatedButton(
                     onPressed: () {
-                      if(formKey.currentState!.validate()) {
+                      if (formKey.currentState!.validate()) {
                         final newAddress = addressController.text;
                         final newPhone = phoneController.text;
                         Navigator.pop(context, [newAddress, newPhone]);
                         print([newAddress, newPhone]);
                       }
-
-
                     },
                     child: const Text(
-                      'Cập nhật địa chỉ',
+                      'Cập nhật thông tin',
                       style: TextStyle(fontSize: 16.0, color: Colors.white),
                     ),
                     style: ButtonStyle(

@@ -46,7 +46,6 @@ class _CheckOutState extends State<CheckOut> {
   }
 
   Widget build(BuildContext context) {
-
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -107,28 +106,31 @@ class _CheckOutState extends State<CheckOut> {
                             //         fontSize: 14),
                             //   ),
                             // ),
-                            subtitle: Row(
+                            subtitle: Column(
                               children: [
                                 Text(
                                   addressChange,
                                   style: GoogleFonts.inter(
-                                    textStyle: TextStyle(
-                                      color: Color(0xFF654C24),
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14,
-                                    )
-                                  ),
+                                      textStyle: TextStyle(
+                                    color: Color(0xFF654C24),
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14,
+                                  )),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  softWrap: false,
                                 ),
-                                Text(' - '),
                                 Text(
                                   phoneChange,
                                   style: GoogleFonts.inter(
                                       textStyle: TextStyle(
-                                        color: Color(0xFF654C24),
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 14,
-                                      )
-                                  ),
+                                    color: Color(0xFF654C24),
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14,
+                                  )),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  softWrap: false,
                                 ),
                               ],
                             ),
@@ -148,7 +150,7 @@ class _CheckOutState extends State<CheckOut> {
                     }
                     if (snapshot.hasData) {
                       final user = snapshot.data;
-                       late List listInfo = [];
+                      late List listInfo = [];
                       return GestureDetector(
                         onTap: () async {
                           listInfo = await Navigator.push(
@@ -161,8 +163,8 @@ class _CheckOutState extends State<CheckOut> {
                             ),
                           );
                           setState(() {
-                              addressChange = listInfo[0];
-                              phoneChange = listInfo[1];
+                            addressChange = listInfo[0];
+                            phoneChange = listInfo[1];
                           });
                         },
                         child: Container(
@@ -178,28 +180,33 @@ class _CheckOutState extends State<CheckOut> {
                                     fontSize: 16),
                               ),
                             ),
-                            subtitle: Row(
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   addressChange,
                                   style: GoogleFonts.inter(
-                                      textStyle: TextStyle(
-                                        color: Color(0xFF654C24),
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 14,
-                                      )
+                                    textStyle: TextStyle(
+                                      color: Color(0xFF654C24),
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 14,
+                                    ),
                                   ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  softWrap: false,
                                 ),
-                                Text(' - '),
                                 Text(
                                   phoneChange,
                                   style: GoogleFonts.inter(
                                       textStyle: TextStyle(
-                                        color: Color(0xFF654C24),
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 14,
-                                      )
-                                  ),
+                                    color: Color(0xFF654C24),
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14,
+                                  )),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  softWrap: false,
                                 ),
                               ],
                             ),
@@ -440,7 +447,7 @@ class _CheckOutState extends State<CheckOut> {
         itemImg: a.imgLink,
         status: 'Đang xử lý',
         quantity: controller.items[a],
-        totalPrice: controller.items[a]*a.minprice,
+        totalPrice: controller.items[a] * a.minprice,
         createdAt: time,
         address: addressChange,
         phone: phoneChange,
