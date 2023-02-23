@@ -1,3 +1,4 @@
+import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -74,6 +75,38 @@ class _ManageBillPageState extends State<ManageBillPage> {
                   foregroundColor: Colors.white,
                   icon: Icons.system_update_alt_rounded,
                   label: 'Update',
+                ),
+                SlidableAction(
+                  onPressed: (BuildContext slidableContext) async {
+                    final confirmed = await confirm(
+                      context,
+                      title: const Text('Confirm'),
+                      content: Text(
+                          'Bạn có chắc muốn xóa đơn "${bill['itemName']}" từ "${bill['address']}" khỏi danh sách?'),
+                      textOK: const Text(
+                        'Có',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                      textCancel: const Text('Quay lại'),
+                    );
+                    print(confirmed);
+                    if (confirmed) {
+                      final docBill = FirebaseFirestore.instance
+                          .collection('bills')
+                          .doc(bill['billId']);
+                      docBill.delete();
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          backgroundColor: Colors.red,
+                          content: Text(
+                              '"${bill['itemName']}" has been removed successfully!')));
+                    }
+                    print('pressedCancel');
+                    return;
+                  },
+                  backgroundColor: Color(0xFFFE4A49),
+                  foregroundColor: Colors.white,
+                  icon: Icons.delete,
+                  label: 'Delete',
                 ),
               ],
             ),

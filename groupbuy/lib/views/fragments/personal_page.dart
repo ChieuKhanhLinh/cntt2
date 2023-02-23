@@ -31,7 +31,6 @@ class PersonalPage extends StatefulWidget {
 }
 
 class _PersonalPageState extends State<PersonalPage> {
-
   final CartController controller = Get.find();
   final auth = FirebaseAuth.instance;
   final db = FirebaseFirestore.instance;
@@ -270,20 +269,6 @@ class _PersonalPageState extends State<PersonalPage> {
         Navigator.pushNamed(context, Profile.routeName);
         break;
 
-      case MenuItems.itemOption:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ItemOptionPage()),
-        );
-        break;
-
-      case MenuItems.itemExpired:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ItemExpiredPage()),
-        );
-        break;
-
       case MenuItems.itemLogin:
         Navigator.pushNamed(context, SignInPage.routeName);
         break;
@@ -306,15 +291,15 @@ class _PersonalPageState extends State<PersonalPage> {
             height: (MediaQuery.of(context).size.height) * 0.06,
           ),
           if (auth.currentUser != null)
-          Text(
-            'Cập nhật thông tin',
-            style: GoogleFonts.inter(
-              textStyle: TextStyle(
-                  color: Color(0xFF013003),
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16),
+            Text(
+              'Cập nhật thông tin',
+              style: GoogleFonts.inter(
+                textStyle: TextStyle(
+                    color: Color(0xFF013003),
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16),
+              ),
             ),
-          ),
           SizedBox(
             height: 12,
           ),
@@ -381,6 +366,47 @@ class _PersonalPageState extends State<PersonalPage> {
           SizedBox(
             height: 9,
           ),
+          if (auth.currentUser != null)
+            StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(auth.currentUser!.uid)
+                  .snapshots(),
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.hasError) {
+                  return Container();
+                }
+                if (snapshot.hasData && snapshot.data != null) {
+                  if (snapshot.data['role'] == 'admin') {
+                    return _itemOption();
+                  }
+                  return Container();
+                }
+                return Container();
+              },
+            ),
+          SizedBox(
+            height: 9,
+          ),
+          if (auth.currentUser != null)
+            StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(auth.currentUser!.uid)
+                  .snapshots(),
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.hasError) {
+                  return Container();
+                }
+                if (snapshot.hasData && snapshot.data != null) {
+                  if (snapshot.data['role'] == 'admin') {
+                    return _itemExpired();
+                  }
+                  return Container();
+                }
+                return Container();
+              },
+            ),
           // appInfo(),
           // SizedBox(
           //   height: 9,
@@ -403,16 +429,52 @@ class _PersonalPageState extends State<PersonalPage> {
         children: [
           Column(
             children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => WaitingProgressBillPage()),
-                  );
-                },
-                icon: Image.asset('assets/choxuly.png'),
-                iconSize: 30,
+              Stack(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => WaitingProgressBillPage()),
+                      );
+                    },
+                    icon: Image.asset('assets/choxuly.png'),
+                    iconSize: 30,
+                  ),
+                  StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('bills')
+                        .where('userId', isEqualTo: auth.currentUser!.uid)
+                        .where('status', isEqualTo: 'Đang xử lý')
+                        .snapshots(),
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (snapshot.hasError) {
+                        return Container();
+                      }
+                      if (snapshot.hasData && snapshot.data != null) {
+                        if (snapshot.data.docs.length > 0)
+                          return Positioned(
+                              top: 5,
+                              right: 5,
+                              child: CircleAvatar(
+                                radius: 8,
+                                backgroundColor: Colors.red,
+                                child: CircleAvatar(
+                                  radius: 7,
+                                  backgroundColor: Colors.white,
+                                  child: Text(
+                                    snapshot.data.docs.length.toString(),
+                                    style: TextStyle(
+                                        color: Colors.red, fontSize: 10),
+                                  ),
+                                ),
+                              ));
+                      }
+                      return Container();
+                    },
+                  ),
+                ],
               ),
               Text(
                 'Chờ xử lý',
@@ -427,15 +489,52 @@ class _PersonalPageState extends State<PersonalPage> {
           ),
           Column(
             children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => PakageBillPage()),
-                  );
-                },
-                icon: Image.asset('assets/donggoi.png'),
-                iconSize: 30,
+              Stack(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PakageBillPage()),
+                      );
+                    },
+                    icon: Image.asset('assets/donggoi.png'),
+                    iconSize: 30,
+                  ),
+                  StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('bills')
+                        .where('userId', isEqualTo: auth.currentUser!.uid)
+                        .where('status', isEqualTo: 'Đóng gói')
+                        .snapshots(),
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (snapshot.hasError) {
+                        return Container();
+                      }
+                      if (snapshot.hasData && snapshot.data != null) {
+                        if (snapshot.data.docs.length > 0)
+                          return Positioned(
+                              top: 5,
+                              right: 5,
+                              child: CircleAvatar(
+                                radius: 8,
+                                backgroundColor: Colors.red,
+                                child: CircleAvatar(
+                                  radius: 7,
+                                  backgroundColor: Colors.white,
+                                  child: Text(
+                                    snapshot.data.docs.length.toString(),
+                                    style: TextStyle(
+                                        color: Colors.red, fontSize: 10),
+                                  ),
+                                ),
+                              ));
+                      }
+                      return Container();
+                    },
+                  ),
+                ],
               ),
               Text(
                 'Đóng gói',
@@ -450,15 +549,52 @@ class _PersonalPageState extends State<PersonalPage> {
           ),
           Column(
             children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => DeliveryBillPage()),
-                  );
-                },
-                icon: Image.asset('assets/vanchuyen.png'),
-                iconSize: 30,
+              Stack(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DeliveryBillPage()),
+                      );
+                    },
+                    icon: Image.asset('assets/vanchuyen.png'),
+                    iconSize: 30,
+                  ),
+                  StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('bills')
+                        .where('userId', isEqualTo: auth.currentUser!.uid)
+                        .where('status', isEqualTo: 'Vận chuyển')
+                        .snapshots(),
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (snapshot.hasError) {
+                        return Container();
+                      }
+                      if (snapshot.hasData && snapshot.data != null) {
+                        if (snapshot.data.docs.length > 0)
+                          return Positioned(
+                              top: 5,
+                              right: 5,
+                              child: CircleAvatar(
+                                radius: 8,
+                                backgroundColor: Colors.red,
+                                child: CircleAvatar(
+                                  radius: 7,
+                                  backgroundColor: Colors.white,
+                                  child: Text(
+                                    snapshot.data.docs.length.toString(),
+                                    style: TextStyle(
+                                        color: Colors.red, fontSize: 10),
+                                  ),
+                                ),
+                              ));
+                      }
+                      return Container();
+                    },
+                  ),
+                ],
               ),
               Text(
                 'Vận chuyển',
@@ -473,15 +609,52 @@ class _PersonalPageState extends State<PersonalPage> {
           ),
           Column(
             children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ReceiveBillPage()),
-                  );
-                },
-                icon: Image.asset('assets/nhanhang.png'),
-                iconSize: 30,
+              Stack(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ReceiveBillPage()),
+                      );
+                    },
+                    icon: Image.asset('assets/nhanhang.png'),
+                    iconSize: 30,
+                  ),
+                  StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('bills')
+                        .where('userId', isEqualTo: auth.currentUser!.uid)
+                        .where('status', isEqualTo: 'Nhận hàng')
+                        .snapshots(),
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (snapshot.hasError) {
+                        return Container();
+                      }
+                      if (snapshot.hasData && snapshot.data != null) {
+                        if (snapshot.data.docs.length > 0)
+                          return Positioned(
+                              top: 5,
+                              right: 5,
+                              child: CircleAvatar(
+                                radius: 8,
+                                backgroundColor: Colors.red,
+                                child: CircleAvatar(
+                                  radius: 7,
+                                  backgroundColor: Colors.white,
+                                  child: Text(
+                                    snapshot.data.docs.length.toString(),
+                                    style: TextStyle(
+                                        color: Colors.red, fontSize: 10),
+                                  ),
+                                ),
+                              ));
+                      }
+                      return Container();
+                    },
+                  ),
+                ],
               ),
               Text(
                 'Nhận hàng',
@@ -564,15 +737,107 @@ class _PersonalPageState extends State<PersonalPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(
-              'assets/Order.png',
-              scale: 0.8,
+            Icon(
+              Icons.article_outlined,
+              size: 30,
             ),
             SizedBox(
               width: 8,
             ),
             Text(
               'Quản lý đơn hàng',
+              style: GoogleFonts.inter(
+                textStyle: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16),
+              ),
+            ),
+            Spacer(),
+            Icon(
+              Icons.navigate_next_rounded,
+              size: 30,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _itemOption() {
+    return GestureDetector(
+      onTap: (() {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ItemOptionPage()),
+        );
+      }),
+      child: Container(
+        height: 69,
+        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.inventory_2_outlined,
+              size: 30,
+            ),
+            SizedBox(
+              width: 8,
+            ),
+            Text(
+              'Tùy chọn sản phẩm',
+              style: GoogleFonts.inter(
+                textStyle: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16),
+              ),
+            ),
+            Spacer(),
+            Icon(
+              Icons.navigate_next_rounded,
+              size: 30,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _itemExpired() {
+    return GestureDetector(
+      onTap: (() {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ItemExpiredPage()),
+        );
+      }),
+      child: Container(
+        height: 69,
+        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.update,
+              size: 30,
+            ),
+            SizedBox(
+              width: 8,
+            ),
+            Text(
+              'Sản phẩm hết thời hạn',
               style: GoogleFonts.inter(
                 textStyle: TextStyle(
                     color: Colors.black,
